@@ -17,6 +17,6 @@ public class BlueBackstageParking extends LinearOpMode {
 
         wormUtil.waitForStart();
 
-        inchWorm.moveTo(new InchWorm.Pose(Distance.ZERO, Distance.tiles(-4), Angle.ZERO));
+        inchWorm.moveTo(new InchWorm.Pose(Distance.tiles(-4), Distance.ZERO, Angle.ZERO));
     }
 }
