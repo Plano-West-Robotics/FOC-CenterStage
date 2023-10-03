@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.freesight.opmodes.FreeSight;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 @TeleOp(name = "hopefully working teleop")
@@ -14,7 +15,8 @@ public class Teleop extends OpMode {
     public void init() {
         hardware = new Hardware(this);
         drive = new Drive(hardware);
-
+        FreeSight vision = new FreeSight(this);
+        vision.findStuff();
         drive.setSpeed(0.5);
         drive.setFieldOriented(false);
     }
