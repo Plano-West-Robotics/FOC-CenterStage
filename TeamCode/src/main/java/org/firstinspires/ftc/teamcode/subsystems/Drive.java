@@ -41,10 +41,10 @@ public class Drive {
             powerY = y;
         }
 
-        double flPower = (powerY - powerX + turn) * getSpeed();
-        double frPower = (powerY + powerX - turn) * getSpeed();
-        double blPower = (powerY + powerX + turn) * getSpeed();
-        double brPower = (powerY - powerX - turn) * getSpeed();
+        double flPower = (powerY - powerX - turn) * getSpeed();
+        double frPower = (powerY + powerX + turn) * getSpeed();
+        double blPower = (powerY + powerX - turn) * getSpeed();
+        double brPower = (powerY - powerX + turn) * getSpeed();
 
         double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(speed)); // shortcut for max(abs([fl, fr, bl, br]))
         flPower /= scale;

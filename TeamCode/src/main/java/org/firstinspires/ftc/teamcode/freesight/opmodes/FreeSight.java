@@ -16,7 +16,7 @@ public class FreeSight  {
     public FreeSight(OpMode op)
     {
         web = OpenCvCameraFactory.getInstance().createWebcam(
-                op.hardwareMap.get(WebcamName.class,"webcam")
+                op.hardwareMap.get(WebcamName.class,"Webcam 1")
         );
         telemetry = op.telemetry;
     }
