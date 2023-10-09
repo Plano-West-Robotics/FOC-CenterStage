@@ -2,10 +2,16 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+/**
+ * Abstractions for gamepads. Benefits include easier edge detection for toggles
+ */
 public class GamepadWrapper {
-    private Gamepad prevState;
-    private Gamepad currState;
+    private final Gamepad prevState;
+    private final Gamepad currState;
 
+    /**
+     * Every <b>digital</b> button (buttons that return true/false)
+     */
     public enum Button {
         A,
         B,
@@ -21,6 +27,9 @@ public class GamepadWrapper {
         DPAD_RIGHT,
     }
 
+    /**
+     * Every <b>analog</b> button. (buttons that report values as doubles)
+     */
     public enum AnalogInput {
         LEFT_TRIGGER,
         RIGHT_TRIGGER,
@@ -39,6 +48,11 @@ public class GamepadWrapper {
         this(new Gamepad());
     }
 
+    /**
+     * Determine whether button is pressed
+     * @param button Button to check
+     * @return whether button is pressed
+     */
     public boolean isPressed(Button button) {
         return isPressed(button, currState);
     }
@@ -62,8 +76,13 @@ public class GamepadWrapper {
         }
     }
 
-    public double getAnalogValue(AnalogInput button) {
-        return getAnalogValue(button, currState);
+    /**
+     * Get the value of an analog input
+     * @param input Input to check
+     * @return Value of the analog input
+     */
+    public double getAnalogValue(AnalogInput input) {
+        return getAnalogValue(input, currState);
     }
 
     private double getAnalogValue(AnalogInput button, Gamepad gamepad) {
@@ -79,10 +98,20 @@ public class GamepadWrapper {
         }
     }
 
+    /**
+     * Determine whether the button was pressed between this timestep and last timestep.
+     * @param button Button to check
+     * @return whether the button was pressed between this timestep and last timestep.
+     */
     public boolean justPressed(Button button) {
         return (!isPressed(button, prevState) && isPressed(button, currState));
     }
 
+    /**
+     * Determine whether the button was released between this timestep and last timestep.
+     * @param button Button to check
+     * @return whether the button was released between this timestep and last timestep.
+     */
     public boolean justReleased(Button button) {
         return (isPressed(button, prevState) && !isPressed(button, currState));
     }
