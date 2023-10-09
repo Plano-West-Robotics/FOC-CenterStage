@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
 
 public class Hardware {
     public DcMotorEx fl, fr, bl, br;
+    public DcMotorEx intake;
     public IMU imu;
     public VoltageSensor voltageSensor;
 
@@ -23,6 +24,10 @@ public class Hardware {
         fr = hardwareMap.get(DcMotorEx.class, "frontRight");
         bl = hardwareMap.get(DcMotorEx.class, "backLeft");
         br = hardwareMap.get(DcMotorEx.class, "backRight");
+
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.REVERSE);
