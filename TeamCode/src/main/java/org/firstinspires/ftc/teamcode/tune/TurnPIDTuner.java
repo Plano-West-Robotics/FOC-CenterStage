@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.inchworm.WormUtil;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
 import org.firstinspires.ftc.teamcode.inchworm.PIDController;
-import org.firstinspires.ftc.teamcode.inchworm.units.Angle;
 
 @Config
 @Autonomous(group="tune")
