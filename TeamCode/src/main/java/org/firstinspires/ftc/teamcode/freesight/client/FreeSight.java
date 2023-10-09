@@ -1,28 +1,25 @@
-package org.firstinspires.ftc.teamcode.freesight.opmodes;
+package org.firstinspires.ftc.teamcode.freesight.client;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.freesight.vision.FreeSightPipeline;
+import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
 import org.openftc.easyopencv.*;
 
-public class FreeSight  {
+public class FreeSight {
     private FreeSightPipeline pipe;
     private final OpenCvWebcam web;
     private final Telemetry telemetry;
 
-    public FreeSight(OpMode op)
-    {
+    public FreeSight(OpMode op) {
         web = OpenCvCameraFactory.getInstance().createWebcam(
-                op.hardwareMap.get(WebcamName.class,"Webcam 1")
+                op.hardwareMap.get(WebcamName.class, "Webcam 1")
         );
         telemetry = op.telemetry;
     }
 
-    public void findStuff()
-    {
+    public void init() {
         pipe = new FreeSightPipeline();
 
         web.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -40,8 +37,11 @@ public class FreeSight  {
         });
     }
 
-    public void stop()
-    {
+    public FreeSightPipeline.Side getPosition() {
+        return pipe.positionState;
+    }
+
+    public void stop() {
         web.stopStreaming();
     }
 }

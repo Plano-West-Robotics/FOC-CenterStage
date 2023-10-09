@@ -1,13 +1,10 @@
-package org.firstinspires.ftc.teamcode.freesight.vision;
+package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
 //import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.opmode.TelemetryImpl;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
