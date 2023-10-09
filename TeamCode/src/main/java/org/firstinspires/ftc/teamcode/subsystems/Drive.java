@@ -1,14 +1,15 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.teamcode.teleop.Hardware;
+import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Drive {
     Hardware hardware;
-    private double speed = 1;
+    private double speed;
     private boolean fieldOriented = false;
 
-    public Drive(Hardware hw) {
-        hardware = hw;
+    public Drive(Hardware hw, double speed) {
+        this.hardware = hw;
+        this.speed = speed;
     }
 
     public void setSpeed(double newSpeed) {
@@ -43,12 +44,12 @@ public class Drive {
 
         double volComp = getVoltageCompensation();
 
-        double flPower = (powerY - powerX - turn) * volComp;
-        double frPower = (powerY + powerX + turn) * volComp;
-        double blPower = (powerY + powerX - turn) * volComp;
-        double brPower = (powerY - powerX + turn) * volComp;
+        double flPower = (powerY + powerX + turn) * volComp;
+        double frPower = (powerY - powerX - turn) * volComp;
+        double blPower = (powerY - powerX + turn) * volComp;
+        double brPower = (powerY + powerX - turn) * volComp;
 
-        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(speed)); // shortcut for max(abs([fl, fr, bl, br]))
+        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(volComp)); // shortcut for max(abs([fl, fr, bl, br]))
         flPower /= scale;
         frPower /= scale;
         blPower /= scale;
