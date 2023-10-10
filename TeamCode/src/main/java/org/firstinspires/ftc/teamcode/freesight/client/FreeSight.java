@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.client;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -27,6 +28,7 @@ public class FreeSight {
             public void onOpened() {
                 web.setPipeline(pipe);
                 web.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(web, 0);
             }
 
             @Override
