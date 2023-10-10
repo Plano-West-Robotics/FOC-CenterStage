@@ -53,7 +53,7 @@ public class Hardware {
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         imu = hardwareMap.get(IMU.class, "imu");
