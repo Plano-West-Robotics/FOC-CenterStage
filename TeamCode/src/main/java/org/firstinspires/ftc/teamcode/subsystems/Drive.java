@@ -35,8 +35,11 @@ public class Drive {
     public void drive(double x, double y, double turn) {
         double powerX, powerY;
         if (getFieldOriented()) {
-            powerX = x * Math.cos(hardware.getYaw()) - y * Math.sin(hardware.getYaw());
-            powerY = x * Math.sin(hardware.getYaw()) + y * Math.cos(hardware.getYaw());
+            double yaw = hardware.getYaw();
+            double sin = Math.sin(-yaw);
+            double cos = Math.cos(-yaw);
+            powerX = x*cos - y*sin;
+            powerY = x*sin + y*cos;
         } else {
             powerX = x;
             powerY = y;

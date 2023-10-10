@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -26,6 +28,8 @@ public class Hardware {
      */
     public Hardware(OpMode opMode) {
         HardwareMap hardwareMap = opMode.hardwareMap;
+
+        opMode.telemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
 
         fl = hardwareMap.get(DcMotorEx.class, "frontLeft");
         fr = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -63,7 +67,7 @@ public class Hardware {
     }
 
     /**
-     * get yaw in specified unit
+     * Get yaw in specified unit. Counterclockwise is positive. The zero position is defined by a call to <code>resetYaw</code>
      * @param angleUnit Unit of the returned angle
      * @return yaw in specified unit
      */
@@ -72,14 +76,14 @@ public class Hardware {
     }
 
     /**
-     * Reset yaw reading to 0
+     * Reset yaw reading to 0.
      */
     public void resetYaw() {
         imu.resetYaw();
     }
 
     /**
-     * Get yaw in radians
+     * Get yaw in radians. Counterclockwise is positive. The zero position is defined by a call to <code>resetYaw</code>.
      * @return yaw in radians
      */
     public double getYaw() {

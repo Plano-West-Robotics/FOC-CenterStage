@@ -40,12 +40,13 @@ public class GamepadWrapper {
     }
 
     public GamepadWrapper(Gamepad gp) {
-        prevState = new Gamepad();
-        currState = gp;
+        this();
+        currState.copy(gp);
     }
 
     public GamepadWrapper() {
-        this(new Gamepad());
+        prevState = new Gamepad();
+        currState = new Gamepad();
     }
 
     /**
@@ -85,8 +86,8 @@ public class GamepadWrapper {
         return getAnalogValue(input, currState);
     }
 
-    private double getAnalogValue(AnalogInput button, Gamepad gamepad) {
-        switch (button) {
+    private double getAnalogValue(AnalogInput input, Gamepad gamepad) {
+        switch (input) {
             case LEFT_TRIGGER: return gamepad.left_trigger;
             case RIGHT_TRIGGER: return gamepad.right_trigger;
             case LEFT_STICK_X: return gamepad.left_stick_x;
