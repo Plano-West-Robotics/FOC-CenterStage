@@ -24,9 +24,9 @@ public class GrabberThingyOp extends LinearOpMode {
         FreeSight vision = new FreeSight(this);
         vision.init();
 
-        if(isStopRequested())
-        {
-            vision.stop();
-        }
+        waitForStart();
+        while (opModeIsActive());
+
+        vision.stop();
     }
 }
