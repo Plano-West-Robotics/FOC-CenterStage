@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.freesight.client.FreeSight;
 @Autonomous
 public class GrabberThingyOp extends LinearOpMode {
 
+
     /**
      * Override this method and place your code here.
      * <p>
@@ -20,7 +21,7 @@ public class GrabberThingyOp extends LinearOpMode {
      *                              that can throw {@link InterruptedException}
      */
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode()  {
         FreeSight vision = new FreeSight(this);
         vision.init();
 
