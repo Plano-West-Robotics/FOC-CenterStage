@@ -42,5 +42,6 @@ public class FreeSight {
 
     public void stop() {
         web.stopStreaming();
+        pipe.releaseFrames();
     }
 }

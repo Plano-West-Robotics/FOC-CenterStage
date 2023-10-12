@@ -17,21 +17,30 @@ import java.util.ArrayList;
 @Config
 public class FreeSightPipeline extends OpenCvPipeline {
 
-    public enum Prop
-    {
-        BLUE,ORANGE,NONE
+    public enum Prop {
+        BLUE, ORANGE, NONE
     }
-    public enum Side
-    {
-        LEFT,RIGHT,MIDDLE
+
+    public enum Side {
+        LEFT, RIGHT, MIDDLE
     }
+
     ArrayList<double[]> frameList = new ArrayList<>();
     public Side positionState;
 
-    public Scalar lowHSV = new Scalar(0,0,0);
-    public Scalar highHSV = new Scalar(0,0,0);
-    public Scalar outline = new Scalar(0,255,0);
+    public Scalar lowHSV = new Scalar(0, 0, 0);
+    public Scalar highHSV = new Scalar(0, 0, 0);
+    public Scalar outline = new Scalar(0, 255, 0);
     public Prop colorState = Prop.NONE;
+
+    private Mat empty = new Mat();
+    private Mat main = new Mat();
+    private Mat masked = new Mat();
+    private Mat scaledThresh = new Mat();
+    private Mat scaledMask = new Mat();
+    private Mat threshold = new Mat();
+    private Mat hierarchy = new Mat();
+
 
     /**
      * @param input the frame to be manipulated
@@ -42,44 +51,48 @@ public class FreeSightPipeline extends OpenCvPipeline {
         int width = input.width();
         int height = input.height();
 
-        Mat mat = new Mat();
+        // Clear buffers
+        empty.copyTo(main);
+        empty.copyTo(masked);
+        empty.copyTo(scaledMask);
+        empty.copyTo(scaledThresh);
+        empty.copyTo(threshold);
+        empty.copyTo(hierarchy);
+        //main = new Mat();
 
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        if(mat.empty()) return input;
+        Imgproc.cvtColor(input, main, Imgproc.COLOR_RGB2HSV);
+        if (main.empty()) return input;
 
         /*
          * BLUE
          * Scalar lowHSV = new Scalar(55.3, 62.3, 53.8);
          * Scalar highHSV = new Scalar(213.9, 240.8, 255);
          */
-        if(colorState == Prop.BLUE)
-        {
+        if (colorState == Prop.BLUE) {
             lowHSV = new Scalar(55.3, 62.3, 53.8);
             highHSV = new Scalar(213.9, 240.8, 255);
-        }
-        else if(colorState == Prop.ORANGE)
-        {
-            lowHSV = new Scalar(0,106.3,198.3);
+        } else if (colorState == Prop.ORANGE) {
+            lowHSV = new Scalar(0, 106.3, 198.3);
             highHSV = new Scalar(14.2, 255, 255);
         }
-        Mat threshold = new Mat();
+        //Mat threshold = new Mat();
 
-        Core.inRange(mat, lowHSV, highHSV, threshold);
+        Core.inRange(main, lowHSV, highHSV, threshold);
 
-        Mat masked = new Mat();
+        //masked = new Mat();
 
 
-        Core.bitwise_and(mat, mat, masked, threshold);
+        Core.bitwise_and(main, main, masked, threshold);
 
         Scalar avg = Core.mean(masked, threshold);
-        Mat scaledMask = new Mat();
+        //scaledMask = new Mat();
 
-        masked.convertTo(scaledMask, -1, 150/avg.val[1],0);
+        masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
 
-        Mat scaledThresh = new Mat();
+        //scaledThresh = new Mat();
         double strictLowS;
         //you probably want to tune this
-        if(colorState == Prop.BLUE)
+        if (colorState == Prop.BLUE)
             strictLowS = 62.3;
         else
             strictLowS = 86.4; // orange
@@ -90,22 +103,19 @@ public class FreeSightPipeline extends OpenCvPipeline {
 
         //contours, apply post processing to information
         ArrayList<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
+        //Mat hierarchy = new Mat();
         //find contours, input scaledThresh because it has hard edges
         Imgproc.findContours(scaledThresh, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
 
-        Mat threshRGB = new Mat();
-        Imgproc.cvtColor(threshold, threshRGB, Imgproc.COLOR_GRAY2BGR);
+        //threshRGB = new Mat();
         if (contours.size() > 0) {
             int index = 0;
             int area = 0;
-            for (int i = 0; i < contours.size(); i++)
-            {
+            for (int i = 0; i < contours.size(); i++) {
                 MatOfPoint bar = contours.get(i);
                 int foo = bar.width() * bar.height();
-                if(foo > area)
-                {
+                if (foo > area) {
                     index = i;
                     area = foo;
                 }
@@ -126,63 +136,62 @@ public class FreeSightPipeline extends OpenCvPipeline {
             );
 
             int bigX;
-            if(point < width / 3) {
+            if (point < width / 3) {
                 positionState = Side.LEFT;
                 bigX = 0;
-            }
-            else if(point > width / 1.5) {
+            } else if (point > width / 1.5) {
                 positionState = Side.RIGHT;
                 bigX = width * 2 / 3;
-            }
-            else {
+            } else {
                 positionState = Side.MIDDLE;
                 bigX = width / 3;
             }
 
-        Imgproc.rectangle(
-                input,
-                new Rect(bigX,
-                        0,
-                        width / 3,
-                        height
-                ),
-                outline
-        );
-        Imgproc.circle(
-                input,
-                new Point(
-                    boundingRect.x + boundingRect.width / 2,
-                    boundingRect.y + boundingRect.height / 2
-                ),
-                10,
-                outline
-        );
-        Imgproc.putText(
-                input,
-                positionState.toString(),
-                new Point(
-                        boundingRect.x + boundingRect.width / 2,
-                        boundingRect.y + boundingRect.height / 2
-                ),
-                Imgproc.FONT_ITALIC,
-                0.5,
-                new Scalar(255, 0, 255)
-        );
-    }
+            Imgproc.rectangle(
+                    input,
+                    new Rect(bigX,
+                            0,
+                            width / 3,
+                            height
+                    ),
+                    outline
+            );
+            Imgproc.circle(
+                    input,
+                    new Point(
+                            boundingRect.x + boundingRect.width / 2,
+                            boundingRect.y + boundingRect.height / 2
+                    ),
+                    10,
+                    outline
+            );
+            Imgproc.putText(
+                    input,
+                    positionState.toString(),
+                    new Point(
+                            boundingRect.x + boundingRect.width / 2,
+                            boundingRect.y + boundingRect.height / 2
+                    ),
+                    Imgproc.FONT_ITALIC,
+                    0.5,
+                    new Scalar(255, 0, 255)
+            );
+        }
 
         //list of frames to reduce inconsistency, not too many so that it is still real-time, change the number from 5 if you want
         if (frameList.size() > 5) {
             frameList.remove(0);
         }
-        //releasing for ram related reasons
-        //input.release();
-        threshRGB.release();
-        scaledThresh.release();
-        scaledMask.release();
-        mat.release();
-        masked.release();
-        threshold.release();
         return input;
 
+    }
+
+    public void releaseFrames() {
+        scaledThresh.release();
+        scaledMask.release();
+        main.release();
+        masked.release();
+        threshold.release();
+        empty.release();
     }
 }
