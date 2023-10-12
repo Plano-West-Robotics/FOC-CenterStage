@@ -28,19 +28,21 @@ public class GrabberThingyOp extends LinearOpMode {
         FreeSight vision = new FreeSight(hardware, this.telemetry);
         vision.init();
         FtcDashboard dash = FtcDashboard.getInstance();
-        dash.addConfigVariable(
-                "Scalar",
-                "high",
-                new ConstantProvider<>(vision.pipe.highHSV));
-        dash.addConfigVariable(
-                "Scalar",
-                "low",
-                new ConstantProvider<>(vision.pipe.lowHSV));
-        dash.addConfigVariable(
-                "Color",
-                "yeah",
-                new ConstantProvider<>(vision.pipe.colorState)
-                );
+//        dash.addConfigVariable(
+//                "Scalar",
+//                "high",
+//                new ConstantProvider<>(vision.pipe.highHSV));
+//        dash.addConfigVariable(
+//                "Scalar",
+//                "low",
+//                new ConstantProvider<>(vision.pipe.lowHSV));
+//        dash.addConfigVariable(
+//                "Color",
+//                "yeah",
+//                new ConstantProvider<>(vision.pipe.colorState)
+//                );
+
+
         waitForStart();
         while (opModeIsActive());
 
