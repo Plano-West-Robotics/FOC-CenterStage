@@ -174,15 +174,16 @@ public class FreeSightPipeline extends OpenCvPipeline {
         if (frameList.size() > 5) {
             frameList.remove(0);
         }
-
+        threshRGB.copyTo(input);
         //releasing for ram related reasons
-        input.release();
+        //input.release();
+        threshRGB.release();
         scaledThresh.release();
         scaledMask.release();
         mat.release();
         masked.release();
         threshold.release();
-        return threshRGB;
+        return input;
 
     }
 }
