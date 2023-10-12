@@ -5,17 +5,28 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 @TeleOp(name = "CCCCCCCCC")
 public class Teleop extends OpModeWrapper {
     Drive drive;
-    double speed;
+    Intake intake;
+    double driveSpeed;
+    double intakeSpeed;
 
     @Override
     public void setup() {
-        speed = 0.7;
-        drive = new Drive(hardware, speed);
+        driveSpeed = 0.7;
+        intakeSpeed = 1; // change this speed if you have to
+        drive = new Drive(hardware, driveSpeed);
         drive.setFieldOriented(false);
+
+        intake = new Intake(hardware, intakeSpeed);
+    }
+
+    @Override
+    public void start() { // runs once before loop()
+        intake.start();
     }
 
     @Override
@@ -23,14 +34,31 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Yaw", hardware.getYaw());
 
         if (gamepad1.justPressed(Controls.GP1_FASTER)) {
-            speed += 0.15;
+            driveSpeed += 0.15;
         }
         if (gamepad1.justPressed(Controls.GP1_SLOWER)) {
-            speed -= 0.15;
+            driveSpeed -= 0.15;
         }
-        speed = Range.clip(speed, 0.1, 1.0);
-        drive.setSpeed(speed);
-        telemetry.addData("Speed", speed);
+        driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
+        drive.setSpeed(driveSpeed);
+        telemetry.addData("Drive speed", driveSpeed);
+
+        if (gamepad2.justPressed(Controls.GP2_TOGGLE_INTAKE)) {
+            intake.toggleRunning();
+        }
+        if (gamepad2.justPressed(Controls.GP2_INTAKE_SPEED_UP)) {
+            intakeSpeed += 0.15;
+        }
+        if (gamepad2.justPressed(Controls.GP2_INTAKE_SPEED_DOWN)) {
+            intakeSpeed -= 0.15;
+        }
+        if (gamepad2.justPressed(Controls.GP2_INTAKE_REVERSE)) {
+            intake.reverse();
+        }
+        intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
+        intake.setSpeed(intakeSpeed);
+        telemetry.addData("Intake speed", intakeSpeed);
+        telemetry.addData("Intake reversed?", intake.isReversed());
 
         if (gamepad1.justPressed(Controls.GP1_FIELD_ORIENTED)) {
             drive.toggleFieldOriented();
@@ -44,5 +72,6 @@ public class Teleop extends OpModeWrapper {
         double x = gamepad1.getAnalogValue(Controls.GP1_STRAFE);
         double turn = gamepad1.getAnalogValue(Controls.GP1_TURN);
         drive.drive(x, y, turn);
+        intake.update();
     }
 }
