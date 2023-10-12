@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autos;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.client.FreeSight;
 
 @Autonomous
@@ -22,7 +23,8 @@ public class GrabberThingyOp extends LinearOpMode {
      */
     @Override
     public void runOpMode()  {
-        FreeSight vision = new FreeSight(this);
+        Hardware hardware = new Hardware(this);
+        FreeSight vision = new FreeSight(hardware, this.telemetry);
         vision.init();
 
         waitForStart();

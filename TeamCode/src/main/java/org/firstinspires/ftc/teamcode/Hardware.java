@@ -10,8 +10,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 /**
  * Hardware wrapper to abstract motors and stuff. I recommend you use this to keep yourself sane.
@@ -21,9 +25,11 @@ public class Hardware {
     public DcMotorEx intake;
     public IMU imu;
     public VoltageSensor voltageSensor;
+    public OpenCvCamera webcam;
 
     /**
      * Initialize hardware wrapper. This constructor reverses motors and all that for you
+     *
      * @param opMode Current opmode. Used to grab the HardwareMap
      */
     public Hardware(OpMode opMode) {
@@ -64,10 +70,13 @@ public class Hardware {
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
+
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"));
     }
 
     /**
      * Get yaw in specified unit. Counterclockwise is positive. The zero position is defined by a call to <code>resetYaw</code>
+     *
      * @param angleUnit Unit of the returned angle
      * @return yaw in specified unit
      */
@@ -84,6 +93,7 @@ public class Hardware {
 
     /**
      * Get yaw in radians. Counterclockwise is positive. The zero position is defined by a call to <code>resetYaw</code>.
+     *
      * @return yaw in radians
      */
     public double getYaw() {
