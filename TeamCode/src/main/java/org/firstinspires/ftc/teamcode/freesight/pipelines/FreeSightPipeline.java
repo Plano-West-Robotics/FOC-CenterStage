@@ -120,7 +120,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
             int point = boundingRect.x + boundingRect.width / 2;
 
             Imgproc.rectangle(
-                    threshRGB,
+                    input,
                     boundingRect,
                     outline
             );
@@ -140,7 +140,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
             }
 
         Imgproc.rectangle(
-                threshRGB,
+                input,
                 new Rect(bigX,
                         0,
                         width / 3,
@@ -149,7 +149,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
                 outline
         );
         Imgproc.circle(
-                threshRGB,
+                input,
                 new Point(
                     boundingRect.x + boundingRect.width / 2,
                     boundingRect.y + boundingRect.height / 2
@@ -158,7 +158,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
                 outline
         );
         Imgproc.putText(
-                threshRGB,
+                input,
                 positionState.toString(),
                 new Point(
                         boundingRect.x + boundingRect.width / 2,
@@ -174,7 +174,6 @@ public class FreeSightPipeline extends OpenCvPipeline {
         if (frameList.size() > 5) {
             frameList.remove(0);
         }
-        threshRGB.copyTo(input);
         //releasing for ram related reasons
         //input.release();
         threshRGB.release();

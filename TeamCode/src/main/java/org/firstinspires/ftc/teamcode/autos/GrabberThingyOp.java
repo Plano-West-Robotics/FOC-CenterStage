@@ -14,9 +14,7 @@ import org.opencv.core.Scalar;
 @Autonomous
 @Config
 public class GrabberThingyOp extends LinearOpMode {
-    public static Scalar HIGH_HSV;
-    public static Scalar LOW_HSV;
-    public static FreeSightPipeline.Prop COLOR_STATE;
+    public static FreeSightPipeline.Prop COLOR_STATE = FreeSightPipeline.Prop.NONE;
 
     @Override
     public void runOpMode()  {
@@ -28,8 +26,6 @@ public class GrabberThingyOp extends LinearOpMode {
 
         waitForStart();
         while (opModeIsActive()) {
-            vision.pipe.highHSV = HIGH_HSV;
-            vision.pipe.lowHSV = LOW_HSV;
             vision.pipe.colorState = COLOR_STATE;
         }
 
