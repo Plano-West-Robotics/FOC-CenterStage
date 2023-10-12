@@ -7,24 +7,29 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class Intake {
     Hardware hardware;
     private double speed; // so that start and stop work properly
-    private double oldSpeed;
     private boolean reversed;
+    private boolean isRunning;
 
-    public Intake(OpMode opMode) {
-        hardware = new Hardware(opMode);
+    public Intake(Hardware hardware, double speed) {
+        this.hardware = hardware;
+        this.speed = speed;
+        this.reversed = false;
+        // this is off by default because in most cases, the constructor will run in init
+        // where we definitely don't want it to run
+        // change this if you really need to but I doubt you will
+        this.isRunning = false;
     }
 
     public void update() {
-        hardware.intake.setPower(speed * (reversed ? -1 : 1));
+        hardware.intake.setPower(isRunning ? speed * (reversed ? -1 : 1) : 0);
     }
 
     public void stop() {
-        oldSpeed = speed;
-        setSpeed(0);
+        isRunning = false;
     }
 
     public void start() {
-        setSpeed(oldSpeed);
+        isRunning = true;
     }
 
     public void reverse() {
@@ -33,6 +38,14 @@ public class Intake {
 
     public boolean isReversed() {
         return reversed;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void toggleRunning() {
+        isRunning = !isRunning;
     }
 
     public double getSpeed() {
