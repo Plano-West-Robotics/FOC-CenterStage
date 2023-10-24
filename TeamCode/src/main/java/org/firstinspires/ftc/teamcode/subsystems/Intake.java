@@ -6,22 +6,28 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Intake {
     Hardware hardware;
-    private double speed; // so that start and stop work properly
+    private double speed;
     private boolean reversed;
-    private boolean isRunning;
+    private boolean isRunning; // so that start and stop work properly
 
     public Intake(Hardware hardware, double speed) {
         this.hardware = hardware;
         this.speed = speed;
         this.reversed = false;
+
         // this is off by default because in most cases, the constructor will run in init
-        // where we definitely don't want it to run
+        // where we definitely don't want the motor to run
         // change this if you really need to but I doubt you will
         this.isRunning = false;
+        hardware.intake.setPower(0);
+        hardware.intake.setPower(0);
     }
 
     public void update() {
-        hardware.intake.setPower(isRunning ? speed * (reversed ? -1 : 1) : 0);
+        double power = isRunning ? speed * (reversed ? -1 : 1) : 0;
+        hardware.intake.setPower(power);
+        // todo: make this manual if needed; might require making a separate subsystem
+        hardware.ramp.setPower(power);
     }
 
     public void stop() {

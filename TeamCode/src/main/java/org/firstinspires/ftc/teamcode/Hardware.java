@@ -15,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 /**
  * Hardware wrapper to abstract motors and stuff. I recommend you use this to keep yourself sane.
@@ -23,6 +22,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class Hardware {
     public DcMotorEx fl, fr, bl, br;
     public DcMotorEx intake;
+    public DcMotorEx ramp;
     public IMU imu;
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
@@ -65,6 +65,11 @@ public class Hardware {
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        // TODO: Change this to a CRServo if needed
+        ramp = hardwareMap.get(DcMotorEx.class, "ramp");
+        ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ramp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
