@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -23,6 +24,8 @@ public class Hardware {
     public DcMotorEx fl, fr, bl, br;
     public DcMotorEx intake;
     public DcMotorEx ramp;
+    public Servo elbow;
+    public Servo wrist;
     public IMU imu;
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
@@ -70,6 +73,9 @@ public class Hardware {
         ramp = hardwareMap.get(DcMotorEx.class, "ramp");
         ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ramp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        elbow = hardwareMap.get(Servo.class, "elbow");
+        wrist = hardwareMap.get(Servo.class, "wrist");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));

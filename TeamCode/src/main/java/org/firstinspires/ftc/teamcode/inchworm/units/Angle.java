@@ -2,7 +2,11 @@ package org.firstinspires.ftc.teamcode.inchworm.units;
 
 public class Angle {
     /** 0 degrees/radians, use for convenience */
-    public static final Angle ZERO = new Angle(0);
+    public static final Angle ZERO = Angle.zero();
+    public static Angle zero()
+    {
+        return new Angle(0);
+    }
     // value in radians
     private final double val;
 
@@ -53,8 +57,8 @@ public class Angle {
         // convert to degrees because mod 2pi doesn't work?
         double angle = theta.angleInDegrees();
 
-        angle += 360;
-        angle %= 360;
+        angle += 360.0;
+        angle %= 360.0;
 
         // convert back when done
         return Angle.degrees(angle);

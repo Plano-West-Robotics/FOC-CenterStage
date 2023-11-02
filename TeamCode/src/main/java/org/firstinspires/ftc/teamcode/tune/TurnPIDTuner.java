@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tune;
 
+import android.annotation.SuppressLint;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -20,6 +22,7 @@ public class TurnPIDTuner extends LinearOpMode {
     /*
      * This class should be used to tune turn PID for InchWorm.
      */
+    @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
         WormUtil wormUtil = new WormUtil(this, InchWorm.GLOBAL_ORIENTATION);

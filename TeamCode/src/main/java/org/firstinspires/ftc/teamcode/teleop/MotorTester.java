@@ -16,6 +16,6 @@ public class MotorTester extends OpMode {
     @Override
     public void loop() {
         intake.setPower(-gamepad1.left_stick_y);
-        ramp.setPower(-gamepad1.left_stick_y);
+        ramp.setPower(-gamepad1.left_stick_y * 0.25);
     }
 }

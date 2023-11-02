@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.inchworm;
 
-import static org.firstinspires.ftc.teamcode.inchworm.units.Angle.ZERO;
-
 import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -24,8 +22,8 @@ import java.util.List;
  */
 public class InchWorm {
     /** Default starting pose of (0, 0, 0) */
-    public static final Pose POSE_ZERO = new Pose(Distance.ZERO, Distance.ZERO, Angle.ZERO);
-    /** Global constant for hub orientation. Use this unless you need to override the orientation for one specific opmode.  */
+    public static final Pose POSE_ZERO = new Pose(Distance.ZERO, Distance.ZERO, Angle.zero());
+    /** Global constant for hub orientation. Use this unless you need to override the orientation for one specific op-mode.  */
     public static final RevHubOrientationOnRobot GLOBAL_ORIENTATION = new RevHubOrientationOnRobot(
             // TODO: change these if they are not accurate
             RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
@@ -118,7 +116,7 @@ public class InchWorm {
     public void moveTo(Pose pose) {
         setTarget(pose);
 
-        while (!update()) {}
+        while (!update()) {continue;}
 
         stop();
     }
@@ -152,17 +150,22 @@ public class InchWorm {
         double outY = controllerY.calculate(current.y.distInTicks());
         double outTheta = controllerTheta.calculateWithError(angError);
 
-        double a = current.theta.angleInRadians();
+        double a = -current.theta.angleInRadians();
         double rotX = outX * Math.cos(a) - outY * Math.sin(a);
         double rotY = outX * Math.sin(a) + outY * Math.cos(a);
-        outX /= MAX_VEL;
-        outY /= MAX_VEL;
+        rotX /= MAX_VEL;
+        rotY /= MAX_VEL;
         outTheta /= MAX_ANG_VEL;
-        opMode.telemetry.addLine("outX: " + outX + System.lineSeparator() + "outY: " + outY + System.lineSeparator() + "outTheta: " + outTheta);
+        opMode.telemetry.addLine(
+                "rotX: " + rotX
+                        + System.lineSeparator() +
+                        "rotY: " + rotY
+                        + System.lineSeparator() +
+                        "outTheta: " + outTheta);
         opMode.telemetry.update();
 
         double voltageCompensation = 12 / getBatteryVoltage();
-        moveWheels(outX, outY, outTheta, getSpeedMultiplier() * voltageCompensation);
+        moveWheels(rotX, rotY, outTheta, getSpeedMultiplier() * voltageCompensation);
         tracker.update();
 
         return !isBusy(target, current);
@@ -211,7 +214,8 @@ public class InchWorm {
         double blPower = (powerY + powerX + turn) * speed;
         double brPower = (powerY - powerX - turn) * speed;
 
-        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(speed)); // shortcut for max(abs([fl,fr,bl,br]))
+        // shortcut for max(abs([fl,fr,bl,br]))
+        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(speed));
         flPower /= scale;
         frPower /= scale;
         blPower /= scale;
@@ -273,7 +277,7 @@ public class InchWorm {
     public static class Pose {
         public Distance x;
         public Distance y;
-        public Angle theta = ZERO;
+        public Angle theta = Angle.zero();
 
         public Pose(Distance X, Distance Y) {
             x = X;
@@ -336,14 +340,14 @@ public class InchWorm {
         private int frOffset = 0;
         private int blOffset = 0;
         private int brOffset = 0;
-        private Angle yawOffset = ZERO;
+        private Angle yawOffset = Angle.zero();
 
         /**
          * Set this to the diameter of the robot, in inches
          * Optional unless you need to relocalize with a custom angle.
          * Default: 0
          */
-        private final Distance TRACKWIDTH = Distance.ZERO;
+        private final Distance TRACK_WIDTH = Distance.ZERO;
 
         /**
          * Override the current pose estimate.
@@ -353,7 +357,7 @@ public class InchWorm {
             pose = pose.normalizeAngle();
             double x = pose.x.distInTicks();
             double y = pose.y.distInTicks();
-            double turn = (pose.theta.angleInRadians() * TRACKWIDTH.distInInches()) * Distance.TPI;
+            double turn = (pose.theta.angleInRadians() * TRACK_WIDTH.distInInches()) * Distance.TPI;
 
             int currentFL = fl.getCurrentPosition();
             int currentFR = fr.getCurrentPosition();
@@ -380,13 +384,13 @@ public class InchWorm {
             currentPos = pose;
         }
 
-        private double sinc(double x) {
+        private double sinC(double x) {
             return x == 0 ? 1 : Math.sin(x) / x;
         }
 
-        // this function doesn't really have a standard name, but it's similar to sinc so cosc it is
-        // not to be confused with cosec
-        private double cosc(double x) {
+        // this function doesn't really have a standard name, but it's similar to sinC so cosC it is
+        // not to be confused with cos-ec
+        private double cosC(double x) {
             return x == 0 ? 0 : (1 - Math.cos(x)) / x;
         }
 
@@ -410,8 +414,8 @@ public class InchWorm {
             double yDiff = ((flDiff + frDiff + blDiff + brDiff) / 4.0);
             double xDiff = ((blDiff + frDiff - flDiff - brDiff) / 4.0);
 
-            double expX = cosc(yawDiff.angleInRadians());
-            double expY = sinc(yawDiff.angleInRadians());
+            double expX = cosC(yawDiff.angleInRadians());
+            double expY = sinC(yawDiff.angleInRadians());
 
             Pose posDiff = new Pose(Distance.ticks(yDiff * expX + xDiff * expY), Distance.ticks(yDiff * expY - xDiff * expX), yawDiff);
             posDiff = posDiff.rot(currentPos.theta.neg());
