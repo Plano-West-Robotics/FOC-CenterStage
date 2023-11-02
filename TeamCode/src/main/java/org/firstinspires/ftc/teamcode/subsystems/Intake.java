@@ -27,7 +27,7 @@ public class Intake {
         double power = isRunning ? speed * (reversed ? -1 : 1) : 0;
         hardware.intake.setPower(power);
         // todo: make this manual if needed; might require making a separate subsystem
-        hardware.ramp.setPower(power);
+        hardware.ramp.setPower(power * 0.25);
     }
 
     public void stop() {
