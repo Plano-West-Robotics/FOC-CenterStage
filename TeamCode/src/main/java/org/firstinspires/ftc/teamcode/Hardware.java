@@ -66,12 +66,13 @@ public class Hardware {
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intake = hardwareMap.get(DcMotorEx.class, "intake");
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         // TODO: Change this to a CRServo if needed
         ramp = hardwareMap.get(DcMotorEx.class, "ramp");
-        ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        // commented out because if encoder isn't plugged in it causes this to run at full speed
+//        ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ramp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         elbow = hardwareMap.get(Servo.class, "elbow");

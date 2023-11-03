@@ -20,11 +20,11 @@ public class Intake {
         // change this if you really need to but I doubt you will
         this.isRunning = false;
         hardware.intake.setPower(0);
-        hardware.intake.setPower(0);
+        hardware.ramp.setPower(0);
     }
 
     public void update() {
-        double power = isRunning ? speed * (reversed ? -1 : 1) : 0;
+        double power = isRunning ? speed * (reversed ? 1 : -1) : 0;
         hardware.intake.setPower(power);
         // todo: make this manual if needed; might require making a separate subsystem
         hardware.ramp.setPower(power * 0.25);
