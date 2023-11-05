@@ -37,26 +37,26 @@ public class Teleop extends OpModeWrapper {
     public void run() {
         telemetry.addData("Yaw", hardware.getYaw());
 
-        if (gamepad1.justPressed(Controls.GP1_FASTER)) {
+        if (gamepads.justPressed(Controls.DRIVE_FASTER)) {
             driveSpeed += 0.15;
         }
-        if (gamepad1.justPressed(Controls.GP1_SLOWER)) {
+        if (gamepads.justPressed(Controls.DRIVE_SLOWER)) {
             driveSpeed -= 0.15;
         }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
         telemetry.addData("Drive speed", driveSpeed);
 
-        if (gamepad2.justPressed(Controls.GP2_TOGGLE_INTAKE)) {
+        if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
             intake.toggleRunning();
         }
-        if (gamepad2.justPressed(Controls.GP2_INTAKE_SPEED_UP)) {
+        if (gamepads.justPressed(Controls.INTAKE_FASTER)) {
             intakeSpeed += 0.15;
         }
-        if (gamepad2.justPressed(Controls.GP2_INTAKE_SPEED_DOWN)) {
+        if (gamepads.justPressed(Controls.INTAKE_SLOWER)) {
             intakeSpeed -= 0.15;
         }
-        if (gamepad2.justPressed(Controls.GP2_INTAKE_REVERSE)) {
+        if (gamepads.justPressed(Controls.INTAKE_REVERSE)) {
             intake.reverse();
         }
         intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
@@ -64,31 +64,31 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Intake speed", intakeSpeed);
         telemetry.addData("Intake reversed?", intake.isReversed());
 
-        if (gamepad2.justPressed(Controls.GP2_ARM_UP)) {
+        if (gamepads.justPressed(Controls.ARM_UP)) {
             arm.setArmPosition(Arm.ArmPosition.UP);
         }
-        if (gamepad2.justPressed(Controls.GP2_ARM_DOWN)) {
+        if (gamepads.justPressed(Controls.ARM_DOWN)) {
             arm.setArmPosition(Arm.ArmPosition.DOWN);
         }
 
-        if (gamepad2.justPressed(Controls.GP2_PEG_ENGAGE)) {
+        if (gamepads.justPressed(Controls.PEG_ENGAGE)) {
             arm.setPegPosition(Arm.PegPosition.ENGAGED);
         }
-        if (gamepad2.justPressed(Controls.GP2_PEG_DISENGAGE)) {
+        if (gamepads.justPressed(Controls.PEG_DISENGAGE)) {
             arm.setPegPosition(Arm.PegPosition.DISENGAGED);
         }
 
-        if (gamepad1.justPressed(Controls.GP1_FIELD_ORIENTED)) {
+        if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
             drive.toggleFieldOriented();
         }
-        if (gamepad1.justPressed(Controls.GP1_RESET_IMU)) {
+        if (gamepads.justPressed(Controls.RESET_IMU)) {
             hardware.resetYaw();
         }
         telemetry.addData("Field oriented enabled", drive.getFieldOriented());
 
-        double y = gamepad1.getAnalogValue(Controls.GP1_STRAIGHT);
-        double x = gamepad1.getAnalogValue(Controls.GP1_STRAFE);
-        double turn = gamepad1.getAnalogValue(Controls.GP1_TURN);
+        double y = gamepads.getAnalogValue(Controls.STRAIGHT);
+        double x = gamepads.getAnalogValue(Controls.STRAFE);
+        double turn = gamepads.getAnalogValue(Controls.TURN);
         drive.drive(x, y, turn);
         intake.update();
     }
