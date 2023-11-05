@@ -30,6 +30,7 @@ public class Hardware {
     public Servo wristL;
     public Servo wristR;
     public Servo peg;
+    public Servo planeLauncher;
 
     public IMU imu;
     public VoltageSensor voltageSensor;
@@ -85,6 +86,7 @@ public class Hardware {
         wristL = hardwareMap.get(Servo.class, "wristL");
         wristR = hardwareMap.get(Servo.class, "wristR");
         peg = hardwareMap.get(Servo.class, "peg");
+        planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));

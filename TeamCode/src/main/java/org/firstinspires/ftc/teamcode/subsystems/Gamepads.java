@@ -27,6 +27,7 @@ public class Gamepads {
         GP1_DPAD_DOWN,
         GP1_DPAD_LEFT,
         GP1_DPAD_RIGHT,
+        GP1_GUIDE,
 
         GP2_CROSS,
         GP2_CIRCLE,
@@ -40,6 +41,7 @@ public class Gamepads {
         GP2_DPAD_DOWN,
         GP2_DPAD_LEFT,
         GP2_DPAD_RIGHT,
+        GP2_GUIDE,
     }
 
     /**
@@ -97,6 +99,7 @@ public class Gamepads {
             case GP1_DPAD_DOWN: return gp1.dpad_down;
             case GP1_DPAD_LEFT: return gp1.dpad_left;
             case GP1_DPAD_RIGHT: return gp1.dpad_right;
+            case GP1_GUIDE: return gp1.guide;
 
             case GP2_CROSS: return gp2.a;
             case GP2_CIRCLE: return gp2.b;
@@ -110,6 +113,7 @@ public class Gamepads {
             case GP2_DPAD_DOWN: return gp2.dpad_down;
             case GP2_DPAD_LEFT: return gp2.dpad_left;
             case GP2_DPAD_RIGHT: return gp2.dpad_right;
+            case GP2_GUIDE: return gp2.guide;
 
             default: throw new RuntimeException("unreachable code entered");
         }

@@ -7,12 +7,14 @@ import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 
 @TeleOp(name = "CCCCCCCCC")
 public class Teleop extends OpModeWrapper {
     Drive drive;
     Intake intake;
     Arm arm;
+    PlaneLauncher launcher;
     double driveSpeed;
     double intakeSpeed;
 
@@ -26,6 +28,7 @@ public class Teleop extends OpModeWrapper {
         intake = new Intake(hardware, intakeSpeed);
 
         arm = new Arm(hardware, telemetry);
+        launcher = new PlaneLauncher(hardware);
     }
 
     @Override
@@ -76,6 +79,10 @@ public class Teleop extends OpModeWrapper {
         }
         if (gamepads.justPressed(Controls.PEG_DISENGAGE)) {
             arm.setPegPosition(Arm.PegPosition.DISENGAGED);
+        }
+
+        if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
+            launcher.disengage();
         }
 
         if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {

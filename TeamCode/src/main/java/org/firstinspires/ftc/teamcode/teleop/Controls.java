@@ -21,4 +21,6 @@ public class Controls {
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
     public static Gamepads.Button PEG_DISENGAGE = Gamepads.Button.GP2_DPAD_LEFT;
     public static Gamepads.Button PEG_ENGAGE = Gamepads.Button.GP2_DPAD_RIGHT;
+
+    public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP2_GUIDE;
 }
