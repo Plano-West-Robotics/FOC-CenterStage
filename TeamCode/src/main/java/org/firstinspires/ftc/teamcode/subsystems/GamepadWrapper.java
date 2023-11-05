@@ -13,10 +13,10 @@ public class GamepadWrapper {
      * Every <b>digital</b> button (buttons that return true/false)
      */
     public enum Button {
-        A,
-        B,
-        X,
-        Y,
+        CROSS,
+        CIRCLE,
+        SQUARE,
+        TRIANGLE,
         LEFT_BUMPER,
         RIGHT_BUMPER,
         LEFT_STICK_BUTTON,
@@ -60,10 +60,10 @@ public class GamepadWrapper {
 
     private boolean isPressed(Button button, Gamepad gamepad) {
         switch (button) {
-            case A: return gamepad.a;
-            case B: return gamepad.b;
-            case X: return gamepad.x;
-            case Y: return gamepad.y;
+            case CROSS: return gamepad.a;
+            case CIRCLE: return gamepad.b;
+            case SQUARE: return gamepad.x;
+            case TRIANGLE: return gamepad.y;
             case LEFT_BUMPER: return gamepad.left_bumper;
             case RIGHT_BUMPER: return gamepad.right_bumper;
             case LEFT_STICK_BUTTON: return gamepad.left_stick_button;
