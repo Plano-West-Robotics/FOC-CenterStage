@@ -24,8 +24,13 @@ public class Hardware {
     public DcMotorEx fl, fr, bl, br;
     public DcMotorEx intake;
     public DcMotorEx ramp;
-    public Servo elbow;
-    public Servo wrist;
+
+    public Servo elbowL;
+    public Servo elbowR;
+    public Servo wristL;
+    public Servo wristR;
+    public Servo peg;
+
     public IMU imu;
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
@@ -75,8 +80,11 @@ public class Hardware {
 //        ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ramp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        elbow = hardwareMap.get(Servo.class, "elbow");
-        wrist = hardwareMap.get(Servo.class, "wrist");
+        elbowL= hardwareMap.get(Servo.class, "elbowL");
+        elbowR= hardwareMap.get(Servo.class, "elbowR");
+        wristL = hardwareMap.get(Servo.class, "wristL");
+        wristR = hardwareMap.get(Servo.class, "wristR");
+        peg = hardwareMap.get(Servo.class, "peg");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
+import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 public class Teleop extends OpModeWrapper {
     Drive drive;
     Intake intake;
+    Arm arm;
     double driveSpeed;
     double intakeSpeed;
 
@@ -22,6 +24,8 @@ public class Teleop extends OpModeWrapper {
         drive.setFieldOriented(false);
 
         intake = new Intake(hardware, intakeSpeed);
+
+        arm = new Arm(hardware, telemetry);
     }
 
     @Override
@@ -59,6 +63,20 @@ public class Teleop extends OpModeWrapper {
         intake.setSpeed(intakeSpeed);
         telemetry.addData("Intake speed", intakeSpeed);
         telemetry.addData("Intake reversed?", intake.isReversed());
+
+        if (gamepad2.justPressed(Controls.GP2_ARM_UP)) {
+            arm.setArmPosition(Arm.ArmPosition.UP);
+        }
+        if (gamepad2.justPressed(Controls.GP2_ARM_DOWN)) {
+            arm.setArmPosition(Arm.ArmPosition.DOWN);
+        }
+
+        if (gamepad2.justPressed(Controls.GP2_PEG_ENGAGE)) {
+            arm.setPegPosition(Arm.PegPosition.ENGAGED);
+        }
+        if (gamepad2.justPressed(Controls.GP2_PEG_DISENGAGE)) {
+            arm.setPegPosition(Arm.PegPosition.DISENGAGED);
+        }
 
         if (gamepad1.justPressed(Controls.GP1_FIELD_ORIENTED)) {
             drive.toggleFieldOriented();

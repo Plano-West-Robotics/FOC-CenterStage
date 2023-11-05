@@ -14,7 +14,13 @@ public class Controls {
 
     // ======================= GAMEPAD 2 ============================
     public static GamepadWrapper.Button GP2_TOGGLE_INTAKE = GamepadWrapper.Button.A; // all of these are subject to change
-    public static GamepadWrapper.Button GP2_INTAKE_SPEED_UP = GamepadWrapper.Button.DPAD_UP;
-    public static GamepadWrapper.Button GP2_INTAKE_SPEED_DOWN = GamepadWrapper.Button.DPAD_DOWN;
+    public static GamepadWrapper.Button GP2_INTAKE_SPEED_UP = GamepadWrapper.Button.RIGHT_BUMPER;
+    public static GamepadWrapper.Button GP2_INTAKE_SPEED_DOWN = GamepadWrapper.Button.LEFT_BUMPER;
     public static GamepadWrapper.Button GP2_INTAKE_REVERSE = GamepadWrapper.Button.B;
+
+    public static GamepadWrapper.Button GP2_ARM_UP = GamepadWrapper.Button.DPAD_UP;
+    public static GamepadWrapper.Button GP2_ARM_DOWN = GamepadWrapper.Button.DPAD_DOWN;
+
+    public static GamepadWrapper.Button GP2_PEG_DISENGAGE = GamepadWrapper.Button.DPAD_LEFT;
+    public static GamepadWrapper.Button GP2_PEG_ENGAGE = GamepadWrapper.Button.DPAD_RIGHT;
 }
