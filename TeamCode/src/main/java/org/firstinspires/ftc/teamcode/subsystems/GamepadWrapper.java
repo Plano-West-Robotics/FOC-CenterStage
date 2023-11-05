@@ -60,10 +60,10 @@ public class GamepadWrapper {
 
     private boolean isPressed(Button button, Gamepad gamepad) {
         switch (button) {
-            case CROSS: return gamepad.a;
-            case CIRCLE: return gamepad.b;
-            case SQUARE: return gamepad.x;
-            case TRIANGLE: return gamepad.y;
+            case CROSS: return gamepad.a || gamepad.cross;
+            case CIRCLE: return gamepad.b || gamepad.circle;
+            case SQUARE: return gamepad.x || gamepad.square;
+            case TRIANGLE: return gamepad.y || gamepad.triangle;
             case LEFT_BUMPER: return gamepad.left_bumper;
             case RIGHT_BUMPER: return gamepad.right_bumper;
             case LEFT_STICK_BUTTON: return gamepad.left_stick_button;
