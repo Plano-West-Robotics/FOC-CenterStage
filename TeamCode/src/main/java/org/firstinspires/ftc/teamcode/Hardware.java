@@ -16,6 +16,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvPipeline;
 
 /**
  * Hardware wrapper to abstract motors and stuff. I recommend you use this to keep yourself sane.
@@ -127,5 +129,19 @@ public class Hardware {
      */
     public double getYaw() {
         return getYaw(AngleUnit.RADIANS);
+    }
+
+    public void openCamera(OpenCvPipeline pipeline) {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.setPipeline(pipeline);
+                webcam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(webcam, 0);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
     }
 }
