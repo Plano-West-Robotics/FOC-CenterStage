@@ -24,14 +24,11 @@ public class Hardware {
     public DcMotorEx fl, fr, bl, br;
     public DcMotorEx intake;
     public DcMotorEx ramp;
-
-    public Servo elbowL;
-    public Servo elbowR;
-    public Servo wristL;
-    public Servo wristR;
+    public DcMotorEx liftL, liftR;
+    public Servo elbowL, elbowR;
+    public Servo wristL, wristR;
     public Servo peg;
     public Servo planeLauncher;
-
     public IMU imu;
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
@@ -81,11 +78,21 @@ public class Hardware {
 //        ramp.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         ramp.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        elbowL= hardwareMap.get(Servo.class, "elbowL");
-        elbowR= hardwareMap.get(Servo.class, "elbowR");
+        liftL = hardwareMap.get(DcMotorEx.class, "liftLeft");
+        liftR = hardwareMap.get(DcMotorEx.class, "liftRight");
+        liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        liftL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftL.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftR.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        elbowL = hardwareMap.get(Servo.class, "elbowL");
+        elbowR = hardwareMap.get(Servo.class, "elbowR");
         wristL = hardwareMap.get(Servo.class, "wristL");
         wristR = hardwareMap.get(Servo.class, "wristR");
         peg = hardwareMap.get(Servo.class, "peg");
+
         planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
         imu = hardwareMap.get(IMU.class, "imu");
