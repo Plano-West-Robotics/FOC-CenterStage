@@ -41,12 +41,12 @@ public class InchWorm {
      * Maximum translational velocity in encoder ticks/second. Find this using the SpeedTuner
      */
     // TODO: tune this value
-    private static final double MAX_VEL = 2000;
+    private static final double MAX_VEL = 1721.398;
     /**
      * Maximum angular velocity in degrees/second. Find this using the SpeedTuner.
      */
     // TODO: tune this value
-    private static final double MAX_ANG_VEL = -188;
+    private static final double MAX_ANG_VEL = 149.353;
     /**
      * PID controllers. <b>coefficients for controllerX and controllerY should be THE SAME!</b>
      * Tune controllerX and controllerY with the TranslationalPIDTuner, and tune controllerTheta with the TurnPIDTuner.
@@ -77,8 +77,8 @@ public class InchWorm {
 
         fl = hardwareMap.get(DcMotor.class, "frontLeft");
         fr = hardwareMap.get(DcMotor.class, "frontRight");
-        bl = hardwareMap.get(DcMotor.class, "rearLeft");
-        br = hardwareMap.get(DcMotor.class, "rearRight");
+        bl = hardwareMap.get(DcMotor.class, "backLeft");
+        br = hardwareMap.get(DcMotor.class, "backRight");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(imuOrientationOnRobot));
