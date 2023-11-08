@@ -93,6 +93,24 @@ public class Hardware {
         wristR = hardwareMap.get(Servo.class, "wristR");
         peg = hardwareMap.get(Servo.class, "peg");
 
+        // Measured 2023-11-07
+        //           in - out
+        // elbowL: 0.65 - 0.05
+        // elbowR: 0.25 - 0.85
+        // wristL: 0.77 - 0.27 // NOTE: the 0.77 should really be a 0.79 to match wristR. need to re-tune at some point
+        // wristR: 0.18 - 0.70
+        // TODO: calibrate bounds for the peg
+
+        elbowL.scaleRange(0.05, 0.65);
+        elbowR.scaleRange(0.25, 0.85);
+        elbowL.setDirection(Servo.Direction.REVERSE);
+        elbowR.setDirection(Servo.Direction.FORWARD);
+
+        wristL.scaleRange(0.27, 0.77);
+        wristR.scaleRange(0.18, 0.70);
+        wristL.setDirection(Servo.Direction.REVERSE);
+        wristR.setDirection(Servo.Direction.FORWARD);
+
         planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
         imu = hardwareMap.get(IMU.class, "imu");
