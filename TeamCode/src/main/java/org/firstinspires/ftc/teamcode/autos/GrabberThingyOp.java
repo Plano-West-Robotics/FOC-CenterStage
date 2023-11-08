@@ -2,19 +2,19 @@ package org.firstinspires.ftc.teamcode.autos;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.config.ConstantProvider;
+//import com.acmerobotics.dashboard.config.ConstantProvider;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.client.FreeSight;
-import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
-import org.opencv.core.Scalar;
+import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline.*;
+//import org.opencv.core.Scalar;
 
 @Autonomous
 @Config
 public class GrabberThingyOp extends LinearOpMode {
-    public static FreeSightPipeline.Prop COLOR_STATE = FreeSightPipeline.Prop.NONE;
+    public static Prop COLOR_STATE = Prop.NONE;
 
     @Override
     public void runOpMode()  {
