@@ -5,8 +5,8 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(0, 0),
-        DOWN(1, 1);
+        UP(1, 1),
+        DOWN(0, 0);
         private final double elbow, wrist;
 
         ArmPosition(double elbow, double wrist) {
@@ -37,10 +37,10 @@ public class Arm {
         currentArmPos = newPos;
 
         hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
-        hardware.elbowR.setPosition(1-newPos.elbow);
+        hardware.elbowR.setPosition(newPos.elbow);
 
         hardware.wristL.setPosition(newPos.wrist); // todo: test this and see
-        hardware.wristR.setPosition(1-newPos.wrist);
+        hardware.wristR.setPosition(newPos.wrist);
     }
 
     public void toggleArmPosition() {
