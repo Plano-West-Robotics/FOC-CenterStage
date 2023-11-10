@@ -46,15 +46,15 @@ public class InchWorm {
      * Maximum angular velocity in degrees/second. Find this using the SpeedTuner.
      */
     // TODO: tune this value
-    private static final double MAX_ANG_VEL = 149.353;
+    private static final double MAX_ANG_VEL = -149.353;
     /**
      * PID controllers. <b>coefficients for controllerX and controllerY should be THE SAME!</b>
      * Tune controllerX and controllerY with the TranslationalPIDTuner, and tune controllerTheta with the TurnPIDTuner.
      */
     // TODO: tune these coefficients 
-    private final PIDController controllerX = new PIDController(0, 0, 0, 0);
-    private final PIDController controllerY = new PIDController(0, 0, 0, 0);
-    private final PIDController controllerTheta = new PIDController(0, 0, 0, 0);
+    private final PIDController controllerX = new PIDController(1.75, 0, 0, 0);
+    private final PIDController controllerY = new PIDController(1.75, 0, 0, 0);
+    private final PIDController controllerTheta = new PIDController(2.5, 0, 0, 0);
 
     private final LinearOpMode opMode;
 
@@ -125,8 +125,6 @@ public class InchWorm {
      * @param newTarget New target position
      */
     public void setTarget(Pose newTarget) {
-        // convert pose in inches to pose in ticks & normalize angle to [-π, π] radians
-        newTarget = newTarget.normalizeAngle();
         controllerX.setTarget(newTarget.x.distInTicks());
         controllerY.setTarget(newTarget.y.distInTicks());
         controllerTheta.setTarget(newTarget.theta.angleInDegrees());
@@ -142,15 +140,15 @@ public class InchWorm {
      * @return Whether we have reached the target
      */
     public boolean update() {
-        Pose current = tracker.currentPos.normalizeAngle();
-        opMode.telemetry.addLine(current.toString());
-        double angError = Angle.sub(target.theta, current.theta).angleInDegrees();
+        opMode.telemetry.addLine(tracker.currentPos.toString());
+        double angError = Angle.sub(target.theta, tracker.currentPos.theta).angleInDegrees();
         opMode.telemetry.addData("angError", angError);
-        double outX = controllerX.calculate(current.x.distInTicks());
-        double outY = controllerY.calculate(current.y.distInTicks());
+        double outX = controllerX.calculate(tracker.currentPos.x.distInTicks());
+        double outY = controllerY.calculate(tracker.currentPos.y.distInTicks());
         double outTheta = controllerTheta.calculateWithError(angError);
 
-        double a = -current.theta.angleInRadians();
+        double a = -tracker.currentPos.theta.angleInRadians();
+//        double a = tracker.currentPos.theta.angleInRadians();
         double rotX = outX * Math.cos(a) - outY * Math.sin(a);
         double rotY = outX * Math.sin(a) + outY * Math.cos(a);
         rotX /= MAX_VEL;
@@ -161,14 +159,21 @@ public class InchWorm {
                         + System.lineSeparator() +
                         "rotY: " + rotY
                         + System.lineSeparator() +
-                        "outTheta: " + outTheta);
+                        "outTheta: " + outTheta
+                        + System.lineSeparator() +
+                        "currX: " + tracker.currentPos.x.distInTicks()
+                        + System.lineSeparator() +
+                        "currY: " + tracker.currentPos.y.distInTicks()
+                        + System.lineSeparator() +
+                        "currTheta: " + tracker.currentPos.theta.angleInDegrees()
+        );
         opMode.telemetry.update();
 
         double voltageCompensation = 12 / getBatteryVoltage();
         moveWheels(rotX, rotY, outTheta, getSpeedMultiplier() * voltageCompensation);
         tracker.update();
 
-        return !isBusy(target, current);
+        return !isBusy(target, tracker.currentPos);
     }
 
     private void setModes(DcMotor.RunMode mode) {
@@ -417,8 +422,10 @@ public class InchWorm {
             double expX = cosC(yawDiff.angleInRadians());
             double expY = sinC(yawDiff.angleInRadians());
 
-            Pose posDiff = new Pose(Distance.ticks(yDiff * expX + xDiff * expY), Distance.ticks(yDiff * expY - xDiff * expX), yawDiff);
-            posDiff = posDiff.rot(currentPos.theta.neg());
+//            Pose posDiff = new Pose(Distance.ticks(yDiff * expX + xDiff * expY), Distance.ticks(yDiff * expY - xDiff * expX), yawDiff);
+            Pose posDiff = new Pose(Distance.ticks(yDiff * expY - xDiff * expX), Distance.ticks(yDiff * expX + xDiff * expY))
+//            posDiff = posDiff.rot(currentPos.theta.neg());
+            posDiff = posDiff.rot(currentPos.theta);
 
             currentPos = currentPos.add(posDiff);
 

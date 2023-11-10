@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.inchworm.units.Distance;
 @Config
 @Autonomous(group="tune")
 public class TranslationalPIDTuner extends LinearOpMode {
-    public static final double MAX_VEL = 2000;
+    public static final double MAX_VEL = 1721.398;
     public static double TARGET = Distance.tiles(1).distInTicks();
     public static double Kp = 0;
     public static double Ki = 0;
@@ -39,7 +39,7 @@ public class TranslationalPIDTuner extends LinearOpMode {
             controller.setParams(Kp, Ki, Kd, TARGET);
 
             InchWorm.Pose current = inchWorm.tracker.currentPos;
-            double out = controller.calculate(current.y.distInTicks());
+            double out = controller.calculate(current.x.distInTicks());
             out /= MAX_VEL;
 
             if (gamepad1.x) {
@@ -49,10 +49,10 @@ public class TranslationalPIDTuner extends LinearOpMode {
 
             telemetry.addData("out", out);
             telemetry.addData("error", String.format("%.2f", TARGET - current.y.distInTicks()));
-            telemetry.addData("current", String.format("%.2f", current.y.distInTicks()));
+            telemetry.addData("current", String.format("%.2f", current.x.distInTicks()));
             telemetry.addData("target", String.format("%.2f", TARGET));
             telemetry.update();
-            inchWorm.moveWheels(0, out, 0, 1);
+            inchWorm.moveWheels(out, 0, 0, 1);
             inchWorm.tracker.update();
         }
     }

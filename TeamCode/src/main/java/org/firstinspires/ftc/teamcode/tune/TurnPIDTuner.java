@@ -10,14 +10,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.inchworm.WormUtil;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
 import org.firstinspires.ftc.teamcode.inchworm.PIDController;
+import org.firstinspires.ftc.teamcode.inchworm.units.Angle;
 
 @Config
 @Autonomous(group="tune")
 public class TurnPIDTuner extends LinearOpMode {
-    public static final double MAX_ANG_VEL = -188;
+    public static final double MAX_ANG_VEL = -149.353;
     public static double TARGET = 90;
-    public static double Kp = 5;
-    public static double Ki = 0.15;
+    public static double Kp = 0;
+    public static double Ki = 0;
     public static double Kd = 0;
     /*
      * This class should be used to tune turn PID for InchWorm.
@@ -39,8 +40,8 @@ public class TurnPIDTuner extends LinearOpMode {
         while (opModeIsActive()) {
             controller.setParams(Kp, Ki, Kd, TARGET);
 
-            double current = inchWorm.tracker.currentPos.theta.angleInDegrees();
-            double out = controller.calculate(current);
+            Angle current = inchWorm.tracker.currentPos.theta;
+            double out = controller.calculateWithError(Angle.sub(Angle.degrees(TARGET), current).angleInDegrees());
             out /= MAX_ANG_VEL;
 
             if (gamepad1.x) {
@@ -49,8 +50,8 @@ public class TurnPIDTuner extends LinearOpMode {
             }
 
             telemetry.addData("out", out);
-            telemetry.addData("error", String.format("%.2f", TARGET - current));
-            telemetry.addData("current", String.format("%.2f", current));
+            telemetry.addData("error", String.format("%.2f", TARGET - current.angleInDegrees()));
+            telemetry.addData("current", String.format("%.2f", current.angleInDegrees()));
             telemetry.addData("target", String.format("%.2f", TARGET));
             telemetry.update();
 
