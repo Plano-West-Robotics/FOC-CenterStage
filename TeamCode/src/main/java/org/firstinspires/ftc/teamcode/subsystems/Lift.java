@@ -5,6 +5,9 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class Lift {
     Hardware hardware;
 
+    private static final int LIFT_ENCODER_LIMIT = 2000; // todo: tune these
+    private static final int LIFT_DELTA = 50;
+
     public Lift(Hardware hardware) {
         this.hardware = hardware;
     }

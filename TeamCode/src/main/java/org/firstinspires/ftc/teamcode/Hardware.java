@@ -80,8 +80,13 @@ public class Hardware {
 
         liftL = hardwareMap.get(DcMotorEx.class, "liftLeft");
         liftR = hardwareMap.get(DcMotorEx.class, "liftRight");
-        liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+//        liftL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        liftR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         liftL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
