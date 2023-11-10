@@ -106,13 +106,13 @@ public class Hardware {
         // wristR: 0.18 - 0.70
         // TODO: calibrate bounds for the peg
 
-        elbowL.scaleRange(0.05, 0.65);
-        elbowR.scaleRange(0.25, 0.85);
+        elbowL.scaleRange(0.05, 0.5);
+        elbowR.scaleRange(0.4, 0.85);
         elbowL.setDirection(Servo.Direction.REVERSE);
         elbowR.setDirection(Servo.Direction.FORWARD);
 
-        wristL.scaleRange(0.27, 0.77);
-        wristR.scaleRange(0.18, 0.70);
+        wristL.scaleRange(0.27, 0.85);
+        wristR.scaleRange(0.12, 0.70);
         wristL.setDirection(Servo.Direction.REVERSE);
         wristR.setDirection(Servo.Direction.FORWARD);
 
