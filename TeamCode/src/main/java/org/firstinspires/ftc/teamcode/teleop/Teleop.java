@@ -28,6 +28,7 @@ public class Teleop extends OpModeWrapper {
         drive.setFieldOriented(false);
 
         intake = new Intake(hardware, intakeSpeed);
+        intake.stop();
 
         lift = new Lift(hardware);
 
@@ -71,6 +72,7 @@ public class Teleop extends OpModeWrapper {
         intake.setSpeed(intakeSpeed);
         telemetry.addData("Intake speed", intakeSpeed);
         telemetry.addData("Intake reversed?", intake.isReversed());
+        telemetry.addData("Intake running?", intake.isRunning());
 
         if (gamepads.justPressed(Controls.ARM_UP)) {
             arm.setArmPosition(Arm.ArmPosition.UP);
