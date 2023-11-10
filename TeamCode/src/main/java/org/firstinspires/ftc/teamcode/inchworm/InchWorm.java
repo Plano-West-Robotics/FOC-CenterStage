@@ -423,7 +423,7 @@ public class InchWorm {
             double expY = sinC(yawDiff.angleInRadians());
 
 //            Pose posDiff = new Pose(Distance.ticks(yDiff * expX + xDiff * expY), Distance.ticks(yDiff * expY - xDiff * expX), yawDiff);
-            Pose posDiff = new Pose(Distance.ticks(yDiff * expY - xDiff * expX), Distance.ticks(yDiff * expX + xDiff * expY))
+            Pose posDiff = new Pose(Distance.ticks(yDiff * expY - xDiff * expX), Distance.ticks(yDiff * expX + xDiff * expY), yawDiff)
 //            posDiff = posDiff.rot(currentPos.theta.neg());
             posDiff = posDiff.rot(currentPos.theta);
 
