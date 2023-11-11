@@ -38,11 +38,6 @@ public class Teleop extends OpModeWrapper {
     }
 
     @Override
-    public void start() { // runs once before loop()
-        intake.start();
-    }
-
-    @Override
     public void run() {
         telemetry.addData("Yaw", hardware.getYaw());
 
