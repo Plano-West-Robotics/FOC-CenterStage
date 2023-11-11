@@ -20,7 +20,7 @@ public class Controls {
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;
     public static Gamepads.Button ARM_UP = Gamepads.Button.GP2_DPAD_UP;
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
-    public static Gamepads.Button PEG_DISENGAGE = Gamepads.Button.GP2_DPAD_LEFT;
-    public static Gamepads.Button PEG_ENGAGE = Gamepads.Button.GP2_DPAD_RIGHT;
+    public static Gamepads.Button PEG_DISENGAGE = Gamepads.Button.GP2_TRIANGLE;
+    public static Gamepads.Button PEG_ENGAGE = Gamepads.Button.GP2_SQUARE;
     public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP2_GUIDE;
 }
