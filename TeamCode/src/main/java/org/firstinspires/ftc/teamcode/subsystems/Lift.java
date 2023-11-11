@@ -33,19 +33,19 @@ public class Lift {
     }
 
     private static double helper(int encoder, double power) {
-        if (encoder < LOWER_LIMIT) {
-            power = boundAtLeast(power, OOB_POWER);
-        } else if (encoder < LOWER_LIMIT + SMALL_DELTA) {
-            power = boundAtLeast(power, 0);
-        } else if (encoder < LOWER_LIMIT + DELTA) {
-            power = boundAtLeast(power, -MAX_NEAR_POWER);
-        } else if (encoder > UPPER_LIMIT) {
-            power = boundAtMost(power, -OOB_POWER);
-        } else if (encoder > UPPER_LIMIT - SMALL_DELTA) {
-            power = boundAtMost(power, 0);
-        } else if (encoder > UPPER_LIMIT - DELTA) {
-            power = boundAtMost(power, MAX_NEAR_POWER);
-        }
+//        if (encoder < LOWER_LIMIT) {
+//            power = boundAtLeast(power, OOB_POWER);
+//        } else if (encoder < LOWER_LIMIT + SMALL_DELTA) {
+//            power = boundAtLeast(power, 0);
+//        } else if (encoder < LOWER_LIMIT + DELTA) {
+//            power = boundAtLeast(power, -MAX_NEAR_POWER);
+//        } else if (encoder > UPPER_LIMIT) {
+//            power = boundAtMost(power, -OOB_POWER);
+//        } else if (encoder > UPPER_LIMIT - SMALL_DELTA) {
+//            power = boundAtMost(power, 0);
+//        } else if (encoder > UPPER_LIMIT - DELTA) {
+//            power = boundAtMost(power, MAX_NEAR_POWER);
+//        }
 
         return power;
     }
