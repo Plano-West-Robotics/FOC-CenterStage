@@ -154,19 +154,14 @@ public class InchWorm {
         rotX /= MAX_VEL;
         rotY /= MAX_VEL;
         outTheta /= MAX_ANG_VEL;
-        opMode.telemetry.addLine(
-                "rotX: " + rotX
-                        + System.lineSeparator() +
-                        "rotY: " + rotY
-                        + System.lineSeparator() +
-                        "outTheta: " + outTheta
-                        + System.lineSeparator() +
-                        "currX: " + tracker.currentPos.x.distInTicks()
-                        + System.lineSeparator() +
-                        "currY: " + tracker.currentPos.y.distInTicks()
-                        + System.lineSeparator() +
-                        "currTheta: " + tracker.currentPos.theta.angleInDegrees()
-        );
+
+        opMode.telemetry.addData("rotX", rotX);
+        opMode.telemetry.addData("rotY", rotY);
+        opMode.telemetry.addData("outTheta", outTheta);
+        opMode.telemetry.addData("currX", tracker.currentPos.x.distInTicks());
+        opMode.telemetry.addData("currY", tracker.currentPos.y.distInTicks());
+        opMode.telemetry.addData("currTheta", tracker.currentPos.theta.angleInDegrees());
+
         opMode.telemetry.update();
 
         double voltageCompensation = 12 / getBatteryVoltage();
