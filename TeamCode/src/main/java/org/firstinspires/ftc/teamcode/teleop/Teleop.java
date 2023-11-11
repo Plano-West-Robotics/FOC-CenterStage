@@ -60,7 +60,7 @@ public class Teleop extends OpModeWrapper {
         if (gamepads.justPressed(Controls.INTAKE_SLOWER)) {
             intakeSpeed -= 0.15;
         }
-        if (gamepads.justPressed(Controls.INTAKE_REVERSE)) {
+        if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
             intake.reverse();
         }
         intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
