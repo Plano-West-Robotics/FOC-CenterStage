@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.client.FreeSight;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline.*;
-//import org.opencv.core.Scalar;
+import org.opencv.core.Scalar;
 
 @Autonomous
 @Config

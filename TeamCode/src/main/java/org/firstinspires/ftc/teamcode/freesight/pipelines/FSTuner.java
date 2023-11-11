@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 
 //@Config
-public class FSPipe extends OpenCvPipeline {
+public class FSTuner extends OpenCvPipeline {
 
     public enum Prop
     {
@@ -151,8 +151,8 @@ public class FSPipe extends OpenCvPipeline {
         Imgproc.circle(
                 threshRGB,
                 new Point(
-                    boundingRect.x + boundingRect.width / 2,
-                    boundingRect.y + boundingRect.height / 2
+                    boundingRect.x + boundingRect.width / 2.0,
+                    boundingRect.y + boundingRect.height / 2.0
                 ),
                 10,
                 outline
@@ -161,8 +161,8 @@ public class FSPipe extends OpenCvPipeline {
                 threshRGB,
                 positionState.toString(),
                 new Point(
-                        boundingRect.x + boundingRect.width / 2,
-                        boundingRect.y + boundingRect.height / 2
+                        boundingRect.x + boundingRect.width / 2.0,
+                        boundingRect.y + boundingRect.height / 2.0
                 ),
                 Imgproc.FONT_ITALIC,
                 0.5,

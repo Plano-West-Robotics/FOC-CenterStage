@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-//@Config
+@Config
 public class FreeSightPipeline extends OpenCvPipeline {
 
     public enum Prop {
@@ -33,14 +33,13 @@ public class FreeSightPipeline extends OpenCvPipeline {
     public Scalar outline = new Scalar(0, 255, 0);
     public Prop colorState = Prop.NONE;
 
-    private Mat empty = new Mat();
-    private Mat main = new Mat();
-    private Mat masked = new Mat();
-    private Mat scaledThresh = new Mat();
-    private Mat scaledMask = new Mat();
-    private Mat threshold = new Mat();
-    private Mat hierarchy = new Mat();
-
+    private final Mat empty = new Mat();
+    private final Mat main = new Mat();
+    private final Mat masked = new Mat();
+    private final Mat scaledThresh = new Mat();
+    private final Mat scaledMask = new Mat();
+    private final Mat threshold = new Mat();
+    private final Mat hierarchy = new Mat();
 
     /**
      * @param input the frame to be manipulated
@@ -159,8 +158,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
             Imgproc.circle(
                     input,
                     new Point(
-                            boundingRect.x + boundingRect.width / 2,
-                            boundingRect.y + boundingRect.height / 2
+                            boundingRect.x + boundingRect.width / 2.0,
+                            boundingRect.y + boundingRect.height / 2.0
                     ),
                     10,
                     outline
@@ -169,8 +168,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
                     input,
                     positionState.toString(),
                     new Point(
-                            boundingRect.x + boundingRect.width / 2,
-                            boundingRect.y + boundingRect.height / 2
+                            boundingRect.x + boundingRect.width / 2.0,
+                            boundingRect.y + boundingRect.height / 2.0
                     ),
                     Imgproc.FONT_ITALIC,
                     0.5,
