@@ -9,7 +9,7 @@ public class PlaneLauncher {
 
     public PlaneLauncher(Hardware hw) {
         hardware = hw;
-        hardware.planeLauncher.setPosition(ENGAGED_POS);
+//        hardware.planeLauncher.setPosition(ENGAGED_POS);
     }
 
     public void disengage() {

@@ -111,8 +111,8 @@ public class Hardware {
         elbowL.setDirection(Servo.Direction.REVERSE);
         elbowR.setDirection(Servo.Direction.FORWARD);
 
-        wristL.scaleRange(0.27, 0.85);
-        wristR.scaleRange(0.12, 0.70);
+        wristL.scaleRange(0.27, 0.92);
+        wristR.scaleRange(0.12, 0.77);
         wristL.setDirection(Servo.Direction.REVERSE);
         wristR.setDirection(Servo.Direction.FORWARD);
 

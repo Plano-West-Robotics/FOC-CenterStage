@@ -47,7 +47,7 @@ public class Lift {
 //            power = boundAtMost(power, MAX_NEAR_POWER);
 //        }
 
-        return power;
+        return power * 0.75;
     }
 
     private static double boundAtLeast(double v, double bound) {
