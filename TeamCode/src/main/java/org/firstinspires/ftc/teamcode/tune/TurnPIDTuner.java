@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.inchworm.WormUtil;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.inchworm.PIDController;
 import org.firstinspires.ftc.teamcode.inchworm.units.Angle;
 
 @Config
-@Autonomous(group="tune")
+@TeleOp(group = "tune")
 public class TurnPIDTuner extends LinearOpMode {
     public static final double MAX_ANG_VEL = -149.353;
     public static double TARGET = 90;

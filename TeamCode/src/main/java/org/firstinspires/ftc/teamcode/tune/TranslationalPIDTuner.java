@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.tune;
 
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.inchworm.WormUtil;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
@@ -12,7 +11,7 @@ import org.firstinspires.ftc.teamcode.inchworm.PIDController;
 import org.firstinspires.ftc.teamcode.inchworm.units.Distance;
 
 @Config
-@Autonomous(group="tune")
+@TeleOp(group = "tune")
 public class TranslationalPIDTuner extends LinearOpMode {
     public static final double MAX_VEL = 1721.398;
     public static double TARGET = Distance.tiles(1).distInTicks();

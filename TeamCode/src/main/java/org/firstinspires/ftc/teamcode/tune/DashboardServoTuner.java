@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.tune;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.ValueProvider;
@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 
-@TeleOp
+@TeleOp(group = "tune")
 public class DashboardServoTuner extends OpMode {
     @Override
     public void init() {
@@ -20,7 +20,6 @@ public class DashboardServoTuner extends OpMode {
                 final ServoImplEx servo = s;
                 double pos = 0.5;
                 String verbatimInput = "";
-                boolean isActive = false;
 
                 @Override
                 public String get() {
@@ -30,22 +29,18 @@ public class DashboardServoTuner extends OpMode {
                 @Override
                 public void set(String value) {
                     if (value.equals("")) {
-                        this.isActive = false;
                         this.servo.setPwmDisable();
-                        this.verbatimInput = value;
-                        return;
+                    } else {
+                        try {
+                            this.pos = Double.parseDouble(value);
+                        } catch (NumberFormatException e) {
+                            return;
+                        }
+
+                        this.servo.setPwmEnable();
+                        this.servo.setPosition(this.pos);
                     }
 
-                    try {
-                        this.pos = Double.parseDouble(value);
-                    } catch (NumberFormatException e) {
-                        // do not acknowledge the request
-                        return;
-                    }
-
-                    this.isActive = true;
-                    this.servo.setPwmEnable();
-                    this.servo.setPosition(this.pos);
                     this.verbatimInput = value;
                 }
             });
