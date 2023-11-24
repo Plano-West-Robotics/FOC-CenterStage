@@ -76,8 +76,8 @@ public class Teleop extends OpModeWrapper {
             arm.setArmPosition(Arm.ArmPosition.DOWN);
         }
 
-        if (gamepads.justPressed(Controls.PEG_TOGGLE)) {
-            arm.togglePegPosition(); // todo: test this and see if it works
+        if (gamepads.justPressed(Controls.FLAP_TOGGLE)) {
+            arm.toggleFlapPosition(); // todo: test this and see if it works
         }
 
         if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {

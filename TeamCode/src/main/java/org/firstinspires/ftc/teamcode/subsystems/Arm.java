@@ -14,18 +14,18 @@ public class Arm {
             this.wrist = wrist;
         }
     }
-    public enum PegPosition {
+    public enum FlapPosition {
         ENGAGED(1), DISENGAGED(0);
 
         private final double pos;
 
-        PegPosition(double p) {
+        FlapPosition(double p) {
             pos = p;
         }
     }
 
     public ArmPosition currentArmPos = ArmPosition.DOWN;
-    public PegPosition currentPegPos = PegPosition.DISENGAGED;
+    public FlapPosition currentFlapPos = FlapPosition.DISENGAGED;
     Hardware hardware;
     Telemetry telemetry;
     public Arm(Hardware hw, Telemetry telem) {
@@ -54,19 +54,19 @@ public class Arm {
         }
     }
 
-    public void setPegPosition(PegPosition newPos) {
-        currentPegPos = newPos;
+    public void setFlapPosition(FlapPosition newPos) {
+        currentFlapPos = newPos;
 
-        hardware.peg.setPosition(newPos.pos);
+        hardware.flap.setPosition(newPos.pos);
     }
 
-    public void togglePegPosition() {
-        switch (currentPegPos) {
+    public void toggleFlapPosition() {
+        switch (currentFlapPos) {
             case ENGAGED:
-                setPegPosition(PegPosition.DISENGAGED);
+                setFlapPosition(FlapPosition.DISENGAGED);
                 break;
             case DISENGAGED:
-                setPegPosition(PegPosition.ENGAGED);
+                setFlapPosition(FlapPosition.ENGAGED);
                 break;
         }
     }

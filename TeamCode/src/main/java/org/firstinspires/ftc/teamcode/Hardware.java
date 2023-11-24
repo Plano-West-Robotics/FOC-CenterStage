@@ -27,7 +27,7 @@ public class Hardware {
     public DcMotorEx liftL, liftR;
     public Servo elbowL, elbowR;
     public Servo wristL, wristR;
-    public Servo peg;
+    public Servo flap;
     public Servo planeLauncher;
     public IMU imu;
     public VoltageSensor voltageSensor;
@@ -96,15 +96,16 @@ public class Hardware {
         elbowR = hardwareMap.get(Servo.class, "elbowR");
         wristL = hardwareMap.get(Servo.class, "wristL");
         wristR = hardwareMap.get(Servo.class, "wristR");
-        peg = hardwareMap.get(Servo.class, "peg");
+        flap = hardwareMap.get(Servo.class, "flap");
 
+        // TODO: redo all of these
         // Measured 2023-11-07
         //           in - out
         // elbowL: 0.65 - 0.05
         // elbowR: 0.25 - 0.85
         // wristL: 0.77 - 0.27 // NOTE: the 0.77 should really be a 0.79 to match wristR. need to re-tune at some point
         // wristR: 0.18 - 0.70
-        // TODO: calibrate bounds for the peg
+        // TODO: calibrate bounds for the flap
 
         elbowL.scaleRange(0.05, 0.5);
         elbowR.scaleRange(0.4, 0.85);
