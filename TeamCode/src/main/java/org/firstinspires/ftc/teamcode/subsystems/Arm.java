@@ -5,13 +5,12 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(1, 1),
-        DOWN(0, 0);
-        private final double elbow, wrist;
+        UP(1),
+        DOWN(0);
+        private final double wristPos;
 
-        ArmPosition(double elbow, double wrist) {
-            this.elbow = elbow;
-            this.wrist = wrist;
+        ArmPosition(double wrist) {
+            this.wristPos = wrist;
         }
     }
     public enum FlapPosition {
@@ -36,11 +35,11 @@ public class Arm {
     public void setArmPosition(ArmPosition newPos) {
         currentArmPos = newPos;
 
-        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
-        hardware.elbowR.setPosition(newPos.elbow);
+//        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
+//        hardware.elbowR.setPosition(newPos.elbow);
 
-        hardware.wristL.setPosition(newPos.wrist); // todo: test this and see
-        hardware.wristR.setPosition(newPos.wrist);
+        hardware.wristL.setPosition(newPos.wristPos); // todo: test this and see
+        hardware.wristR.setPosition(newPos.wristPos);
     }
 
     public void toggleArmPosition() {
@@ -69,5 +68,11 @@ public class Arm {
                 setFlapPosition(FlapPosition.ENGAGED);
                 break;
         }
+    }
+
+    // call this during init or before start probably
+    public void holdElbows() {
+        hardware.elbowL.setPosition(0.45);
+        hardware.elbowR.setPosition(0.5);
     }
 }

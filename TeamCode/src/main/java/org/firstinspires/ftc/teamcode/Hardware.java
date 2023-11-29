@@ -98,24 +98,28 @@ public class Hardware {
         wristR = hardwareMap.get(Servo.class, "wristR");
         flap = hardwareMap.get(Servo.class, "flap");
 
-        // TODO: redo all of these
-        // Measured 2023-11-07
-        //           in - out
-        // elbowL: 0.65 - 0.05
-        // elbowR: 0.25 - 0.85
-        // wristL: 0.77 - 0.27 // NOTE: the 0.77 should really be a 0.79 to match wristR. need to re-tune at some point
-        // wristR: 0.18 - 0.70
         // TODO: calibrate bounds for the flap
+        /*
+        * Measured 2023-11-29
+        * holds: servos will hold this position for the entirety of the match
+        * elbowL hold: 0.45
+        * elbowR hold: 0.5
+        *
+        *           in   out
+        * wristL: 0.07 - 0.5
+        * wristR: 0.90 - 0.45
+        * */
 
-        elbowL.scaleRange(0.05, 0.5);
-        elbowR.scaleRange(0.4, 0.85);
-        elbowL.setDirection(Servo.Direction.REVERSE);
-        elbowR.setDirection(Servo.Direction.FORWARD);
+        // no need to scale because they'll be holding position
+//        elbowL.scaleRange(0.05, 0.5);
+//        elbowR.scaleRange(0.4, 0.85);
+//        elbowL.setDirection(Servo.Direction.REVERSE);
+//        elbowR.setDirection(Servo.Direction.FORWARD);
 
-        wristL.scaleRange(0.27, 0.92);
-        wristR.scaleRange(0.12, 0.77);
-        wristL.setDirection(Servo.Direction.REVERSE);
-        wristR.setDirection(Servo.Direction.FORWARD);
+        wristL.scaleRange(0.07, 0.5);
+        wristR.scaleRange(0.45, 0.9);
+        wristR.setDirection(Servo.Direction.REVERSE);
+        wristL.setDirection(Servo.Direction.FORWARD);
 
         planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
