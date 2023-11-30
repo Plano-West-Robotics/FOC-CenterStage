@@ -50,7 +50,7 @@ public class DashboardMotorTuner extends OpMode {
 
                     this.verbatimInput = value;
                 }
-            });
+            }, true);
         }
     }
 

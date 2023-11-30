@@ -58,7 +58,7 @@ public class DashboardMotorByPortTuner extends OpMode {
 
                         this.verbatimInput = value;
                     }
-                });
+                }, true);
             }
         }
     }

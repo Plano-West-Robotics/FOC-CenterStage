@@ -43,7 +43,7 @@ public class DashboardServoTuner extends OpMode {
 
                     this.verbatimInput = value;
                 }
-            });
+            }, true);
         }
     }
 
