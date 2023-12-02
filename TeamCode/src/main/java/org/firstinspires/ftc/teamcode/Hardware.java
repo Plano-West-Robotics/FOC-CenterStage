@@ -100,14 +100,14 @@ public class Hardware {
 
         // TODO: calibrate bounds for the flap
         /*
-        * Measured 2023-11-29
+        * Measured 2023-12-01
         * holds: servos will hold this position for the entirety of the match
         * elbowL hold: 0.45
-        * elbowR hold: 0.5
+        * elbowR hold: 0.75
         *
         *           in   out
-        * wristL: 0.07 - 0.5
-        * wristR: 0.90 - 0.45
+        * wristL: 0.1 - 0.5
+        * wristR: 0.92 - 0.56
         * */
 
         // no need to scale because they'll be holding position
@@ -116,8 +116,8 @@ public class Hardware {
 //        elbowL.setDirection(Servo.Direction.REVERSE);
 //        elbowR.setDirection(Servo.Direction.FORWARD);
 
-        wristL.scaleRange(0.07, 0.5);
-        wristR.scaleRange(0.45, 0.9);
+        wristL.scaleRange(0.1, 0.5);
+        wristR.scaleRange(0.56, 0.92);
         wristR.setDirection(Servo.Direction.REVERSE);
         wristL.setDirection(Servo.Direction.FORWARD);
 
