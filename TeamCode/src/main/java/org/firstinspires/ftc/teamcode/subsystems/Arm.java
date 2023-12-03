@@ -72,7 +72,7 @@ public class Arm {
 
     // call this during init or before start probably
     public void holdElbows() {
-        hardware.elbowL.setPosition(0.45);
-        hardware.elbowR.setPosition(0.75);
+        hardware.elbowL.setPosition(0.5);
+        hardware.elbowR.setPosition(0.7);
     }
 }

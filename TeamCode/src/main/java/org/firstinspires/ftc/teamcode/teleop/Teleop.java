@@ -101,7 +101,7 @@ public class Teleop extends OpModeWrapper {
         lift.run(gamepads.getAnalogValue(Controls.LIFT));
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
-        telemetry.addData("Left Right Encoder", hardware.liftR.getCurrentPosition());
+        telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
 
         intake.update();
     }
