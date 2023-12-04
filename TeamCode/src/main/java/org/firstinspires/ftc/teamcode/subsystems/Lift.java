@@ -5,8 +5,8 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class Lift {
     Hardware hardware;
 
-    private static final int LOWER_LIMIT = 0;
-    private static final int UPPER_LIMIT = 2000;
+    public static final int LOWER_LIMIT = 0;
+    public static final int UPPER_LIMIT = 2000;
 
     // when within this amount of a limit, the slide cannot move toward that limit
     private static final int SMALL_DELTA = 25;

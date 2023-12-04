@@ -33,12 +33,16 @@ public class Hardware {
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
 
+    public OpMode opMode;
+
     /**
      * Initialize hardware wrapper. This constructor reverses motors and all that for you
      *
      * @param opMode Current opmode. Used to grab the HardwareMap
      */
     public Hardware(OpMode opMode) {
+        this.opMode = opMode;
+
         HardwareMap hardwareMap = opMode.hardwareMap;
 
         opMode.telemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -81,7 +85,6 @@ public class Hardware {
 
         liftL = hardwareMap.get(DcMotorEx.class, "liftLeft");
         liftR = hardwareMap.get(DcMotorEx.class, "liftRight");
-
 
 //        liftL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        liftR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

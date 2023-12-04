@@ -23,7 +23,7 @@ public class InchWormBackup {
     /**
      * Encoder ticks per motor revolution for your drive motors. You can find this information online.
      */
-    public static final double TICKS_PER_REV = 538;
+    public static final double TICKS_PER_REV = 537.7;
     /**
      * Diameter of your mecanum wheels in inches.
      */
@@ -65,10 +65,7 @@ public class InchWormBackup {
     /**
      * Whether to draw a representation of the robot to FTC Dashboard or not.
      */
-    private static final boolean DASHBOARD_DRAW = false;
-    private final FtcDashboard dashboard;
-    // TODO: change these values
-    private static final Pose startPos = new Pose(0, 0, 0);
+    private static final boolean DASHBOARD_DRAW = true;
 
     public InchWormBackup(LinearOpMode mode) {
         opMode = mode;
@@ -82,7 +79,7 @@ public class InchWormBackup {
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(new RevHubOrientationOnRobot(
                 // TODO: change these parameters if they are not accurate
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP
         )));
         imu.resetYaw();
@@ -108,8 +105,6 @@ public class InchWormBackup {
         for (LynxModule hub : allHubs) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
-
-        dashboard = FtcDashboard.getInstance();
     }
 
     /**
@@ -134,7 +129,7 @@ public class InchWormBackup {
             opMode.telemetry.addData("angError", angError);
             Pose out = new Pose(controllerX.calculate(current.x), controllerY.calculate(current.y), controllerTheta.calculateWithError(angError));
 
-            out = out.rot(current.theta);
+            out = out.rot(-current.theta);
             out = new Pose(out.x / MAX_VEL, out.y / MAX_VEL, out.theta / MAX_ANG_VEL);
             opMode.telemetry.addLine(out.toString());
             opMode.telemetry.update();
@@ -153,7 +148,7 @@ public class InchWormBackup {
      * @param y y coordinate to move to. for now, must be in inches
      */
     public void moveTo(double x, double y) {
-        moveTo(new Pose(x, y));
+        moveTo(new Pose(x, y, tracker.currentPos.theta));
     }
 
     /**
@@ -201,10 +196,10 @@ public class InchWormBackup {
     }
 
     public void moveWheels(double powerX, double powerY, double turn, double speed) {
-        double flPower = (powerY - powerX + turn) * speed;
-        double frPower = (powerY + powerX - turn) * speed;
-        double blPower = (powerY + powerX + turn) * speed;
-        double brPower = (powerY - powerX - turn) * speed;
+        double flPower = (powerX - powerY + turn) * speed;
+        double frPower = (powerX + powerY - turn) * speed;
+        double blPower = (powerX + powerY + turn) * speed;
+        double brPower = (powerX - powerY - turn) * speed;
 
         double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(speed)); // shortcut for max(abs([fl,fr,bl,br]))
         flPower /= scale;
@@ -225,14 +220,7 @@ public class InchWormBackup {
      * @return theta normalized into [0, 2π)
      */
     private static double modAngle(double theta) {
-        // convert to degrees because mod 2pi doesn't work?
-        double angle = Math.toDegrees(theta);
-
-        angle += 360;
-        angle %= 360;
-
-        // convert back to radians when done
-        return Math.toRadians(angle);
+        return theta % (2 * Math.PI);
     }
 
     /**
@@ -242,10 +230,7 @@ public class InchWormBackup {
      * @return smallest difference between the two angles, within range [-π, π)
      */
     private static double angleDiff(double a, double b) {
-        double diff = a - b;
-        if (diff >= Math.PI) diff -= 2 * Math.PI;
-        if (diff < -Math.PI) diff += 2 * Math.PI;
-        return diff;
+        return modAngle(a - b + Math.PI) - Math.PI;
     }
 
     /**
@@ -297,13 +282,16 @@ public class InchWormBackup {
         if (!DASHBOARD_DRAW) return;
 
         TelemetryPacket packet = new TelemetryPacket();
-        Pose p = startPos.add(currentPose.rot(startPos.theta));
-        double l = 0.5; // customize this if needed
+        double x = currentPose.x / TPI * (24 / 23.625);
+        double y = currentPose.y / TPI * (24 / 23.625);
+        double cos = Math.cos(currentPose.theta);
+        double sin = Math.sin(currentPose.theta);
+        double r = 9; // customize this if needed
 
         packet.fieldOverlay()
-                .strokeCircle(p.x, p.y, 1)
-                .strokeLine(Math.cos(p.theta) + p.x, Math.sin(p.theta) + p.y, l * Math.cos(p.theta) + p.x, l * Math.sin(p.theta) + p.y);
-        dashboard.sendTelemetryPacket(packet);
+                .strokeCircle(x, y, r)
+                .strokeLine(x, y, r * cos + x, r * sin + y);
+        FtcDashboard.getInstance().sendTelemetryPacket(packet);
     }
 
     public static class Pose {
@@ -371,53 +359,19 @@ public class InchWormBackup {
 
     public class PositionTracker {
         public Pose currentPos = new Pose(0, 0, 0);
+
         private int lastFL = 0;
         private int lastFR = 0;
         private int lastBL = 0;
         private int lastBR = 0;
-
-        private int flOffset = 0;
-        private int frOffset = 0;
-        private int blOffset = 0;
-        private int brOffset = 0;
-        private double yawOffset = 0;
-
-        /**
-         * Set this to the diameter of the robot, in inches
-         */
-        private final int TRACKWIDTH = 0;
+        private double lastYaw = 0;
 
         /**
          * Override the current pose estimate.
          * @param pose Pose to relocalize to. x and y must be in inches, and theta must be in radians.
          */
         public void setPoseEstimate(Pose pose) {
-            pose = pose.toTicks().normalizeAngle();
-            double turn = (pose.theta * TRACKWIDTH) * TPI;
-
-            int currentFL = fl.getCurrentPosition();
-            int currentFR = fr.getCurrentPosition();
-            int currentBL = bl.getCurrentPosition();
-            int currentBR = br.getCurrentPosition();
-
-            int fl = (int) (pose.y - pose.x + turn);
-            int fr = (int) (pose.y + pose.x - turn);
-            int bl = (int) (pose.y + pose.x + turn);
-            int br = (int) (pose.y - pose.x - turn);
-
-
-            lastFL = fl;
-            lastFR = fr;
-            lastBL = bl;
-            lastBR = br;
-
-            flOffset = fl - currentFL;
-            frOffset = fr - currentFR;
-            blOffset = bl - currentBL;
-            brOffset = br - currentBR;
-            yawOffset = angleDiff(pose.theta, getYaw());
-
-            currentPos = pose;
+            currentPos = pose.toTicks();
         }
 
         private double sinc(double x) {
@@ -434,34 +388,34 @@ public class InchWormBackup {
          * Updates the current position estimate. The more you call this, the better.
          */
         public void update() {
-            int newFL = fl.getCurrentPosition() + flOffset;
-            int newFR = fr.getCurrentPosition() + frOffset;
-            int newBL = bl.getCurrentPosition() + blOffset;
-            int newBR = br.getCurrentPosition() + brOffset;
-
-            double newYaw = getYaw() + yawOffset;
-            double yawDiff = angleDiff(newYaw, currentPos.theta);
+            int newFL = fl.getCurrentPosition();
+            int newFR = fr.getCurrentPosition();
+            int newBL = bl.getCurrentPosition();
+            int newBR = br.getCurrentPosition();
+            double newYaw = getYaw();
 
             int flDiff = newFL - lastFL;
             int frDiff = newFR - lastFR;
             int blDiff = newBL - lastBL;
             int brDiff = newBR - lastBR;
-
-            double yDiff = ((flDiff + frDiff + blDiff + brDiff) / 4.0);
-            double xDiff = ((blDiff + frDiff - flDiff - brDiff) / 4.0);
-
-            double expX = cosc(yawDiff);
-            double expY = sinc(yawDiff);
-
-            Pose posDiff = new Pose(yDiff * expX + xDiff * expY, yDiff * expY - xDiff * expX, yawDiff);
-            posDiff = posDiff.rot(-currentPos.theta);
-
-            currentPos = currentPos.add(posDiff);
+            double yawDiff = angleDiff(newYaw, lastYaw);
 
             lastFL = newFL;
             lastFR = newFR;
             lastBL = newBL;
             lastBR = newBR;
+            lastYaw = newYaw;
+
+            double xDiff = ((flDiff + frDiff + blDiff + brDiff) / 4.0);
+            double yDiff = ((-flDiff + frDiff + blDiff - brDiff) / 4.0) * Math.tan(Math.toRadians(40));
+
+            double expX = cosc(yawDiff);
+            double expY = sinc(yawDiff);
+
+            Pose posDiff = new Pose(yDiff * expX + xDiff * expY, yDiff * expY - xDiff * expX, yawDiff);
+            posDiff = posDiff.rot(currentPos.theta);
+
+            currentPos = currentPos.add(posDiff);
 
             drawPose(currentPos);
         }

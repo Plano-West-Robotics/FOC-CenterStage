@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(1),
+        UP(0.7),
         DOWN(0);
         private final double wristPos;
 
@@ -14,7 +14,7 @@ public class Arm {
         }
     }
     public enum FlapPosition {
-        ENGAGED(1), DISENGAGED(0);
+        CLOSED(0.18), OPEN(0.75);
 
         private final double pos;
 
@@ -24,7 +24,7 @@ public class Arm {
     }
 
     public ArmPosition currentArmPos = ArmPosition.DOWN;
-    public FlapPosition currentFlapPos = FlapPosition.DISENGAGED;
+    public FlapPosition currentFlapPos = FlapPosition.OPEN;
     Hardware hardware;
     Telemetry telemetry;
     public Arm(Hardware hw, Telemetry telem) {
@@ -61,11 +61,11 @@ public class Arm {
 
     public void toggleFlapPosition() {
         switch (currentFlapPos) {
-            case ENGAGED:
-                setFlapPosition(FlapPosition.DISENGAGED);
+            case CLOSED:
+                setFlapPosition(FlapPosition.OPEN);
                 break;
-            case DISENGAGED:
-                setFlapPosition(FlapPosition.ENGAGED);
+            case OPEN:
+                setFlapPosition(FlapPosition.CLOSED);
                 break;
         }
     }
