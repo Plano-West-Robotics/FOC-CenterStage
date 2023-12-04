@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(0.7),
+        UP(1),
         DOWN(0);
         private final double wristPos;
 
@@ -14,7 +14,7 @@ public class Arm {
         }
     }
     public enum FlapPosition {
-        CLOSED(0.18), OPEN(0.75);
+        CLOSED(0), OPEN(1);
 
         private final double pos;
 
