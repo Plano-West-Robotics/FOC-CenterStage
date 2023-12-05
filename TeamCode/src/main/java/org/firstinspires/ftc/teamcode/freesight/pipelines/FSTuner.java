@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -9,13 +9,12 @@ import org.opencv.core.Rect;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
 
 
-//@Config
-public class FSTuner extends OpenCvPipeline {
+@Config
+public class FSTuner extends FreeSightPipeline {
 
     public enum Prop
     {
@@ -32,6 +31,14 @@ public class FSTuner extends OpenCvPipeline {
     public Scalar highHSV = new Scalar(0,0,0);
     public Scalar outline = new Scalar(0,255,0);
     public Prop colorState = Prop.NONE;
+    private final Mat empty = new Mat();
+    private final Mat main = new Mat();
+    private final Mat masked = new Mat();
+    private final Mat scaledThresh = new Mat();
+    private final Mat scaledMask = new Mat();
+    private final Mat threshold = new Mat();
+    private final Mat hierarchy = new Mat();
+    private final Mat threshRGB = new Mat();
 
     /**
      * @param input the frame to be manipulated
@@ -42,10 +49,9 @@ public class FSTuner extends OpenCvPipeline {
         int width = input.width();
         int height = input.height();
 
-        Mat mat = new Mat();
 
-        Imgproc.cvtColor(input, mat, Imgproc.COLOR_RGB2HSV);
-        if(mat.empty()) return input;
+        Imgproc.cvtColor(input, main, Imgproc.COLOR_RGB2HSV);
+        if(main.empty()) return input;
 
         /*
          * BLUE
@@ -62,40 +68,23 @@ public class FSTuner extends OpenCvPipeline {
             lowHSV = new Scalar(0,106.3,198.3);
             highHSV = new Scalar(14.2, 255, 255);
         }
-        Mat threshold = new Mat();
 
-        Core.inRange(mat, lowHSV, highHSV, threshold);
-
-        Mat masked = new Mat();
+        Core.inRange(main, lowHSV, highHSV, threshold);
 
 
-        Core.bitwise_and(mat, mat, masked, threshold);
+
+        Core.bitwise_and(main, main, masked, threshold);
 
         Scalar avg = Core.mean(masked, threshold);
-        Mat scaledMask = new Mat();
 
         masked.convertTo(scaledMask, -1, 150/avg.val[1],0);
 
-        Mat scaledThresh = new Mat();
-        double strictLowS;
-        //you probably want to tune this
-        if(colorState == Prop.BLUE)
-            strictLowS = 62.3;
-        else
-            strictLowS = 86.4; // orange
-        Scalar strictLowHSV = new Scalar(0, strictLowS, 0); //strict lower bound HSV for yellow
-        Scalar strictHighHSV = new Scalar(255, 255, 255); //strict higher bound HSV for yellow
-        //apply strict HSV filter onto scaledMask to get rid of any yellow other than pole
-        Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
-
         //contours, apply post processing to information
         ArrayList<MatOfPoint> contours = new ArrayList<>();
-        Mat hierarchy = new Mat();
         //find contours, input scaledThresh because it has hard edges
         Imgproc.findContours(scaledThresh, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
 
-        Mat threshRGB = new Mat();
         Imgproc.cvtColor(threshold, threshRGB, Imgproc.COLOR_GRAY2BGR);
         if (contours.size() > 0) {
             int index = 0;
@@ -176,14 +165,16 @@ public class FSTuner extends OpenCvPipeline {
         }
         threshRGB.copyTo(input);
         //releasing for ram related reasons
-        //input.release();
-        threshRGB.release();
+
+        return input;
+    }
+    public void releaseFrames() {
         scaledThresh.release();
         scaledMask.release();
-        mat.release();
+        main.release();
         masked.release();
         threshold.release();
-        return input;
-
+        empty.release();
+        threshRGB.release();
     }
 }

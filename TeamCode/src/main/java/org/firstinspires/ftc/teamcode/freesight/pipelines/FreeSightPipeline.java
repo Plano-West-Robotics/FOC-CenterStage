@@ -88,18 +88,6 @@ public class FreeSightPipeline extends OpenCvPipeline {
 
         masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
 
-        //scaledThresh = new Mat();
-        double strictLowS;
-        //you probably want to tune this
-        if (colorState == Prop.PURPLE)
-            strictLowS = 62.3;
-        else
-            strictLowS = 86.4; // orange
-        Scalar strictLowHSV = new Scalar(0, strictLowS, 0); //strict lower bound HSV for yellow
-        Scalar strictHighHSV = new Scalar(255, 255, 255); //strict higher bound HSV for yellow
-        //apply strict HSV filter onto scaledMask to get rid of any yellow other than pole
-        Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
-
         //contours, apply post processing to information
         ArrayList<MatOfPoint> contours = new ArrayList<>();
         //Mat hierarchy = new Mat();
