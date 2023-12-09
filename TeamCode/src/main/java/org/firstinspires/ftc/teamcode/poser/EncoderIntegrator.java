@@ -72,8 +72,8 @@ public class EncoderIntegrator {
         double poseExponentiationY = sinc(imuYawDiff.valInRadians());
 
         Distance2 relativePosDiff = Distance2.inMM(
-                relativeYDiff * poseExponentiationX + relativeXDiff * poseExponentiationY,
-                relativeYDiff * poseExponentiationY - relativeXDiff * poseExponentiationX
+                relativeXDiff * poseExponentiationY - relativeYDiff * poseExponentiationX,
+                relativeXDiff * poseExponentiationX + relativeYDiff * poseExponentiationY
         );
 
         Pose poseDiff = new Pose(
