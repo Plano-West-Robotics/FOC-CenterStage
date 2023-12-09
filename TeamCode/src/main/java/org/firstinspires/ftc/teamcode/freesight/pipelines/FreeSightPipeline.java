@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-import com.acmerobotics.dashboard.config.Config;
+//import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-@Config
+//@Config
 public class FreeSightPipeline extends OpenCvPipeline {
 
     public enum Prop {
@@ -68,8 +68,11 @@ public class FreeSightPipeline extends OpenCvPipeline {
          * Scalar highHSV = new Scalar(213.9, 240.8, 255);
          */
         if (colorState == Prop.PURPLE) {
-            lowHSV = new Scalar(55.3, 62.3, 53.8);
-            highHSV = new Scalar(213.9, 240.8, 255.0);
+            lowHSV = new Scalar(106.3, 66.3, 60.8);
+            highHSV = new Scalar(151.9, 178.8, 219.0);
+
+//            lowHSV = new Scalar(55.3, 62.3, 53.8);
+//            highHSV = new Scalar(213.9, 240.8, 255.0);
         } else if (colorState == Prop.ORANGE) {
             lowHSV = new Scalar(0, 162.9, 107.7);
             highHSV = new Scalar(15.6, 255, 184.2);
@@ -77,6 +80,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
         //Mat threshold = new Mat();
 
         Core.inRange(main, lowHSV, highHSV, threshold);
+        Imgproc.cvtColor(threshold, input, Imgproc.COLOR_GRAY2RGB);
 
         //masked = new Mat();
 
@@ -87,6 +91,15 @@ public class FreeSightPipeline extends OpenCvPipeline {
         //scaledMask = new Mat();
 
         masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
+
+        double strictLowS;
+        if (colorState == Prop.PURPLE)
+            strictLowS = 62.3;
+        else
+            strictLowS = 86.4;
+        Scalar strictLowHSV = new Scalar(0, strictLowS, 0);
+        Scalar strictHighHSV = new Scalar(255, 255, 255);
+        Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
 
         //contours, apply post processing to information
         ArrayList<MatOfPoint> contours = new ArrayList<>();

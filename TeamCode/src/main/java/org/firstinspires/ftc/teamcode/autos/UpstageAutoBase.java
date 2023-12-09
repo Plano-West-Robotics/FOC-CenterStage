@@ -38,6 +38,7 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         Poser poser = new Poser(hardware, 0.9, isFlipped, startingPose);
 
         Vision vision = new Vision(hardware, alliance);
+        telemetry.addLine("vision started");
 
         while (!isStarted()) {
             telemetry.addData("Detection", vision.getSide());

@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-import com.acmerobotics.dashboard.config.Config;
+//import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -13,7 +13,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 
 
-@Config
+//@Config
 public class FSTuner extends FreeSightPipeline {
 
     public enum Prop
@@ -60,13 +60,13 @@ public class FSTuner extends FreeSightPipeline {
          */
         if(colorState == Prop.BLUE)
         {
-            lowHSV = new Scalar(128.9, 53.8, 46.8);
-            highHSV = new Scalar(160.1, 145.9, 181.3);
+            lowHSV = new Scalar(106.3, 66.3, 60.8);
+            highHSV = new Scalar(151.9, 178.8, 219.0);
         }
         else if(colorState == Prop.ORANGE)
         {
-            lowHSV = new Scalar(0,106.3,198.3);
-            highHSV = new Scalar(14.2, 255, 255);
+            lowHSV = new Scalar(0, 162.9, 107.7);
+            highHSV = new Scalar(15.6, 255, 184.2);
         }
 
         Core.inRange(main, lowHSV, highHSV, threshold);
