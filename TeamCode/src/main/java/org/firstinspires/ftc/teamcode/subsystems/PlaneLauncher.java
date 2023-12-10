@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class PlaneLauncher {
     Hardware hardware;
     private static final double ENGAGED_POS = 0; // todo: change these later
-    private static final double DISENGAGED_POS = 1;
+    private static final double DISENGAGED_POS = 0;
 
     public PlaneLauncher(Hardware hw) {
         hardware = hw;
