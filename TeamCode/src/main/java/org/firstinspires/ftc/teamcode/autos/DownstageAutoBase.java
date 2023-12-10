@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
-public abstract class UpstageAutoBase extends LinearOpMode {
+public abstract class DownstageAutoBase extends LinearOpMode {
     public void runOpMode(Alliance alliance) {
         Hardware hardware = new Hardware(this);
         Intake intake = new Intake(hardware, 0.3);
@@ -22,7 +22,7 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         arm.holdElbows();
         ControlledLift lift = new ControlledLift(hardware);
 
-        Pose startingPose = new Pose(Distance2.inTiles(0.5, -2.5), Angle.LEFT);
+        Pose startingPose = new Pose(Distance2.inTiles(-1.5, -2.5), Angle.LEFT);
         boolean isFlipped = alliance.isBlue();
         if (isFlipped) {
             startingPose = startingPose.flippedAcrossXAxis();
@@ -35,7 +35,7 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 ).div(2),
                 Angle.ZERO
         ));
-        if (alliance.isBlue()) {
+        if (alliance.isRed()) {
             startingPose = startingPose.then(new Pose(
                     new Distance2(
                             Distance.ZERO,
@@ -65,35 +65,32 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 break;
         }
 
-        poser.goTo(Distance2.inTiles(0.5, -2.5)).run();
+        poser.goTo(Distance2.inTiles(-1.5, -2.5)).run();
 
-        Distance yOffsetAtBackdrop = Distance.ZERO;
         switch (randomization) {
             case LEFT:
-                yOffsetAtBackdrop = Distance.inInches(6);
                 poser.goTo(
-                        Distance.inTiles(0.5),
-                        Distance.inTiles(-1.5)
-                ).run();
-                poser.goTo(
-                        Angle.BACKWARD
-                ).run();
-                poser.moveBy(
-                        Distance.inInches(-2.5),
-                        Distance.inInches(1)
+                        Distance.inTiles(-2),
+                        Distance.inTiles(-2).add(Distance.inInches(3))
                 ).run();
                 break;
             case MIDDLE:
                 poser.goTo(
-                        Distance.inTiles(0.5).add(Distance.inInches(4.5)),
+                        Distance.inTiles(-1.5).sub(Distance.inInches(4.5)),
                         Distance.inTiles(-1.5).add(Distance.inInches(4))
                 ).run();
                 break;
             case RIGHT:
-                yOffsetAtBackdrop = Distance.inInches(-6);
                 poser.goTo(
-                        Distance.inTiles(1),
-                        Distance.inTiles(-2).add(Distance.inInches(3))
+                        Distance.inTiles(-1.5),
+                        Distance.inTiles(-1.5)
+                ).run();
+                poser.goTo(
+                        Angle.FORWARD
+                ).run();
+                poser.moveBy(
+                        Distance.inInches(2.5),
+                        Distance.inInches(1)
                 ).run();
                 break;
         }
@@ -107,58 +104,21 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         intake.update();
 
         switch (randomization) {
+            case LEFT:
             case MIDDLE:
-            case RIGHT:
                 poser.moveBy(
                         Distance.ZERO,
                         Distance.inInches(-3)
                 ).run();
                 break;
-            default:
+            case RIGHT:
+                poser.moveBy(
+                        Distance.inInches(-3),
+                        Distance.ZERO
+                ).run();
                 break;
         }
 
-        // arm up
-        arm.setArmPosition(Arm.ArmPosition.UP);
-        // go in front of backdrop
-        poser.goTo(
-                Distance.inTiles(2),
-                Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
-                Angle.BACKWARD
-        ).run();
-        // lift up
-        lift.setTarget(0.32);
-        while (lift.update());
-        lift.stop();
-        // move closer to backdrop
-        poser.moveBy(
-                Distance.inInches(7),
-                Distance.ZERO
-        ).run();
-        // drop pixel
-        arm.setFlapPosition(Arm.FlapPosition.OPEN);
-        sleep(1000);
-        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
-        // move over
-        poser.moveBy(
-                Distance.inInches(-7),
-                Distance.ZERO
-        ).run();
-        poser.goTo(
-                Distance.inTiles(2),
-                Distance.inTiles(-2.6)
-        ).run();
-        // lower slide and move arm in
-        arm.setArmPosition(Arm.ArmPosition.DOWN);
-        sleep(500);
-        lift.setTarget(0.02);
-        while (lift.update());
-        lift.stop();
-        arm.setFlapPosition(Arm.FlapPosition.OPEN);
-        // move to final parking position
-        poser.goTo(
-                Distance.inTiles(2.5),
-                Distance.inTiles(-2.6)
-        ).run();
+        poser.goTo(Distance2.inTiles(-1.5, -2.5), Angle.LEFT).run();
     }
 }
