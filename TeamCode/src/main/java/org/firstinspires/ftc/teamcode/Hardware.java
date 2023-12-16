@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
@@ -31,6 +34,8 @@ public class Hardware {
     public Servo planeLauncher;
     public IMU imu;
     public VoltageSensor voltageSensor;
+    public ColorSensor top;
+    public ColorSensor bottom;
     public OpenCvCamera webcam;
 
     public OpMode opMode;
@@ -119,6 +124,9 @@ public class Hardware {
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
+
+        top = hardwareMap.get(ColorSensor.class, "top");
+        bottom = hardwareMap.get(ColorSensor.class, "bottom");
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

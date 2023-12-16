@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
+import org.firstinspires.ftc.teamcode.subsystems.Sensor;
 
 @TeleOp(name = "CCCCCCCCC")
 public class Teleop extends OpModeWrapper {
@@ -19,6 +20,7 @@ public class Teleop extends OpModeWrapper {
     Lift lift;
     Arm arm;
     PlaneLauncher launcher;
+    Sensor sense;
     double driveSpeed;
     double intakeSpeed;
 
@@ -37,6 +39,8 @@ public class Teleop extends OpModeWrapper {
         arm = new Arm(hardware, telemetry);
 
         launcher = new PlaneLauncher(hardware);
+
+        sense = new Sensor(hardware);
     }
 
     @SuppressLint("DefaultLocale")
@@ -103,6 +107,10 @@ public class Teleop extends OpModeWrapper {
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
+
+        sense.update();
+        telemetry.addData("Top Mag", sense.top_state.toString());
+        telemetry.addData("Bottom Mag", sense.bottom_state.toString());
 
         intake.update();
     }
