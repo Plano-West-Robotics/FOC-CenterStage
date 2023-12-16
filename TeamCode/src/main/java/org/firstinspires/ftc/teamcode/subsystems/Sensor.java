@@ -40,7 +40,7 @@ public class Sensor {
 
     /**
      * Use HSV color wheel threshold to determine the pixel color
-     * @param scr HSV color scalar to check
+     * @param scr HSV colour scalar to check
      * @return Color of Pixel
      */
     public static State getMost(ColorScalar scr) {
