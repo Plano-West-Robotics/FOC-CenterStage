@@ -58,7 +58,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
         empty.copyTo(threshold);
         empty.copyTo(hierarchy);
 
-        // Convert main to HSV
+        // Convert input to HSV
         Imgproc.cvtColor(input, main, Imgproc.COLOR_RGB2HSV);
         if (main.empty()) return input;
 
