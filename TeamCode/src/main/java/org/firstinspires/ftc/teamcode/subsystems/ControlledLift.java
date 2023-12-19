@@ -6,7 +6,6 @@ public class ControlledLift {
     private Hardware hardware;
     private int target;
 
-    public static double GRAVITY_FEEDFORWARD = 0.05;
 
     public ControlledLift(Hardware hardware) {
         this.hardware = hardware;
@@ -20,8 +19,8 @@ public class ControlledLift {
         int liftLError = target - this.hardware.liftL.getCurrentPosition();
         int liftRError = target - this.hardware.liftR.getCurrentPosition();
 
-        this.hardware.liftL.setPower(helper(liftLError) + GRAVITY_FEEDFORWARD);
-        this.hardware.liftR.setPower(helper(liftRError) + GRAVITY_FEEDFORWARD);
+        this.hardware.liftL.setPower(helper(liftLError) + Lift.GRAVITY_FEEDFORWARD);
+        this.hardware.liftR.setPower(helper(liftRError) + Lift.GRAVITY_FEEDFORWARD);
 
         return Math.abs(liftLError) > 50 || Math.abs(liftRError) > 50;
     }
@@ -31,8 +30,8 @@ public class ControlledLift {
             this.hardware.liftL.setPower(0);
             this.hardware.liftR.setPower(0);
         } else {
-            this.hardware.liftL.setPower(GRAVITY_FEEDFORWARD);
-            this.hardware.liftR.setPower(GRAVITY_FEEDFORWARD);
+            this.hardware.liftL.setPower(Lift.GRAVITY_FEEDFORWARD);
+            this.hardware.liftR.setPower(Lift.GRAVITY_FEEDFORWARD);
         }
     }
 

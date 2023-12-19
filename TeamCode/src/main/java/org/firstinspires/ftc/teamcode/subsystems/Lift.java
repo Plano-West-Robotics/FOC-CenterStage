@@ -17,6 +17,8 @@ public class Lift {
     // when within `DELTA` of a limit, the slide can move no faster than this speed toward that limit
     private static final double MAX_NEAR_POWER = 0.6;
 
+    public static double GRAVITY_FEEDFORWARD = 0.05;
+
     public Lift(Hardware hardware) {
         this.hardware = hardware;
     }
@@ -25,8 +27,8 @@ public class Lift {
         int leftEncoder = this.hardware.liftL.getCurrentPosition();
         int rightEncoder = this.hardware.liftR.getCurrentPosition();
 
-        double leftPower = helper(leftEncoder, power);
-        double rightPower = helper(rightEncoder, power);
+        double leftPower = helper(leftEncoder, power) + GRAVITY_FEEDFORWARD;
+        double rightPower = helper(rightEncoder, power) + GRAVITY_FEEDFORWARD;
 
         this.hardware.liftL.setPower(leftPower);
         this.hardware.liftR.setPower(rightPower);
