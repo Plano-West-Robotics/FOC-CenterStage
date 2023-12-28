@@ -51,8 +51,8 @@ public class LED {
     private void showColors() {
         sensor.update();
         // it's bigger on the inside
-        hardware.ledLeft.setPosition(mapValue(sensor.top_state.stateToCode()));
-        hardware.ledRight.setPosition(mapValue(sensor.bottom_state.stateToCode()));
+        hardware.ledLeft.setPosition(mapValue(sensor.top_state.toColorPattern()));
+        hardware.ledRight.setPosition(mapValue(sensor.bottom_state.toColorPattern()));
     }
 
     private void idle() {

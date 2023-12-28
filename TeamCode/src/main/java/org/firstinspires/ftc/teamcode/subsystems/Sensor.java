@@ -14,21 +14,13 @@ public class Sensor {
     public enum State {
         GREEN, PURPLE, YELLOW, WHITE, NONE;
 
-        public LED.ColorPattern stateToCode() {
-            // खूपच घाण कोड आहे हे
-            // enum hell
-            switch (this) {
-                case GREEN:
-                    return LED.ColorPattern.GREEN;
-                case PURPLE:
-                    return LED.ColorPattern.PURPLE;
-                case YELLOW:
-                    return LED.ColorPattern.YELLOW;
-                case WHITE:
-                    return LED.ColorPattern.WHITE;
-                case NONE:
-                default:
-                    return LED.ColorPattern.NONE;
+        public LED.ColorPattern toColorPattern() {
+            // "what in gods name" - missing
+            try {
+                return LED.ColorPattern.valueOf(this.name());
+            } catch (IllegalArgumentException e) {
+                // if your code ever reaches here, god help you
+                return LED.ColorPattern.NONE;
             }
         }
     }
