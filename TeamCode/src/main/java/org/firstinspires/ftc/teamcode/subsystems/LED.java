@@ -70,9 +70,8 @@ public class LED {
 
     /**
      * Map a pattern number to a PWM value.
-     * This equation was derived from the Blinkin user manual and a whole lot of algebra.
      */
     private double mapValue(ColorPattern pattern) {
-        return (pattern.val + 49.5) / 200;
+        return (pattern.val - 1) / 99.0;
     }
 }

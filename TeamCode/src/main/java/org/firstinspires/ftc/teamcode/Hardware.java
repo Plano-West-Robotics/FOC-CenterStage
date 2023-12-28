@@ -129,6 +129,13 @@ public class Hardware {
         top = hardwareMap.get(ColorSensor.class, "top");
         bottom = hardwareMap.get(ColorSensor.class, "bottom");
 
+        ledLeft = hardwareMap.get(Servo.class, "ledLeft");
+        ledRight = hardwareMap.get(Servo.class, "ledRight");
+        // these values are from the blinkin user manual.
+        // if these are wrong i will be writing a strongly worded email to rev robotics
+        ledLeft.scaleRange(0.2525, 0.7475);
+        ledRight.scaleRange(0.2525, 0.7475);
+
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"));
