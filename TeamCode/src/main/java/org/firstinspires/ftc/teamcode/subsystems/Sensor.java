@@ -12,7 +12,25 @@ public class Sensor {
      * Which pixel is detected
      */
     public enum State {
-        GREEN, PURPLE, YELLOW, WHITE, NONE
+        GREEN, PURPLE, YELLOW, WHITE, NONE;
+
+        public LED.ColorPattern stateToCode() {
+            // खूपच घाण कोड आहे हे
+            // enum hell
+            switch (this) {
+                case GREEN:
+                    return LED.ColorPattern.GREEN;
+                case PURPLE:
+                    return LED.ColorPattern.PURPLE;
+                case YELLOW:
+                    return LED.ColorPattern.YELLOW;
+                case WHITE:
+                    return LED.ColorPattern.WHITE;
+                case NONE:
+                default:
+                    return LED.ColorPattern.NONE;
+            }
+        }
     }
 
     public Sensor(Hardware hw) {
