@@ -78,7 +78,7 @@ public class Sensor {
     /**
      * Specific use Scalar for RGB/HSV color values
      */
-    static class ColorScalar extends Scalar {
+    public static class ColorScalar extends Scalar {
         boolean isHSV = false;
 
         public ColorScalar(double v0, double v1, double v2) {
