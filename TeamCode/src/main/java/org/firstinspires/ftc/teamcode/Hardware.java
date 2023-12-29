@@ -25,9 +25,8 @@ public class Hardware {
     public DcMotorEx intake;
     public DcMotorEx ramp;
     public DcMotorEx liftL, liftR;
-    public Servo elbowL, elbowR;
-    public Servo wristL, wristR;
-    public Servo flap;
+    public Servo armL, armR;
+    public Servo flap, blocker;
     public Servo planeLauncher;
     public IMU imu;
     public VoltageSensor voltageSensor;
@@ -96,13 +95,12 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        elbowL = hardwareMap.get(Servo.class, "elbowL");
-        elbowR = hardwareMap.get(Servo.class, "elbowR");
-        wristL = hardwareMap.get(Servo.class, "wristL");
-        wristR = hardwareMap.get(Servo.class, "wristR");
+        armL = hardwareMap.get(Servo.class, "elbowL");
+        armR = hardwareMap.get(Servo.class, "elbowR");
         flap = hardwareMap.get(Servo.class, "flap");
+        blocker = hardwareMap.get(Servo.class, "blocker");
 
-        // TODO: calibrate bounds for the flap
+        // TODO: redo these
         /*
         * Measured 2023-12-04
         * holds: servos will hold this position for the entirety of the match
@@ -115,16 +113,12 @@ public class Hardware {
         * flap:   0.46 - 0.65
         * */
 
-        // no need to scale because they'll be holding position
-//        elbowL.scaleRange(0.05, 0.5);
-//        elbowR.scaleRange(0.4, 0.85);
-//        elbowL.setDirection(Servo.Direction.REVERSE);
-//        elbowR.setDirection(Servo.Direction.FORWARD);
 
-        wristL.scaleRange(0.1, 0.36);
-        wristR.scaleRange(0.64, 0.94);
-        wristR.setDirection(Servo.Direction.REVERSE);
-        wristL.setDirection(Servo.Direction.FORWARD);
+        // todo: do these
+//        wristL.scaleRange(0.1, 0.36);
+//        wristR.scaleRange(0.64, 0.94);
+//        wristR.setDirection(Servo.Direction.REVERSE);
+//        wristL.setDirection(Servo.Direction.FORWARD);
 
         flap.scaleRange(0.46, 0.65);
 

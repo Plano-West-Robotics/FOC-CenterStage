@@ -7,10 +7,10 @@ public class Arm {
     public enum ArmPosition {
         UP(1),
         DOWN(0);
-        private final double wristPos;
+        private final double pos;
 
-        ArmPosition(double wrist) {
-            this.wristPos = wrist;
+        ArmPosition(double p) {
+            this.pos = p;
         }
     }
     public enum FlapPosition {
@@ -23,8 +23,19 @@ public class Arm {
         }
     }
 
+    public enum BlockerPosition {
+        BLOCK(0), UNBLOCK(1); // todo: change these if needed
+
+        private final double pos;
+
+        BlockerPosition(double p) {
+            pos = p;
+        }
+    }
+
     public ArmPosition currentArmPos = ArmPosition.DOWN;
     public FlapPosition currentFlapPos = FlapPosition.OPEN;
+    public BlockerPosition currentBlockerPos = BlockerPosition.UNBLOCK;
     Hardware hardware;
     Telemetry telemetry;
     public Arm(Hardware hw, Telemetry telem) {
@@ -35,11 +46,8 @@ public class Arm {
     public void setArmPosition(ArmPosition newPos) {
         currentArmPos = newPos;
 
-//        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
-//        hardware.elbowR.setPosition(newPos.elbow);
-
-        hardware.wristL.setPosition(newPos.wristPos); // todo: test this and see
-        hardware.wristR.setPosition(newPos.wristPos);
+        hardware.armL.setPosition(newPos.pos);
+        hardware.armR.setPosition(newPos.pos);
     }
 
     public void toggleArmPosition() {
@@ -70,9 +78,20 @@ public class Arm {
         }
     }
 
-    // call this during init or before start probably
-    public void holdElbows() {
-        hardware.elbowL.setPosition(0.4);
-        hardware.elbowR.setPosition(0.6);
+    public void setBlockerPosition(BlockerPosition newPos) {
+        currentBlockerPos = newPos;
+
+        hardware.blocker.setPosition(newPos.pos);
+    }
+
+    public void toggleBlockerPosition() {
+        switch (currentBlockerPos) {
+            case BLOCK:
+                setBlockerPosition(BlockerPosition.UNBLOCK);
+                break;
+            case UNBLOCK:
+                setBlockerPosition(BlockerPosition.BLOCK);
+                break;
+        }
     }
 }

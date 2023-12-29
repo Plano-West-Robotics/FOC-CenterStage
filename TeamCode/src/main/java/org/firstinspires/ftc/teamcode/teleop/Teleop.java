@@ -33,7 +33,6 @@ public class Teleop extends OpModeWrapper {
         lift = new Lift(hardware);
 
         arm = new Arm(hardware, telemetry);
-        arm.holdElbows();
 
         launcher = new PlaneLauncher(hardware);
     }
@@ -78,7 +77,11 @@ public class Teleop extends OpModeWrapper {
         }
 
         if (gamepads.justPressed(Controls.FLAP_TOGGLE)) {
-            arm.toggleFlapPosition(); // todo: test this and see if it works
+            arm.toggleFlapPosition();
+        }
+
+        if (gamepads.justPressed(Controls.BLOCKER_TOGGLE)) {
+            arm.toggleBlockerPosition();
         }
 
         if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
