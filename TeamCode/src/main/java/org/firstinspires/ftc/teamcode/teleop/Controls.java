@@ -15,8 +15,6 @@ public class Controls {
     public static Gamepads.Button INTAKE_DIR_TOG = Gamepads.Button.GP1_CIRCLE;
 
     // ======================= GAMEPAD 2 ============================
-    public static Gamepads.Button INTAKE_FASTER = Gamepads.Button.GP2_RIGHT_BUMPER;
-    public static Gamepads.Button INTAKE_SLOWER = Gamepads.Button.GP2_LEFT_BUMPER;
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;
     public static Gamepads.Button ARM_UP = Gamepads.Button.GP2_DPAD_UP;
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
