@@ -19,7 +19,6 @@ public abstract class DownstageAutoBase extends LinearOpMode {
         Intake intake = new Intake(hardware, 0.3);
         Arm arm = new Arm(hardware, telemetry);
         arm.setFlapPosition(Arm.FlapPosition.CLOSED);
-        arm.holdElbows();
         ControlledLift lift = new ControlledLift(hardware);
 
         Pose startingPose = new Pose(Distance2.inTiles(-1.5, -2.5), Angle.LEFT);
