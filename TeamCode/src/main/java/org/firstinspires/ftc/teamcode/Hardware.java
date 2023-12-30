@@ -100,27 +100,21 @@ public class Hardware {
         flap = hardwareMap.get(Servo.class, "flap");
         blocker = hardwareMap.get(Servo.class, "blocker");
 
-        // TODO: redo these
+        // TODO: tune armL, retune blocker once it's fixed
         /*
-        * Measured 2023-12-04
-        * holds: servos will hold this position for the entirety of the match
-        * elbowL hold: 0.4
-        * elbowR hold: 0.6
-        *
-        *           in   out
-        * wristL: 0.1  - 0.36
-        * wristR: 0.94 - 0.64
-        * flap:   0.46 - 0.65
-        * */
+        * Measured 2023-12-24
+        *           in    out
+        * blocker: 0.40 - 0.75
+        *    armR: 0.32 - 0.05
+        *    flap: 0.90 - 0.65
+        */
 
+        armR.scaleRange(0.05, 0.32);
+        armR.setDirection(Servo.Direction.REVERSE);
 
-        // todo: do these
-//        wristL.scaleRange(0.1, 0.36);
-//        wristR.scaleRange(0.64, 0.94);
-//        wristR.setDirection(Servo.Direction.REVERSE);
-//        wristL.setDirection(Servo.Direction.FORWARD);
+        blocker.scaleRange(0.4, 0.75);
 
-        flap.scaleRange(0.46, 0.65);
+        flap.scaleRange(0.65, 0.9);
 
         planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
