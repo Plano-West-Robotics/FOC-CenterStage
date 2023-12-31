@@ -58,10 +58,10 @@ public class Drive {
         blPower /= scale;
         brPower /= scale;
 
-        hardware.fl.setPower(flPower * getSpeed());
-        hardware.fr.setPower(frPower * getSpeed());
-        hardware.bl.setPower(blPower * getSpeed());
-        hardware.br.setPower(brPower * getSpeed());
+        hardware.fl.setPower(flPower * speed);
+        hardware.fr.setPower(frPower * speed);
+        hardware.bl.setPower(blPower * speed);
+        hardware.br.setPower(brPower * speed);
     }
 
     public double getVoltageCompensation() {

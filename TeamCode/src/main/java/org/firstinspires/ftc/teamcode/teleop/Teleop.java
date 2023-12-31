@@ -53,7 +53,7 @@ public class Teleop extends OpModeWrapper {
         }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
-        telemetry.addData("Drive speed", String.format("%.2f", driveSpeed));
+        telemetry.addData("Drive speed", String.format("%.2f", drive.getSpeed()));
 
         if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
             intake.toggleRunning();
