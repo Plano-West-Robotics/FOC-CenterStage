@@ -4,8 +4,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class PlaneLauncher {
     Hardware hardware;
-    private static final double ENGAGED_POS = 0; // todo: change these later
-    private static final double DISENGAGED_POS = 0;
+    private static final double LAUNCH_POS = 0;
 
     public PlaneLauncher(Hardware hw) {
         hardware = hw;
@@ -13,6 +12,11 @@ public class PlaneLauncher {
     }
 
     public void disengage() {
-        hardware.planeLauncher.setPosition(DISENGAGED_POS);
+        hardware.launcherPin.setPosition(LAUNCH_POS);
+    }
+
+    public void aim() {
+        // todo: tune this maybe
+        hardware.launcherBase.setPosition(0.5);
     }
 }

@@ -27,7 +27,7 @@ public class Hardware {
     public DcMotorEx liftL, liftR;
     public Servo armL, armR;
     public Servo flap, blocker;
-    public Servo planeLauncher;
+    public Servo launcherPin, launcherBase;
     public IMU imu;
     public VoltageSensor voltageSensor;
     public OpenCvCamera webcam;
@@ -118,7 +118,8 @@ public class Hardware {
 
         flap.scaleRange(0.65, 0.9);
 
-        planeLauncher = hardwareMap.get(Servo.class, "launcher");
+        launcherPin = hardwareMap.get(Servo.class, "launcherPin");
+        launcherBase = hardwareMap.get(Servo.class, "launcherBase");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
