@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.ValueProvider;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -17,6 +18,7 @@ public class DashboardMotorTuner extends OpMode {
     @Override
     public void init() {
         FtcDashboard db = FtcDashboard.getInstance();
+        telemetry = new MultipleTelemetry(telemetry, db.getTelemetry());
 
         for (DcMotorEx m : hardwareMap.getAll(DcMotorEx.class)) {
             String name = hardwareMap.getNamesOf(m).iterator().next();
