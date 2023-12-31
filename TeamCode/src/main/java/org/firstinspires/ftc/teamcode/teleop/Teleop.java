@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -37,6 +39,7 @@ public class Teleop extends OpModeWrapper {
         launcher = new PlaneLauncher(hardware);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void run() {
         telemetry.addData("Yaw", hardware.getYaw());
@@ -49,7 +52,7 @@ public class Teleop extends OpModeWrapper {
         }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
-        telemetry.addData("Drive speed", driveSpeed);
+        telemetry.addData("Drive speed", String.format("%.2f", driveSpeed));
 
         if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
             intake.toggleRunning();
@@ -59,7 +62,7 @@ public class Teleop extends OpModeWrapper {
         }
         intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
         intake.setSpeed(intakeSpeed);
-        telemetry.addData("Intake speed", intakeSpeed);
+        telemetry.addData("Intake speed", String.format("%.2f", intakeSpeed));
         telemetry.addData("Intake reversed?", intake.isReversed());
         telemetry.addData("Intake running?", intake.isRunning());
 
