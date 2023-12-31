@@ -22,13 +22,6 @@ public class FIPOp extends OpModeWrapper {
 
     @Override
     public void run() {
-        if (gamepads.justPressed(Controls.DRIVE_FASTER)) {
-            driveSpeed += 0.15;
-        }
-        if (gamepads.justPressed(Controls.DRIVE_SLOWER)) {
-            driveSpeed -= 0.15;
-
-        }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
         telemetry.addData("Drive speed", driveSpeed);
