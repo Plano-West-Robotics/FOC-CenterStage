@@ -24,7 +24,7 @@ public class Teleop extends OpModeWrapper {
 
     @Override
     public void setup() {
-        driveSpeed = 0.7;
+        driveSpeed = 1;
         intakeSpeed = 1; // change this speed if you have to
         drive = new Drive(hardware, driveSpeed);
         drive.setFieldOriented(false);
@@ -44,11 +44,12 @@ public class Teleop extends OpModeWrapper {
     public void run() {
         telemetry.addData("Yaw", hardware.getYaw());
 
-        if (gamepads.justPressed(Controls.DRIVE_FASTER)) {
-            driveSpeed += 0.15;
-        }
-        if (gamepads.justPressed(Controls.DRIVE_SLOWER)) {
-            driveSpeed -= 0.15;
+        if (gamepads.isPressed(Controls.SLOW_SPEED)) {
+            driveSpeed = 0.7;
+        } else if (gamepads.isPressed(Controls.SUPER_SLOW_SPEED)) {
+            driveSpeed = 0.35;
+        } else {
+            driveSpeed = 1;
         }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
