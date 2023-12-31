@@ -11,7 +11,7 @@ public class PlaneLauncher {
 //        hardware.planeLauncher.setPosition(ENGAGED_POS);
     }
 
-    public void disengage() {
+    public void fire() {
         hardware.launcherPin.setPosition(LAUNCH_POS);
     }
 

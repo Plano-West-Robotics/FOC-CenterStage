@@ -83,7 +83,7 @@ public class Teleop extends OpModeWrapper {
         }
 
         if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
-            launcher.disengage();
+            launcher.fire();
         }
 
         if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
