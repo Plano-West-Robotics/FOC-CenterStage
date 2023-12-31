@@ -95,22 +95,24 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        armL = hardwareMap.get(Servo.class, "elbowL");
-        armR = hardwareMap.get(Servo.class, "elbowR");
+        armL = hardwareMap.get(Servo.class, "armL");
+        armR = hardwareMap.get(Servo.class, "armR");
         flap = hardwareMap.get(Servo.class, "flap");
         blocker = hardwareMap.get(Servo.class, "blocker");
 
-        // TODO: tune armL, retune blocker once it's fixed
         /*
-        * Measured 2023-12-24
+        * Measured 2023-12-30
         *           in    out
         * blocker: 0.40 - 0.75
-        *    armR: 0.32 - 0.05
+        *    armR: 0.73 - 0.3
+        *    armL: 0.13 - 0.58
         *    flap: 0.90 - 0.65
         */
 
-        armR.scaleRange(0.05, 0.32);
+        armR.scaleRange(0.3, 0.73);
+        armL.scaleRange(0.13, 0.58);
         armR.setDirection(Servo.Direction.REVERSE);
+        armL.setDirection(Servo.Direction.FORWARD);
 
         blocker.scaleRange(0.4, 0.75);
 
