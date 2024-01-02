@@ -51,7 +51,7 @@ public class DashboardTelemetryWrapper implements Telemetry {
                 new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH              ).div(2),
                 new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.div(2)       ).div(2),
                 new Distance2( Distance.ROBOT_LENGTH.div(5), Distance.ROBOT_WIDTH.div(2)       ).div(2),
-                new Distance2( Distance.ROBOT_LENGTH.div(5), Distance.ROBOT_WIDTH.div(2)       ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH.div(5), Distance.ROBOT_WIDTH.neg().div(2) ).div(2),
                 new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.neg().div(2) ).div(2),
                 new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.neg()        ).div(2),
                 new Distance2( Distance.ROBOT_LENGTH.neg(),  Distance.ROBOT_WIDTH.neg()        ).div(2)
