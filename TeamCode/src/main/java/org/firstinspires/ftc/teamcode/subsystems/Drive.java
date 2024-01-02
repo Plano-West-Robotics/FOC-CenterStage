@@ -68,4 +68,8 @@ public class Drive {
         double voltage = hardware.voltageSensor.getVoltage();
         return 12 / voltage;
     }
+
+    public void stop() {
+        drive(0, 0, 0);
+    }
 }
