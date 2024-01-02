@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Poser {
     private Hardware hardware;
-    protected Localizer localizer;
+    private Localizer localizer;
 
     private double speed;
     private Pose lastTarget;
