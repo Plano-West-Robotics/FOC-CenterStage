@@ -29,7 +29,8 @@ public class Poser {
         this.lastTarget = flipped ? initialPose.flippedAcrossXAxis() : initialPose;
         this.flipped = flipped;
 
-        drawRobotPose(initialPose);
+        this.hardware.dashboardTelemetry.drawRobot(initialPose);
+        this.hardware.dashboardTelemetry.update();
     }
 
     private void move(double powerX, double powerY, double turn) {
@@ -50,28 +51,6 @@ public class Poser {
 
     private static void drawLineDelta(Canvas canvas, Distance2 p1, Distance2 del) {
         drawLine(canvas, p1, p1.add(del));
-    }
-
-    private static void drawRobotPose(Pose pose) {
-        FtcDashboard db = FtcDashboard.getInstance();
-        TelemetryPacket packet = new TelemetryPacket();
-        Canvas canvas = packet.fieldOverlay();
-
-        canvas.setStroke("black");
-        canvas.setStrokeWidth(1);
-        canvas.strokeCircle(
-                pose.pos.x.valInInches() * (24 / 23.625),
-                pose.pos.y.valInInches() * (24 / 23.625),
-                9
-        );
-        canvas.strokeLine(
-                pose.pos.x.valInInches() * (24 / 23.625),
-                pose.pos.y.valInInches() * (24 / 23.625),
-                pose.pos.x.valInInches() * (24 / 23.625) + 9 * pose.yaw.cos(),
-                pose.pos.y.valInInches() * (24 / 23.625) + 9 * pose.yaw.sin()
-        );
-
-        db.sendTelemetryPacket(packet);
     }
 
     public Motion moveBy(Distance x, Distance y) {
@@ -147,7 +126,9 @@ public class Poser {
         public boolean update() {
             Poser poser = Poser.this;
 
-            drawRobotPose(poser.localizer.getPoseEstimate());
+            hardware.dashboardTelemetry.drawRobot(poser.localizer.getPoseEstimate());
+            hardware.dashboardTelemetry.drawTarget(target, poser.localizer.getPoseEstimate());
+            hardware.dashboardTelemetry.update();
 
             long now = System.nanoTime();
             long dtNanos = now - this.lastUpdate;

@@ -34,6 +34,7 @@ public class Hardware {
     public OpenCvCamera webcam;
 
     public OpMode opMode;
+    public DashboardTelemetryWrapper dashboardTelemetry;
 
     /**
      * Initialize hardware wrapper. This constructor reverses motors and all that for you
@@ -45,7 +46,8 @@ public class Hardware {
 
         HardwareMap hardwareMap = opMode.hardwareMap;
 
-        opMode.telemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.dashboardTelemetry = new DashboardTelemetryWrapper(FtcDashboard.getInstance());
+        opMode.telemetry = new MultipleTelemetry(opMode.telemetry, this.dashboardTelemetry);
 
         fl = hardwareMap.get(DcMotorEx.class, "frontLeft");
         fr = hardwareMap.get(DcMotorEx.class, "frontRight");
