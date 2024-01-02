@@ -14,8 +14,8 @@ public class Poser {
     private Pose lastTarget;
     private boolean flipped;
 
-    private static Distance MAX_VEL = Distance.inMM(965.522); // mm/s
-    private static Angle MAX_ANG_VEL = Angle.inDegrees(149.353); // deg/s
+    private static Distance MAX_VEL = Distance.inMM(939.571); // mm/s
+    private static Angle MAX_ANG_VEL = Angle.inDegrees(156.941); // deg/s
     private static Distance MAX_ACCEL = MAX_VEL.div(1); // mm/s^2
     private static double MU = 0.2;
 
@@ -108,9 +108,9 @@ public class Poser {
     }
 
     public class Motion {
-        private final PIDController xCtrl = new PIDController(1.5, 0, 0);
-        private final PIDController yCtrl = new PIDController(1.5, 0, 0);
-        private final PIDController yawCtrl = new PIDController(2.5, 0, 0);
+        private final PIDController xCtrl = new PIDController(5, 0, 0.4);
+        private final PIDController yCtrl = new PIDController(5.5, 0, 0.4); // technically should be the same as above, but i added a little extra kick for the ramp // technically should be the same as above, but i added a little extra kick for the ramp // technically should be the same as above, but i added a little extra kick for the ramp
+        private final PIDController yawCtrl = new PIDController(5, 0, 0.35);
 
         private final Pose target;
         private Distance2 vel;
@@ -194,7 +194,7 @@ public class Poser {
 
             poser.move(pow.x.div(MAX_VEL), pow.y.div(MAX_VEL), angPow.div(MAX_ANG_VEL));
 
-            return posError.magnitude().valInMM() > 10 || Math.abs(angError.valInDegrees()) > 2;
+            return posError.magnitude().valInMM() > 15 || Math.abs(angError.valInDegrees()) > 4;
         }
 
         public void end() {
