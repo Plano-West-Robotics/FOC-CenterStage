@@ -22,9 +22,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
  */
 public class Hardware {
     public DcMotorEx fl, fr, bl, br;
-    public DcMotorEx intake;
-    public DcMotorEx ramp;
+    public DcMotorEx intake, ramp;
     public DcMotorEx liftL, liftR;
+    public DcMotorEx leftOdo, backOdo, rightOdo; // TODO: make a wrapper class that only exposes reading the encoder
     public Servo armL, armR;
     public Servo flap, blocker;
     public Servo planeLauncher;
@@ -56,8 +56,6 @@ public class Hardware {
         bl.setDirection(DcMotorSimple.Direction.REVERSE);
         br.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        // replace this with odo velo pid later maybe
-
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -86,6 +84,10 @@ public class Hardware {
         liftR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        leftOdo = ramp;
+        backOdo = intake;
+        rightOdo = null; // TODO
 
         armL = hardwareMap.get(Servo.class, "armL");
         armR = hardwareMap.get(Servo.class, "armR");

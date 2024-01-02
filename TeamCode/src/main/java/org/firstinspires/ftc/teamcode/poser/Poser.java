@@ -8,20 +8,20 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Poser {
     private Hardware hardware;
-    private EncoderIntegrator localizer;
+    private Localizer localizer;
 
     private double speed;
     private Pose lastTarget;
     private boolean flipped;
 
-    private static Distance MAX_VEL = Distance.inMM(1721.398 * EncoderIntegrator.MM_PER_ENCODER_TICK); // mm/s
+    private static Distance MAX_VEL = Distance.inMM(965.522); // mm/s
     private static Angle MAX_ANG_VEL = Angle.inDegrees(149.353); // deg/s
     private static Distance MAX_ACCEL = MAX_VEL.div(1); // mm/s^2
     private static double MU = 0.2;
 
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
-        this.localizer = new EncoderIntegrator(hardware, initialPose);
+        this.localizer = new TwoDeadWheelLocalizer(hardware, initialPose);
 
         this.speed = speed;
         // flip it back if needed
@@ -147,7 +147,7 @@ public class Poser {
         public boolean update() {
             Poser poser = Poser.this;
 
-            drawRobotPose(poser.localizer.poseEstimate);
+            drawRobotPose(poser.localizer.getPoseEstimate());
 
             long now = System.nanoTime();
             long dtNanos = now - this.lastUpdate;
@@ -157,7 +157,7 @@ public class Poser {
             poser.localizer.update();
 
             // position
-            Distance2 posError = this.target.pos.sub(poser.localizer.poseEstimate.pos);
+            Distance2 posError = this.target.pos.sub(poser.localizer.getPoseEstimate().pos);
 //            double posErrorMM = posError.magnitude().valInMM();
 //            double targetVelMM = Math.min(Math.sqrt(2 * MAX_ACCEL.valInMM() * posErrorMM) - 0.2 * MAX_ACCEL.valInMM(), MAX_VEL.valInMM());
 //            Distance2 targetVel = posError.normalized().mul(Distance.inMM(targetVelMM));
@@ -175,17 +175,17 @@ public class Poser {
 //            );
 //            canvas.setStroke("black");
 //            canvas.strokeCircle(
-//                    poser.localizer.poseEstimate.pos.x.valInInches(),
-//                    poser.localizer.poseEstimate.pos.y.valInInches(),
+//                    poser.localizer.getPoseEstimate().pos.x.valInInches(),
+//                    poser.localizer.getPoseEstimate().pos.y.valInInches(),
 //                    9
 //            );
-//            drawLineDelta(canvas, poser.localizer.poseEstimate.pos, Distance2.inInches(0, 9).rot(poser.localizer.poseEstimate.yaw));
+//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, Distance2.inInches(0, 9).rot(poser.localizer.getPoseEstimate().yaw));
 //            canvas.setStroke("red");
-//            drawLineDelta(canvas, poser.localizer.poseEstimate.pos, targetVel);
+//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, targetVel);
 //            canvas.setStroke("green");
-//            drawLineDelta(canvas, poser.localizer.poseEstimate.pos, vel);
+//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, vel);
 //            canvas.setStroke("blue");
-//            drawLineDelta(canvas, poser.localizer.poseEstimate.pos.add(vel), velDiff);
+//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos.add(vel), velDiff);
 //
 //            db.sendTelemetryPacket(packet);
 //
@@ -193,10 +193,10 @@ public class Poser {
 //            Vector2 pow =
 //                    vel.div(MAX_VEL).mul(poser.speed).mul(MU)
 //                            .add(velDiff.div(dt).div(MAX_ACCEL))
-//                            .rot(poser.localizer.poseEstimate.yaw.neg());
+//                            .rot(poser.localizer.getPoseEstimate().yaw.neg());
 
             // angle
-            Angle angError = this.target.yaw.sub(poser.localizer.poseEstimate.yaw).modSigned();
+            Angle angError = this.target.yaw.sub(poser.localizer.getPoseEstimate().yaw).modSigned();
 //            double angPow = Math.signum(angError.valInRadians()) * poser.speed;
 //            if (angError.valInDegrees() < 60) {
 //                angPow *= Math.pow(1 - Math.pow(1 - Math.abs(angError.valInDegrees() / 60), 1.6), 1/1.6);
@@ -206,7 +206,7 @@ public class Poser {
                     Distance.inDefaultUnits(this.xCtrl.update(posError.x.valInDefaultUnits())),
                     Distance.inDefaultUnits(this.yCtrl.update(posError.y.valInDefaultUnits()))
             )
-                    .rot(poser.localizer.poseEstimate.yaw.neg())
+                    .rot(poser.localizer.getPoseEstimate().yaw.neg())
                     .mul(poser.speed);
             Angle angPow = Angle.inDefaultUnits(this.yawCtrl.update(angError.valInDefaultUnits()))
                     .mul(poser.speed);
