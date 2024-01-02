@@ -16,6 +16,8 @@ public class DashboardTelemetryWrapper implements Telemetry {
     private boolean canvasHoldingStaleData;
     private final TelemetryLog log;
 
+    private static final Canvas DEFAULT_FIELD = new TelemetryPacket().fieldOverlay();
+
     public DashboardTelemetryWrapper(FtcDashboard dashboard) {
         this.dashboard = dashboard;
         this.packet = new TelemetryPacket();
@@ -28,6 +30,7 @@ public class DashboardTelemetryWrapper implements Telemetry {
 
         if (this.canvasHoldingStaleData) {
             canvas.clear();
+            canvas.getOperations().addAll(DEFAULT_FIELD.getOperations());
             this.canvasHoldingStaleData = false;
         }
 
@@ -44,14 +47,14 @@ public class DashboardTelemetryWrapper implements Telemetry {
         // |            |
         // 1------------8
         Distance2[] ps = new Distance2[]{
-                new Distance2( Distance.ROBOT_WIDTH.neg(),        Distance.ROBOT_LENGTH.neg()  ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH.neg(),        Distance.ROBOT_LENGTH        ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH.neg().div(2), Distance.ROBOT_LENGTH        ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH.neg().div(2), Distance.ROBOT_LENGTH.div(5) ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH.div(2),       Distance.ROBOT_LENGTH.div(5) ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH.div(2),       Distance.ROBOT_LENGTH        ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH,              Distance.ROBOT_LENGTH        ).div(2),
-                new Distance2( Distance.ROBOT_WIDTH,              Distance.ROBOT_LENGTH.neg()  ).div(2)
+                new Distance2( Distance.ROBOT_LENGTH.neg(),  Distance.ROBOT_WIDTH              ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH              ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.div(2)       ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH.div(5), Distance.ROBOT_WIDTH.div(2)       ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH.div(5), Distance.ROBOT_WIDTH.div(2)       ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.neg().div(2) ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH,        Distance.ROBOT_WIDTH.neg()        ).div(2),
+                new Distance2( Distance.ROBOT_LENGTH.neg(),  Distance.ROBOT_WIDTH.neg()        ).div(2)
         };
 
         double[] xs = new double[ps.length];
