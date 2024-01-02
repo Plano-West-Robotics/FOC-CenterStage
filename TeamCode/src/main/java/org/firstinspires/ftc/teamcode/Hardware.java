@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -35,7 +36,7 @@ public class Hardware {
     public VoltageSensor voltageSensor;
 
     public ColorSensor top, bottom;
-    public Servo ledLeft, ledRight;
+    public ServoImplEx ledLeft, ledRight;
 
     public OpenCvCamera webcam;
 
@@ -129,8 +130,8 @@ public class Hardware {
         top = hardwareMap.get(ColorSensor.class, "top");
         bottom = hardwareMap.get(ColorSensor.class, "bottom");
 
-        ledLeft = hardwareMap.get(Servo.class, "ledLeft");
-        ledRight = hardwareMap.get(Servo.class, "ledRight");
+        ledLeft = hardwareMap.get(ServoImplEx.class, "ledLeft");
+        ledRight = hardwareMap.get(ServoImplEx.class, "ledRight");
         // these values are from the blinkin user manual.
         // if these are wrong i will be writing a strongly worded email to rev robotics
         ledLeft.scaleRange(0.2525, 0.7475);

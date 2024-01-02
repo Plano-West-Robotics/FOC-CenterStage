@@ -51,13 +51,16 @@ public class LED {
     private void showColors() {
         sensor.update();
         // it's bigger on the inside
-        hardware.ledLeft.setPosition(mapValue(sensor.top_state.toColorPattern()));
-        hardware.ledRight.setPosition(mapValue(sensor.bottom_state.toColorPattern()));
+        this.hardware.ledLeft.setPwmEnable();
+        this.hardware.ledRight.setPwmEnable();
+
+        this.hardware.ledLeft.setPosition(mapValue(sensor.top_state.toColorPattern()));
+        this.hardware.ledRight.setPosition(mapValue(sensor.bottom_state.toColorPattern()));
     }
 
     private void idle() {
-        this.hardware.ledLeft.setPosition(mapValue(ColorPattern.FOC_GREEN));
-        this.hardware.ledRight.setPosition(mapValue(ColorPattern.FOC_YELLOW));
+        this.hardware.ledLeft.setPwmDisable(); // if PWM is off, the blinkin falls back to the idle pattern
+        this.hardware.ledRight.setPwmDisable();
     }
 
     public void setMode(Mode newMode) {
