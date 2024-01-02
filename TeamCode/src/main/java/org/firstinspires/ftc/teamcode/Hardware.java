@@ -88,9 +88,9 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        leftOdo = new Encoder(ramp);
+        leftOdo = null; // TODO
         backOdo = new Encoder(intake);
-        rightOdo = null; // TODO
+        rightOdo = new Encoder(ramp);
 
         armL = hardwareMap.get(Servo.class, "armL");
         armR = hardwareMap.get(Servo.class, "armR");

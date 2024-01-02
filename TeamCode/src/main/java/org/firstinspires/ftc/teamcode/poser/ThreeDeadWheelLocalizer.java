@@ -14,12 +14,12 @@ public class ThreeDeadWheelLocalizer implements Localizer {
 
     public static final double MM_PER_ENCODER_TICK = (35 * Math.PI) / 8192;
 
-    public static final Distance LEFT_ODO_LEVER_ARM = Distance.inMM(165);
+    public static final Distance LEFT_ODO_LEVER_ARM = null; // TODO
     public static final Distance BACK_ODO_LEVER_ARM = Distance.inMM(180);
-    public static final Distance RIGHT_ODO_LEVER_ARM = null; // TODO
-    public static int LEFT_ODO_DIR = -1; // 1 for CCW positive, -1 for CW
-    public static int BACK_ODO_DIR = 1;
-    public static int RIGHT_ODO_DIR = 0; // TODO
+    public static final Distance RIGHT_ODO_LEVER_ARM = Distance.inMM(165);
+    public static int LEFT_ODO_DIR = 0; // TODO
+    public static int BACK_ODO_DIR = -1; // 1 for CCW positive, -1 for CW
+    public static int RIGHT_ODO_DIR = -1;
 
     public ThreeDeadWheelLocalizer(Hardware hardware, Pose initialPose) {
         this.hardware = hardware;
