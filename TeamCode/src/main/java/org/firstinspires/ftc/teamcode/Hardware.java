@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
+import org.firstinspires.ftc.teamcode.poser.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
@@ -24,7 +25,7 @@ public class Hardware {
     public DcMotorEx fl, fr, bl, br;
     public DcMotorEx intake, ramp;
     public DcMotorEx liftL, liftR;
-    public DcMotorEx leftOdo, backOdo, rightOdo; // TODO: make a wrapper class that only exposes reading the encoder
+    public Encoder leftOdo, backOdo, rightOdo;
     public Servo armL, armR;
     public Servo flap, blocker;
     public Servo planeLauncher;
@@ -85,8 +86,8 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        leftOdo = ramp;
-        backOdo = intake;
+        leftOdo = new Encoder(ramp);
+        backOdo = new Encoder(intake);
         rightOdo = null; // TODO
 
         armL = hardwareMap.get(Servo.class, "armL");
