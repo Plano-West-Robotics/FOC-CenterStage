@@ -15,7 +15,7 @@ public class TwoDeadWheelLocalizer implements Localizer {
 
     public static final double MM_PER_ENCODER_TICK = ThreeDeadWheelLocalizer.MM_PER_ENCODER_TICK;
 
-    public static final Distance BACK_ODO_LEVER_ARM = Distance.inMM(180);
+    public static final Distance BACK_ODO_LEVER_ARM = Distance.inMM(175);
     public static final Distance RIGHT_ODO_LEVER_ARM = Distance.inMM(165);
     public static int BACK_ODO_DIR = -1;
     public static int RIGHT_ODO_DIR = -1;
