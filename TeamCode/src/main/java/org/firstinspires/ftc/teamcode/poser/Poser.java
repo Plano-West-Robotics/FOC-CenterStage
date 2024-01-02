@@ -3,21 +3,20 @@ package org.firstinspires.ftc.teamcode.poser;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Poser {
-    private Hardware hardware;
-    private Localizer localizer;
+    private final Hardware hardware;
+    private final Localizer localizer;
 
     private double speed;
     private Pose lastTarget;
     private boolean flipped;
 
-    private static Distance MAX_VEL = Distance.inMM(965.522); // mm/s
-    private static Angle MAX_ANG_VEL = Angle.inDegrees(149.353); // deg/s
-    private static Distance MAX_ACCEL = MAX_VEL.div(1); // mm/s^2
-    private static double MU = 0.2;
+    private static final Distance MAX_VEL = Distance.inMM(965.522); // mm/s
+    private static final Angle MAX_ANG_VEL = Angle.inDegrees(149.353); // deg/s
 
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
@@ -129,19 +128,29 @@ public class Poser {
     }
 
     public class Motion {
+        private final Pose target;
+
+        private long lastUpdate;
         private final PIDController xCtrl = new PIDController(1.5, 0, 0);
         private final PIDController yCtrl = new PIDController(1.5, 0, 0);
         private final PIDController yawCtrl = new PIDController(2.5, 0, 0);
 
-        private final Pose target;
-        private Distance2 vel;
-        private long lastUpdate;
+        private boolean first;
+        private Pose lastPose;
+        private double runningXPow;
+        private double runningYPow;
+        private double runningAngPow;
+        // TODO: tune
+        private final PIDController xVelCtrl = new PIDController(1, 0, 0);
+        private final PIDController yVelCtrl = new PIDController(1, 0, 0);
+        private final PIDController angVelCtrl = new PIDController(1, 0 ,0);
 
         public Motion(Pose target) {
             this.target = target;
 
-            this.vel = Distance2.ZERO;
             this.lastUpdate = System.nanoTime();
+
+            this.first = true;
         }
 
         public boolean update() {
@@ -150,78 +159,57 @@ public class Poser {
             drawRobotPose(poser.localizer.getPoseEstimate());
 
             long now = System.nanoTime();
-            long dtNanos = now - this.lastUpdate;
-            this.lastUpdate = now;
+            long dtNanos = now - lastUpdate;
+            lastUpdate = now;
             double dt = dtNanos / (1000 * 1000 * 1000.);
 
             poser.localizer.update();
+            Pose pose = poser.localizer.getPoseEstimate();
 
-            // position
-            Distance2 posError = this.target.pos.sub(poser.localizer.getPoseEstimate().pos);
-//            double posErrorMM = posError.magnitude().valInMM();
-//            double targetVelMM = Math.min(Math.sqrt(2 * MAX_ACCEL.valInMM() * posErrorMM) - 0.2 * MAX_ACCEL.valInMM(), MAX_VEL.valInMM());
-//            Distance2 targetVel = posError.normalized().mul(Distance.inMM(targetVelMM));
-//
-//            Distance2 velError = targetVel.sub(vel);
-//            Distance2 velDiff = velError.normalized().mul(
-//                    Distance.inMM(Math.min(velError.magnitude().valInMM(), MAX_ACCEL.valInMM() * dt))
-//            );
-//
-//            canvas.setStroke("orange");
-//            canvas.strokeCircle(
-//                    this.target.pos.x.valInInches(),
-//                    this.target.pos.y.valInInches(),
-//                    1
-//            );
-//            canvas.setStroke("black");
-//            canvas.strokeCircle(
-//                    poser.localizer.getPoseEstimate().pos.x.valInInches(),
-//                    poser.localizer.getPoseEstimate().pos.y.valInInches(),
-//                    9
-//            );
-//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, Distance2.inInches(0, 9).rot(poser.localizer.getPoseEstimate().yaw));
-//            canvas.setStroke("red");
-//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, targetVel);
-//            canvas.setStroke("green");
-//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos, vel);
-//            canvas.setStroke("blue");
-//            drawLineDelta(canvas, poser.localizer.getPoseEstimate().pos.add(vel), velDiff);
-//
-//            db.sendTelemetryPacket(packet);
-//
-//            vel = vel.add(velDiff);
-//            Vector2 pow =
-//                    vel.div(MAX_VEL).mul(poser.speed).mul(MU)
-//                            .add(velDiff.div(dt).div(MAX_ACCEL))
-//                            .rot(poser.localizer.getPoseEstimate().yaw.neg());
-
-            // angle
-            Angle angError = this.target.yaw.sub(poser.localizer.getPoseEstimate().yaw).modSigned();
-//            double angPow = Math.signum(angError.valInRadians()) * poser.speed;
-//            if (angError.valInDegrees() < 60) {
-//                angPow *= Math.pow(1 - Math.pow(1 - Math.abs(angError.valInDegrees() / 60), 1.6), 1/1.6);
-//            }
-
-            Distance2 pow = new Distance2(
-                    Distance.inDefaultUnits(this.xCtrl.update(posError.x.valInDefaultUnits())),
-                    Distance.inDefaultUnits(this.yCtrl.update(posError.y.valInDefaultUnits()))
-            )
-                    .rot(poser.localizer.getPoseEstimate().yaw.neg())
-                    .mul(poser.speed);
-            Angle angPow = Angle.inDefaultUnits(this.yawCtrl.update(angError.valInDefaultUnits()))
+            // position pid
+            Distance2 posError = target.pos.sub(pose.pos);
+            Distance2 targetVel = new Distance2(xCtrl.update(posError.x), yCtrl.update(posError.y))
+                    .rot(pose.yaw.neg())
                     .mul(poser.speed);
 
-            poser.move(pow.x.div(MAX_VEL), pow.y.div(MAX_VEL), angPow.div(MAX_ANG_VEL));
+            Angle angError = target.yaw.sub(pose.yaw).modSigned();
+            Angle targetAngVel = yawCtrl.update(angError).mul(poser.speed);
+
+            // velocity pid
+            if (first) {
+                runningXPow = targetVel.x.div(MAX_VEL);
+                runningYPow = targetVel.y.div(MAX_VEL);
+                runningAngPow = targetAngVel.div(MAX_ANG_VEL);
+                first = false;
+            } else {
+                Distance2 currVel = pose.pos.sub(lastPose.pos).div(dt);
+                Angle currAngVel = pose.yaw.sub(lastPose.yaw).div(dt);
+                Distance xVelError = targetVel.x.sub(currVel.x);
+                Distance yVelError = targetVel.y.sub(currVel.y);
+                Angle angVelError = targetAngVel.sub(currAngVel);
+
+                Distance xAccel = xVelCtrl.update(xVelError);
+                Distance yAccel = yVelCtrl.update(yVelError);
+                Angle angAccel = angVelCtrl.update(angVelError);
+
+                runningXPow += xAccel.div(MAX_VEL) * dt;
+                runningYPow += yAccel.div(MAX_VEL) * dt;
+                runningAngPow += angAccel.div(MAX_ANG_VEL) * dt;
+            }
+
+            runningXPow = Range.clip(runningXPow, -1, 1);
+            runningYPow = Range.clip(runningYPow, -1, 1);
+            runningAngPow = Range.clip(runningAngPow, -1, 1);
+
+            poser.move(runningXPow, runningYPow, runningAngPow);
+
+            lastPose = pose;
 
             return posError.magnitude().valInMM() > 10 || Math.abs(angError.valInDegrees()) > 2;
         }
 
         public void end() {
-            Poser poser = Poser.this;
-
-            poser.move(0, 0, 0);
-            this.vel = Distance2.ZERO;
-            this.lastUpdate = System.nanoTime();
+            Poser.this.move(0, 0, 0);
         }
 
         public void run() {
