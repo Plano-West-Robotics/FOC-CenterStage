@@ -38,10 +38,13 @@ public class Poser {
         double blPower = powerX + powerY - turn;
         double brPower = powerX - powerY + turn;
 
-        this.hardware.fl.setPower(flPower);
-        this.hardware.fr.setPower(frPower);
-        this.hardware.bl.setPower(blPower);
-        this.hardware.br.setPower(brPower);
+        double voltage = this.hardware.voltageSensor.getVoltage();
+        double volComp = 12 / voltage;
+
+        this.hardware.fl.setPower(flPower * volComp);
+        this.hardware.fr.setPower(frPower * volComp);
+        this.hardware.bl.setPower(blPower * volComp);
+        this.hardware.br.setPower(brPower * volComp);
     }
 
     private static void drawLine(Canvas canvas, Distance2 p1, Distance2 p2) {
@@ -107,9 +110,9 @@ public class Poser {
     }
 
     public class Motion {
-        private final PIDController xCtrl = new PIDController(5, 0.5, 0);
-        private final PIDController yCtrl = new PIDController(5, 0.5, 0);
-        private final PIDController yawCtrl = new PIDController(5, 0.25, 0);
+        private final PIDController xCtrl = new PIDController(5, 0.6, 0.15);
+        private final PIDController yCtrl = new PIDController(5, 0.6, 0.15);
+        private final PIDController yawCtrl = new PIDController(5, 0.25, 0.15);
         private final Pose target;
 
 //        private long lastUpdate;
@@ -145,6 +148,11 @@ public class Poser {
 
             Vector2 pow = targetVel.div(MAX_VEL);
             double angPow = targetAngVel.div(MAX_ANG_VEL);
+
+            hardware.opMode.telemetry.addData("xOut", pow.x);
+            hardware.opMode.telemetry.addData("yOut", pow.y);
+            hardware.opMode.telemetry.addData("angOut", angPow);
+
             poser.move(pow.x, pow.y, angPow);
 
             return posError.magnitude().valInMM() > 15 || Math.abs(angError.valInDegrees()) > 4;
