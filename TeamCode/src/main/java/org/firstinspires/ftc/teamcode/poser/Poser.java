@@ -112,12 +112,12 @@ public class Poser {
         private final PIDController yawCtrl = new PIDController(5, 0.25, 0);
         private final Pose target;
 
-        private long lastUpdate;
+//        private long lastUpdate;
 
         public Motion(Pose target) {
             this.target = target;
 
-            this.lastUpdate = System.nanoTime();
+//            this.lastUpdate = System.nanoTime();
         }
 
         public boolean update() {
@@ -127,10 +127,10 @@ public class Poser {
             hardware.dashboardTelemetry.drawTarget(target, poser.localizer.getPoseEstimate());
             hardware.dashboardTelemetry.update();
 
-            long now = System.nanoTime();
-            long dtNanos = now - lastUpdate;
-            lastUpdate = now;
-            double dt = dtNanos / (1000 * 1000 * 1000.);
+//            long now = System.nanoTime();
+//            long dtNanos = now - lastUpdate;
+//            lastUpdate = now;
+//            double dt = dtNanos / (1000 * 1000 * 1000.);
 
             poser.localizer.update();
             Pose pose = poser.localizer.getPoseEstimate();
