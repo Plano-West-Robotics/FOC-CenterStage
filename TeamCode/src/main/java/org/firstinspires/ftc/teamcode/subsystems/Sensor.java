@@ -73,14 +73,15 @@ public class Sensor {
             return State.NONE;
         }
 
-        if (s <= 10) {
-            return State.WHITE;
-        } else if (h >= 95 && h <= 145) {
+        
+        if (h >= 95 && h <= 145) {
             return State.GREEN;
         } else if (h >= 200 && h <= 290) {
             return State.PURPLE;
         } else if (h >= 40 && h <= 90) {
             return State.YELLOW;
+        } else if (s <= 50) {
+            return State.WHITE;
         }
 
         return State.NONE;
