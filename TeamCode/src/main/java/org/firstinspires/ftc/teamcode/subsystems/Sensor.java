@@ -61,7 +61,7 @@ public class Sensor {
     }
 
     /**
-     * Use HSV color wheel threshold to determine the pixel color
+     * Use HSV color wheel threshold to determine the pixel colour
      * @param scr HSV colour scalar to check
      * @return Color of Pixel
      */
@@ -88,7 +88,7 @@ public class Sensor {
     }
 
     /**
-     * Specific use Scalar for RGB/HSV color values
+     * Specific use Scalar for RGB/HSV colour values
      */
     public static class ColorScalar extends Scalar {
         boolean isHSV = false;
@@ -106,7 +106,6 @@ public class Sensor {
             double r = this.val[0];
             double g = this.val[1];
             double b = this.val[2];
-            //COPIED FROM https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
 
             // h, s, v = hue, saturation, value
             double cmax = Math.max(r, Math.max(g, b)); // maximum of r, g, b
