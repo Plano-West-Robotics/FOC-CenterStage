@@ -117,6 +117,8 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
 
         ledStrip.update();
+        telemetry.addData("Top state", ledStrip.sensor.top_state);
+        telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         intake.update();
     }

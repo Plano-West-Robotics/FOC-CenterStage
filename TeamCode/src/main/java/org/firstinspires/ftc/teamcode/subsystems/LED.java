@@ -10,7 +10,7 @@ public class LED {
 
     private Mode currentMode = Mode.IDLE;
     private final Hardware hardware;
-    private final Sensor sensor;
+    public final Sensor sensor;
 
     /**
      * color to pattern number mappings

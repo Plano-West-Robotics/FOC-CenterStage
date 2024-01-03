@@ -9,9 +9,6 @@ public class Sensor {
     public State top_state;
     public State bottom_state;
 
-    public double top_distance;
-    public double bottom_distance;
-
     /**
      * Which pixel is detected
      */
@@ -56,8 +53,8 @@ public class Sensor {
         );
         top.cvtRGBToHSV();
         bottom.cvtRGBToHSV();
-        top_distance = this.hw.top.getDistance(DistanceUnit.MM);
-        bottom_distance = this.hw.bottom.getDistance(DistanceUnit.MM);
+        double top_distance = this.hw.top.getDistance(DistanceUnit.MM);
+        double bottom_distance = this.hw.bottom.getDistance(DistanceUnit.MM);
         top_state = getMost(top, top_distance);
         bottom_state = getMost(bottom, bottom_distance);
 
