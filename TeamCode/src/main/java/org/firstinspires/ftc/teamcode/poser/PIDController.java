@@ -22,6 +22,14 @@ public class PIDController {
         this.firstIteration = true;
     }
 
+    public Distance update(Distance error) {
+        return Distance.inDefaultUnits(this.update(error.valInDefaultUnits()));
+    }
+
+    public Angle update(Angle error) {
+        return Angle.inDefaultUnits(this.update(error.valInDefaultUnits()));
+    }
+
     public double update(double error) {
         double now = System.nanoTime() / (1000 * 1000 * 1000.);
 
