@@ -117,7 +117,7 @@ public class Hardware {
         armR.setDirection(Servo.Direction.REVERSE);
         armL.setDirection(Servo.Direction.FORWARD);
 
-        blocker.scaleRange(0.4, 0.75);
+        blocker.scaleRange(0.4, 0.9);
 
         flap.scaleRange(0.65, 0.9);
 
