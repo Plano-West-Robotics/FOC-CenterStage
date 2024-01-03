@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-//import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-//@Config
+@Config
 public class FreeSightPipeline extends OpenCvPipeline {
 
     public enum Prop {
