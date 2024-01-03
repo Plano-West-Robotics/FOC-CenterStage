@@ -33,8 +33,10 @@ public class Hardware {
     public Servo planeLauncher;
     public IMU imu;
     public VoltageSensor voltageSensor;
-    public ColorSensor top;
-    public ColorSensor bottom;
+
+    public ColorSensor top, bottom;
+    public Servo ledLeft, ledRight;
+
     public OpenCvCamera webcam;
 
     public OpMode opMode;
