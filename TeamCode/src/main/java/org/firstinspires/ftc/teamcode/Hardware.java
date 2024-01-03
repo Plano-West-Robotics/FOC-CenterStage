@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -11,8 +12,6 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -35,7 +34,7 @@ public class Hardware {
     public IMU imu;
     public VoltageSensor voltageSensor;
 
-    public ColorSensor top, bottom;
+    public RevColorSensorV3 top, bottom;
     public ServoImplEx ledLeft, ledRight;
 
     public OpenCvCamera webcam;
@@ -127,8 +126,8 @@ public class Hardware {
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
 
-        top = hardwareMap.get(ColorSensor.class, "top");
-        bottom = hardwareMap.get(ColorSensor.class, "bottom");
+        top = hardwareMap.get(RevColorSensorV3.class, "top");
+        bottom = hardwareMap.get(RevColorSensorV3.class, "bottom");
 
         ledLeft = hardwareMap.get(ServoImplEx.class, "ledLeft");
         ledRight = hardwareMap.get(ServoImplEx.class, "ledRight");

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.opencv.core.Scalar;
 
@@ -7,6 +8,9 @@ public class Sensor {
     Hardware hw;
     public State top_state;
     public State bottom_state;
+
+    public double top_distance;
+    public double bottom_distance;
 
     /**
      * Which pixel is detected
@@ -39,20 +43,24 @@ public class Sensor {
     }
 
     public void update() {
+
         ColorScalar top = new ColorScalar(
-                this.hw.top.red(),
-                this.hw.top.blue(),
-                this.hw.top.green()
+                this.hw.top.getNormalizedColors().red,
+                this.hw.top.getNormalizedColors().green,
+                this.hw.top.getNormalizedColors().blue
         );
         ColorScalar bottom = new ColorScalar(
-                this.hw.bottom.red(),
-                this.hw.bottom.blue(),
-                this.hw.bottom.green()
+                this.hw.bottom.getNormalizedColors().red,
+                this.hw.bottom.getNormalizedColors().green,
+                this.hw.bottom.getNormalizedColors().blue
         );
         top.cvtRGBToHSV();
         bottom.cvtRGBToHSV();
-        top_state = getMost(top);
-        bottom_state = getMost(bottom);
+        top_distance = this.hw.top.getDistance(DistanceUnit.MM);
+        bottom_distance = this.hw.bottom.getDistance(DistanceUnit.MM);
+        top_state = getMost(top, top_distance);
+        bottom_state = getMost(bottom, bottom_distance);
+
     }
 
     /**
@@ -60,18 +68,24 @@ public class Sensor {
      * @param scr HSV colour scalar to check
      * @return Color of Pixel
      */
-    public static State getMost(ColorScalar scr) {
+    public static State getMost(ColorScalar scr, double dist) {
         double h = scr.val[0];
         double s = scr.val[1];
-        if (s <= 10.0) {
+
+        if (dist > 20) {
+            return State.NONE;
+        }
+
+        if (s <= 10) {
             return State.WHITE;
-        } else if (h >= 85 && h <= 145) {
+        } else if (h >= 95 && h <= 145) {
             return State.GREEN;
-        } else if (h >= 263 && h <= 290) {
+        } else if (h >= 200 && h <= 290) {
             return State.PURPLE;
-        } else if (h >= 40 && h <= 60) {
+        } else if (h >= 40 && h <= 90) {
             return State.YELLOW;
         }
+
         return State.NONE;
     }
 
@@ -95,9 +109,6 @@ public class Sensor {
             double g = this.val[1];
             double b = this.val[2];
             //COPIED FROM https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
-            r = r / 255.0;
-            g = g / 255.0;
-            b = b / 255.0;
 
             // h, s, v = hue, saturation, value
             double cmax = Math.max(r, Math.max(g, b)); // maximum of r, g, b
