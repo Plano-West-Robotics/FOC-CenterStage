@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.LED;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 import org.firstinspires.ftc.teamcode.subsystems.Sensor;
@@ -20,7 +21,7 @@ public class Teleop extends OpModeWrapper {
     Lift lift;
     Arm arm;
     PlaneLauncher launcher;
-    Sensor sense;
+    LED ledStrip;
     double driveSpeed;
     double intakeSpeed;
 
@@ -40,7 +41,14 @@ public class Teleop extends OpModeWrapper {
 
         launcher = new PlaneLauncher(hardware);
 
-        sense = new Sensor(hardware);
+        ledStrip = new LED(hardware);
+        ledStrip.setMode(LED.Mode.IDLE);
+        ledStrip.update();
+    }
+
+    @Override
+    public void start() {
+        ledStrip.setMode(LED.Mode.RUNNING);
     }
 
     @SuppressLint("DefaultLocale")
@@ -108,9 +116,7 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
 
-        sense.update();
-        telemetry.addData("Top Mag", sense.top_state.toString());
-        telemetry.addData("Bottom Mag", sense.bottom_state.toString());
+        ledStrip.update();
 
         intake.update();
     }

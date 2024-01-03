@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class LED {
-    enum Mode {
+    public enum Mode {
         RUNNING,
         IDLE
     }
