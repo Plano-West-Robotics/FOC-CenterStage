@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.client.FreeSight;
 
 @Autonomous
-@Config
 public class FSTunerOP extends LinearOpMode {
     @Override
     public void runOpMode()  {
