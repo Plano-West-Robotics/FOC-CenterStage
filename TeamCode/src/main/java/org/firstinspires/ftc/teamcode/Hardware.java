@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -35,7 +36,7 @@ public class Hardware {
     public VoltageSensor voltageSensor;
 
     public RevColorSensorV3 top, bottom;
-    public ServoImplEx ledLeft, ledRight;
+    public RevBlinkinLedDriver ledLeft, ledRight;
 
     public OpenCvCamera webcam;
 
@@ -129,12 +130,9 @@ public class Hardware {
         top = hardwareMap.get(RevColorSensorV3.class, "top");
         bottom = hardwareMap.get(RevColorSensorV3.class, "bottom");
 
-        ledLeft = hardwareMap.get(ServoImplEx.class, "ledLeft");
-        ledRight = hardwareMap.get(ServoImplEx.class, "ledRight");
-        // these values are from the blinkin user manual.
-        // if these are wrong i will be writing a strongly worded email to rev robotics
-        ledLeft.scaleRange(0.2525, 0.7475);
-        ledRight.scaleRange(0.2525, 0.7475);
+        ledLeft = hardwareMap.get(RevBlinkinLedDriver.class, "ledLeft");
+        ledRight = hardwareMap.get(RevBlinkinLedDriver.class, "ledRight");
+
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

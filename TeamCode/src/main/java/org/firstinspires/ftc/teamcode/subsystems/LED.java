@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class LED {
@@ -11,25 +13,6 @@ public class LED {
     private Mode currentMode = Mode.IDLE;
     private final Hardware hardware;
     public final Sensor sensor;
-
-    /**
-     * color to pattern number mappings
-     * making mr london proud fr
-     * "no magic numbers!" - nerd emoji
-     */
-    enum ColorPattern {
-        FOC_GREEN(90), FOC_YELLOW(84),
-
-        GREEN(89), PURPLE(96), YELLOW(85), WHITE(97),
-
-        NONE(100);
-
-        public final int val;
-
-        ColorPattern(int i) {
-            val = i;
-        }
-    }
 
     public LED(Hardware hardware) {
         this.hardware = hardware;
@@ -50,17 +33,14 @@ public class LED {
 
     private void showColors() {
         sensor.update();
-        // it's bigger on the inside
-        this.hardware.ledLeft.setPwmEnable();
-        this.hardware.ledRight.setPwmEnable();
 
-        this.hardware.ledLeft.setPosition(mapValue(sensor.top_state.toColorPattern()));
-        this.hardware.ledRight.setPosition(mapValue(sensor.bottom_state.toColorPattern()));
+        this.hardware.ledLeft.setPattern(sensor.top_state.toColorPattern());
+        this.hardware.ledRight.setPattern(sensor.bottom_state.toColorPattern());
     }
 
     private void idle() {
-        this.hardware.ledLeft.setPwmDisable(); // if PWM is off, the blinkin falls back to the idle pattern
-        this.hardware.ledRight.setPwmDisable();
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_2_TWINKLES);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_2_TWINKLES);
     }
 
     public void setMode(Mode newMode) {
@@ -69,12 +49,5 @@ public class LED {
 
     public Mode getMode() {
         return currentMode;
-    }
-
-    /**
-     * Map a pattern number to a PWM value.
-     */
-    private double mapValue(ColorPattern pattern) {
-        return (pattern.val - 1) / 99.0;
     }
 }

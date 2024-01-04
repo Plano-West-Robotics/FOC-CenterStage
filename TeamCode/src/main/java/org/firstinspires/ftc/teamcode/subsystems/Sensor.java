@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.opencv.core.Scalar;
@@ -15,20 +17,20 @@ public class Sensor {
     public enum State {
         GREEN, PURPLE, YELLOW, WHITE, NONE;
 
-        public LED.ColorPattern toColorPattern() {
+        public RevBlinkinLedDriver.BlinkinPattern toColorPattern() {
             // enum hell
             switch (this) {
                 case GREEN:
-                    return LED.ColorPattern.GREEN;
+                    return RevBlinkinLedDriver.BlinkinPattern.DARK_GREEN;
                 case PURPLE:
-                    return LED.ColorPattern.PURPLE;
+                    return RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                 case YELLOW:
-                    return LED.ColorPattern.YELLOW;
+                    return RevBlinkinLedDriver.BlinkinPattern.GOLD;
                 case WHITE:
-                    return LED.ColorPattern.WHITE;
+                    return RevBlinkinLedDriver.BlinkinPattern.GRAY;
                 case NONE:
                 default:
-                    return LED.ColorPattern.NONE;
+                    return RevBlinkinLedDriver.BlinkinPattern.BLACK;
             }
         }
     }
