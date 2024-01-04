@@ -9,12 +9,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Hardware;
-import org.firstinspires.ftc.teamcode.inchworm.PIDController;
+import org.firstinspires.ftc.teamcode.poser.PIDController;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
+import org.firstinspires.ftc.teamcode.poser.Poser;
 import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 @Config
 @TeleOp(group = "tune")
@@ -32,19 +32,21 @@ public class TranslationalPIDTuner extends LinearOpMode {
     public void runOpMode() {
         Hardware hw = new Hardware(this);
         Localizer localizer = new TwoDeadWheelLocalizer(hw, Pose.ZERO);
-        Drive drive = new Drive(hw, 1);
+        Poser poser = new Poser(hw, 1, false, Pose.ZERO);
 
-        PIDController controller = new PIDController(Kp, Ki, Kd, TARGET);
+        PIDController controller = new PIDController(Kp, Ki, Kd);
         FtcDashboard dashboard = FtcDashboard.getInstance();
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
         waitForStart();
 
         while (opModeIsActive()) {
-            controller.setParams(Kp, Ki, Kd, TARGET);
+            controller.kp = Kp;
+            controller.ki = Ki;
+            controller.kd = Ki;
 
             Pose current = localizer.getPoseEstimate();
-            double out = controller.calculate(current.pos.y.valInMM());
+            double out = controller.update(Distance.inMM(TARGET).sub(current.pos.x)).valInMM();
             out /= MAX_VEL;
 
             if (gamepad1.x) {
@@ -53,11 +55,11 @@ public class TranslationalPIDTuner extends LinearOpMode {
             }
 
             telemetry.addData("out", out);
-            telemetry.addData("error", String.format("%.2f", TARGET - current.pos.y.valInMM()));
-            telemetry.addData("current", String.format("%.2f", current.pos.y.valInMM()));
+            telemetry.addData("error", String.format("%.2f", TARGET - current.pos.x.valInMM()));
+            telemetry.addData("current", String.format("%.2f", current.pos.x.valInMM()));
             telemetry.addData("target", String.format("%.2f", TARGET));
             telemetry.update();
-            drive.drive(-out, 0, 0);
+            poser.move(out, 0, 0);
             localizer.update();
         }
     }

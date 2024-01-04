@@ -82,10 +82,12 @@ public class FreeSightPipeline extends OpenCvPipeline {
 
         masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
 
-        // todo: revert this commit iff it breaks
+        Scalar strictLowHSV = new Scalar(0, 0, 0);
+        Scalar strictHighHSV = new Scalar(255, 255, 255);
+        Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
 
         ArrayList<MatOfPoint> contours = new ArrayList<>();
-        Imgproc.findContours(scaledMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+        Imgproc.findContours(scaledThresh, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
 
         if (contours.size() > 0) {

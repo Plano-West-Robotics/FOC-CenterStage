@@ -18,6 +18,8 @@ public class Poser {
     private static Distance MAX_VEL = Distance.inMM(939.571); // mm/s
     private static Angle MAX_ANG_VEL = Angle.inDegrees(156.941); // deg/s
 
+    private static final boolean ENABLE_DRAWING = false;
+
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
         this.localizer = new TwoDeadWheelLocalizer(hardware, initialPose);
@@ -28,23 +30,22 @@ public class Poser {
         this.lastTarget = flipped ? initialPose.flippedAcrossXAxis() : initialPose;
         this.flipped = flipped;
 
-        this.hardware.dashboardTelemetry.drawRobot(initialPose);
-        this.hardware.dashboardTelemetry.update();
+        if (ENABLE_DRAWING) {
+            this.hardware.dashboardTelemetry.drawRobot(initialPose);
+            this.hardware.dashboardTelemetry.update();
+        }
     }
 
-    private void move(double powerX, double powerY, double turn) {
+    public void move(double powerX, double powerY, double turn) {
         double flPower = powerX - powerY - turn;
         double frPower = powerX + powerY + turn;
         double blPower = powerX + powerY - turn;
         double brPower = powerX - powerY + turn;
 
-        double voltage = this.hardware.voltageSensor.getVoltage();
-        double volComp = 12 / voltage;
-
-        this.hardware.fl.setPower(flPower * volComp);
-        this.hardware.fr.setPower(frPower * volComp);
-        this.hardware.bl.setPower(blPower * volComp);
-        this.hardware.br.setPower(brPower * volComp);
+        this.hardware.fl.setPower(flPower);
+        this.hardware.fr.setPower(frPower);
+        this.hardware.bl.setPower(blPower);
+        this.hardware.br.setPower(brPower);
     }
 
     private static void drawLine(Canvas canvas, Distance2 p1, Distance2 p2) {
@@ -110,9 +111,9 @@ public class Poser {
     }
 
     public class Motion {
-        private final PIDController xCtrl = new PIDController(5, 0.6, 0.15);
-        private final PIDController yCtrl = new PIDController(5, 0.6, 0.15);
-        private final PIDController yawCtrl = new PIDController(5, 0.25, 0.15);
+        private final PIDController xCtrl = new PIDController(2.5, 0, 0);
+        private final PIDController yCtrl = new PIDController(2.5, 0, 0);
+        private final PIDController yawCtrl = new PIDController(1.5, 0, 0);
         private final Pose target;
 
 //        private long lastUpdate;
@@ -126,9 +127,11 @@ public class Poser {
         public boolean update() {
             Poser poser = Poser.this;
 
-            hardware.dashboardTelemetry.drawRobot(poser.localizer.getPoseEstimate());
-            hardware.dashboardTelemetry.drawTarget(target, poser.localizer.getPoseEstimate());
-            hardware.dashboardTelemetry.update();
+            if (ENABLE_DRAWING) {
+                hardware.dashboardTelemetry.drawRobot(poser.localizer.getPoseEstimate());
+                hardware.dashboardTelemetry.drawTarget(target, poser.localizer.getPoseEstimate());
+                hardware.dashboardTelemetry.update();
+            }
 
 //            long now = System.nanoTime();
 //            long dtNanos = now - lastUpdate;

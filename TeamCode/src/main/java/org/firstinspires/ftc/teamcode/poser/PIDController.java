@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode.poser;
 
 public class PIDController {
-    public final double p;
-    public final double i;
-    public final double d;
+    public double kp;
+    public double ki;
+    public double kd;
 
     private double integral;
     private double lastError;
@@ -11,9 +11,9 @@ public class PIDController {
     private boolean firstIteration;
 
     public PIDController(double p, double i, double d) {
-        this.p = p;
-        this.i = i;
-        this.d = d;
+        this.kp = p;
+        this.ki = i;
+        this.kd = d;
 
         this.reset();
     }
@@ -33,7 +33,7 @@ public class PIDController {
     public double update(double error) {
         double now = System.nanoTime() / (1000 * 1000 * 1000.);
 
-        double p = this.p * error;
+        double p = this.kp * error;
         double i, d;
 
         if (this.firstIteration) {
@@ -45,8 +45,8 @@ public class PIDController {
         } else {
             double dt = now - this.lastUpdate;
             this.integral += error * dt;
-            i = this.i * this.integral;
-            d = this.d * (error - this.lastError) / dt;
+            i = this.ki * this.integral;
+            d = this.kd * (error - this.lastError) / dt;
         }
 
         this.lastUpdate = now;
