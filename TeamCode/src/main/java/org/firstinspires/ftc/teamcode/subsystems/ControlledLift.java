@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class ControlledLift {
@@ -9,6 +11,12 @@ public class ControlledLift {
 
     public ControlledLift(Hardware hardware) {
         this.hardware = hardware;
+
+        this.hardware.liftL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.hardware.liftR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        this.hardware.liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.hardware.liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void setTarget(double target) {
