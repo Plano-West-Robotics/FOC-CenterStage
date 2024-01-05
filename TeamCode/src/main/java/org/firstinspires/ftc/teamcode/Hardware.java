@@ -124,7 +124,7 @@ public class Hardware {
         */
 
         armR.scaleRange(0.4, 0.78);
-        armL.scaleRange(0.25, 0.6);
+        armL.scaleRange(0.02, 0.25);
         armR.setDirection(Servo.Direction.REVERSE);
         armL.setDirection(Servo.Direction.FORWARD);
 
