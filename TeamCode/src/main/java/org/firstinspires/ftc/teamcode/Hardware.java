@@ -115,22 +115,22 @@ public class Hardware {
         blocker = hardwareMap.get(Servo.class, "blocker");
 
         /*
-        * Measured 2024-01-04
+        * Measured 2024-01-05
         *           in    out
         * blocker: 0.40 - 0.75
-        *    armR: 0.78 - 0.4
-        *    armL: 0.25 - 0.6
-        *    flap: 0.90 - 0.65
+        *    armR: 0.41 - 0.08
+        *    armL: 0.30 - 0.65
+        *    flap: 0.80 - 0.65
         */
 
-        armR.scaleRange(0.4, 0.78);
-        armL.scaleRange(0.02, 0.25);
+        armR.scaleRange(0.08, 0.41);
+        armL.scaleRange(0.30, 0.65);
         armR.setDirection(Servo.Direction.REVERSE);
         armL.setDirection(Servo.Direction.FORWARD);
 
         blocker.scaleRange(0.4, 0.9);
 
-        flap.scaleRange(0.65, 0.9);
+        flap.scaleRange(0.65, 0.8);
 
         planeLauncher = hardwareMap.get(Servo.class, "launcher");
 
