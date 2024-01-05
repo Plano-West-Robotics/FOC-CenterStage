@@ -16,10 +16,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 public abstract class UpstageAutoBase extends LinearOpMode {
     public void runOpMode(Alliance alliance) {
         Hardware hardware = new Hardware(this);
-//        Intake intake = new Intake(hardware, 0.3);
-//        Arm arm = new Arm(hardware, telemetry);
-//        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
-//        ControlledLift lift = new ControlledLift(hardware);
+        Intake intake = new Intake(hardware, 0.3);
+        Arm arm = new Arm(hardware, telemetry);
+        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        ControlledLift lift = new ControlledLift(hardware);
 
         Pose startingPose = new Pose(Distance2.inTiles(0.5, -2.5), Angle.LEFT);
         boolean isFlipped = alliance.isBlue();
@@ -85,7 +85,7 @@ public abstract class UpstageAutoBase extends LinearOpMode {
             case MIDDLE:
                 poser.goTo(
                         Distance.inTiles(0.5).add(Distance.inInches(4.5)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(4))
+                        Distance.inTiles(-1.5).add(Distance.inInches(2))
                 ).run();
                 break;
             case RIGHT:
@@ -97,13 +97,13 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 break;
         }
 
-//        intake.reverse();
-//        intake.start();
-//        intake.update();
-//        sleep(500);
-//        intake.stop();
-//        intake.reverse();
-//        intake.update();
+        intake.reverse();
+        intake.start();
+        intake.update();
+        sleep(500);
+        intake.stop();
+        intake.reverse();
+        intake.update();
 
         switch (randomization) {
             case MIDDLE:
@@ -118,46 +118,49 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         }
 
         // arm up
-//        arm.setArmPosition(Arm.ArmPosition.UP);
+        arm.setArmPosition(Arm.ArmPosition.UP);
         // go in front of backdrop
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
                 Angle.BACKWARD
         ).run();
-        // lift up
-//        lift.setTarget(0.32);
-//        while (lift.update());
-//        lift.stop();
         // move closer to backdrop
         poser.moveBy(
-                Distance.inInches(7),
-                Distance.ZERO
+                Distance.inInches(5.35),
+                Distance.inInches(-2.5)
         ).run();
+        // lift up
+        lift.setTarget(0.32);
+        while (lift.update());
+        lift.stop();
         // drop pixel
-//        arm.setFlapPosition(Arm.FlapPosition.OPEN);
-//        sleep(1000);
-//        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        sleep(1000);
+        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         // move over
         poser.moveBy(
-                Distance.inInches(-7),
-                Distance.ZERO
+                // these should be negative of lines 130 and 131, i think
+                Distance.inInches(-5.35),
+                Distance.inInches(2.5)
         ).run();
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-2.6)
         ).run();
-        // lower slide and move arm in
-//        arm.setArmPosition(Arm.ArmPosition.DOWN);
-//        sleep(500);
-//        lift.setTarget(0.02);
-//        while (lift.update());
-//        lift.stop();
-//        arm.setFlapPosition(Arm.FlapPosition.OPEN);
         // move to final parking position
-        poser.goTo(
-                Distance.inTiles(2.5),
-                Distance.inTiles(-2.6)
+        poser.moveBy(
+                Distance.inTiles(0.5),
+                Distance.ZERO
         ).run();
+
+        // lower slide and move arm in
+        arm.setArmPosition(Arm.ArmPosition.DOWN);
+        arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        sleep(500);
+        lift.setTarget(0.02);
+        while (lift.update());
+        lift.stop();
+        // all done!
     }
 }
