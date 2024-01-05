@@ -34,7 +34,7 @@ public class FreeSight {
             @Override
             public void onOpened() {
                 web.setPipeline(pipe);
-                web.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT, OpenCvWebcam.StreamFormat.MJPEG);
+                web.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
                 FtcDashboard.getInstance().startCameraStream(web, 0);
             }
 
