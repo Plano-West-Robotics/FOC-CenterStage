@@ -115,16 +115,16 @@ public class Hardware {
         blocker = hardwareMap.get(Servo.class, "blocker");
 
         /*
-        * Measured 2024-01-05
+        * Measured 2024-01-06
         *           in    out
         * blocker: 0.40 - 0.75
-        *    armR: 0.41 - 0.08
-        *    armL: 0.30 - 0.65
+        *    armR: 0.83 - 0.50
+        *    armL: 0.20 - 0.54
         *    flap: 0.80 - 0.65
         */
 
-        armR.scaleRange(0.08, 0.41);
-        armL.scaleRange(0.30, 0.65);
+        armR.scaleRange(0.37, 0.7);
+        armL.scaleRange(0.20, 0.54);
         armR.setDirection(Servo.Direction.REVERSE);
         armL.setDirection(Servo.Direction.FORWARD);
 
