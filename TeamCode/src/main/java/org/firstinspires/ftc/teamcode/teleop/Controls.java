@@ -13,6 +13,7 @@ public class Controls {
     public static Gamepads.Button RESET_IMU = Gamepads.Button.GP1_TRIANGLE;
     public static Gamepads.Button TOGGLE_INTAKE = Gamepads.Button.GP1_CROSS; // all of these are subject to change
     public static Gamepads.Button INTAKE_DIR_TOG = Gamepads.Button.GP1_CIRCLE;
+    public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP1_GUIDE;
 
     // ======================= GAMEPAD 2 ============================
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;
@@ -20,5 +21,4 @@ public class Controls {
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
     public static Gamepads.Button FLAP_TOGGLE = Gamepads.Button.GP2_SQUARE;
     public static Gamepads.Button BLOCKER_TOGGLE = Gamepads.Button.GP2_TRIANGLE;
-    public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP2_GUIDE;
 }

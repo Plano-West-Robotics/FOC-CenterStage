@@ -94,11 +94,9 @@ public class Teleop extends OpModeWrapper {
             arm.toggleBlockerPosition();
         }
 
-        // hold to aim, release to fire
+        // press to aim and fire
         if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
             launcher.aim();
-        }
-        if (gamepads.justReleased(Controls.LAUNCH_PLANE)) {
             launcher.fire();
         }
 

@@ -16,7 +16,6 @@ public class PlaneLauncher {
     }
 
     public void aim() {
-        // todo: tune this maybe
-        hardware.launcherBase.setPosition(0.5);
+        hardware.launcherBase.setPosition(0.65);
     }
 }
