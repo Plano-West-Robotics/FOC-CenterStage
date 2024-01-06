@@ -7,7 +7,8 @@ import org.firstinspires.ftc.teamcode.Hardware;
 public class LED {
     public enum Mode {
         RUNNING,
-        IDLE
+        IDLE,
+        EJECT_OVERRIDE
     }
 
     private Mode currentMode = Mode.IDLE;
@@ -23,6 +24,9 @@ public class LED {
         switch (currentMode) {
             case RUNNING:
                 showColors();
+                break;
+            case EJECT_OVERRIDE:
+                ejectOverride();
                 break;
             case IDLE:
             default: // technically not needed but whatever
@@ -41,6 +45,11 @@ public class LED {
     private void idle() {
         this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
         this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
+    }
+
+    private void ejectOverride() {
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
     }
 
     public void setMode(Mode newMode) {
