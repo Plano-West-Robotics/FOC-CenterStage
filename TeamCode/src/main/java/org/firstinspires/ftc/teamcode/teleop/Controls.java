@@ -19,6 +19,8 @@ public class Controls {
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;
     public static Gamepads.Button ARM_UP = Gamepads.Button.GP2_DPAD_UP;
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
-    public static Gamepads.Button FLAP_TOGGLE = Gamepads.Button.GP2_SQUARE;
-    public static Gamepads.Button BLOCKER_TOGGLE = Gamepads.Button.GP2_TRIANGLE;
+    public static Gamepads.Button FLAP_OPEN = Gamepads.Button.GP2_SQUARE;
+    public static Gamepads.Button FLAP_CLOSED = Gamepads.Button.GP2_CROSS;
+    public static Gamepads.Button BLOCKER_OPEN = Gamepads.Button.GP2_TRIANGLE;
+    public static Gamepads.Button BLOCKER_CLOSED = Gamepads.Button.GP2_CIRCLE;
 }

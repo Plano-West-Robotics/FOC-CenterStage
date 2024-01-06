@@ -40,6 +40,7 @@ public class Teleop extends OpModeWrapper {
         arm = new Arm(hardware, telemetry);
 
         launcher = new PlaneLauncher(hardware);
+        launcher.idle();
 
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
@@ -72,6 +73,11 @@ public class Teleop extends OpModeWrapper {
         }
         if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
             intake.reverse();
+            if (intake.isReversed()) {
+                ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
+            } else {
+                ledStrip.setMode(LED.Mode.RUNNING);
+            }
         }
         intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
         intake.setSpeed(intakeSpeed);
@@ -86,12 +92,18 @@ public class Teleop extends OpModeWrapper {
             arm.setArmPosition(Arm.ArmPosition.DOWN);
         }
 
-        if (gamepads.justPressed(Controls.FLAP_TOGGLE)) {
-            arm.toggleFlapPosition();
+        if (gamepads.justPressed(Controls.FLAP_OPEN)) {
+            arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        }
+        if (gamepads.justPressed(Controls.FLAP_CLOSED)) {
+            arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         }
 
-        if (gamepads.justPressed(Controls.BLOCKER_TOGGLE)) {
-            arm.toggleBlockerPosition();
+        if (gamepads.justPressed(Controls.BLOCKER_OPEN)) {
+            arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
+        }
+        if (gamepads.justPressed(Controls.BLOCKER_CLOSED)) {
+            arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
         }
 
         // press to aim and fire
@@ -99,14 +111,6 @@ public class Teleop extends OpModeWrapper {
             launcher.aim();
             launcher.fire();
         }
-
-        if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
-            drive.toggleFieldOriented();
-        }
-        if (gamepads.justPressed(Controls.RESET_IMU)) {
-            hardware.resetYaw();
-        }
-        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
 
         double y = gamepads.getAnalogValue(Controls.STRAIGHT);
         double x = gamepads.getAnalogValue(Controls.STRAFE);
