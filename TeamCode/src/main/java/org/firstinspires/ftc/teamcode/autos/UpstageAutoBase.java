@@ -65,6 +65,8 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         }
 
         poser.goTo(Distance2.inTiles(0.5, -2.5)).run();
+        // arm up
+        arm.setArmPosition(Arm.ArmPosition.UP);
 
         Distance yOffsetAtBackdrop = Distance.ZERO;
         switch (randomization) {
@@ -117,8 +119,6 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 break;
         }
 
-        // arm up
-        arm.setArmPosition(Arm.ArmPosition.UP);
         // go in front of backdrop
         poser.goTo(
                 Distance.inTiles(2),
@@ -131,7 +131,7 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 Distance.inInches(-2.5)
         ).run();
         // lift up
-        lift.setTarget(0.32);
+        lift.setTarget(0.25);
         while (lift.update());
         lift.stop();
         // drop pixel
@@ -148,11 +148,6 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 Distance.inTiles(2),
                 Distance.inTiles(-2.6)
         ).run();
-        // move to final parking position
-        poser.moveBy(
-                Distance.inTiles(0.5),
-                Distance.ZERO
-        ).run();
 
         // lower slide and move arm in
         arm.setArmPosition(Arm.ArmPosition.DOWN);
@@ -161,6 +156,13 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         lift.setTarget(0.02);
         while (lift.update());
         lift.stop();
+
+        // move to final parking position
+        poser.moveBy(
+                Distance.inTiles(0.5),
+                Distance.ZERO
+        ).run();
+
         // all done!
     }
 }

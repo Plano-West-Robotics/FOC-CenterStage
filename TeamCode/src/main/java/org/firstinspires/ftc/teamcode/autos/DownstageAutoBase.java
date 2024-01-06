@@ -117,7 +117,5 @@ public abstract class DownstageAutoBase extends LinearOpMode {
                 ).run();
                 break;
         }
-
-        poser.goTo(Distance2.inTiles(-1.5, -2.5), Angle.LEFT).run();
     }
 }
