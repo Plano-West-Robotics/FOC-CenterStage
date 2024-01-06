@@ -39,8 +39,8 @@ public class LED {
     }
 
     private void idle() {
-        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_2_TWINKLES);
-        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.CP1_2_TWINKLES);
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
     }
 
     public void setMode(Mode newMode) {
