@@ -4,6 +4,9 @@ repositories {
     maven {
         url = 'https://maven.brott.dev/'
     }
+    maven {
+        url = 'https://www.matthewo.tech/maven/'
+    }
 }
 
 dependencies {
@@ -22,5 +25,7 @@ dependencies {
     //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.13'
+
+    implementation 'org.team11260:fast-load:0.1.2'
 }
 

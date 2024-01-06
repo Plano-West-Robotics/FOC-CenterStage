@@ -9,8 +9,10 @@ import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.LED;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
+import org.firstinspires.ftc.teamcode.subsystems.Sensor;
 
 @TeleOp(name = "CCCCCCCCC")
 public class Teleop extends OpModeWrapper {
@@ -19,6 +21,7 @@ public class Teleop extends OpModeWrapper {
     Lift lift;
     Arm arm;
     PlaneLauncher launcher;
+    LED ledStrip;
     double driveSpeed;
     double intakeSpeed;
 
@@ -37,6 +40,15 @@ public class Teleop extends OpModeWrapper {
         arm = new Arm(hardware, telemetry);
 
         launcher = new PlaneLauncher(hardware);
+
+        ledStrip = new LED(hardware);
+        ledStrip.setMode(LED.Mode.IDLE);
+        ledStrip.update();
+    }
+
+    @Override
+    public void start() {
+        ledStrip.setMode(LED.Mode.RUNNING);
     }
 
     @SuppressLint("DefaultLocale")
@@ -53,7 +65,7 @@ public class Teleop extends OpModeWrapper {
         }
         driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
-        telemetry.addData("Drive speed", String.format("%.2f", driveSpeed));
+        telemetry.addData("Drive speed", String.format("%.2f", drive.getSpeed()));
 
         if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
             intake.toggleRunning();
@@ -107,6 +119,10 @@ public class Teleop extends OpModeWrapper {
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
+
+        ledStrip.update();
+        telemetry.addData("Top state", ledStrip.sensor.top_state);
+        telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         intake.update();
     }

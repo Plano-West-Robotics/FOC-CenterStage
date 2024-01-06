@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -9,11 +11,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
+import org.firstinspires.ftc.teamcode.poser.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 
@@ -22,17 +26,22 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
  */
 public class Hardware {
     public DcMotorEx fl, fr, bl, br;
-    public DcMotorEx intake;
-    public DcMotorEx ramp;
+    public DcMotorEx intake, ramp;
     public DcMotorEx liftL, liftR;
+    public Encoder leftOdo, backOdo, rightOdo;
     public Servo armL, armR;
     public Servo flap, blocker;
     public Servo launcherPin, launcherBase;
     public IMU imu;
     public VoltageSensor voltageSensor;
+
+    public RevColorSensorV3 top, bottom;
+    public RevBlinkinLedDriver ledLeft, ledRight;
+
     public OpenCvCamera webcam;
 
     public OpMode opMode;
+    public DashboardTelemetryWrapper dashboardTelemetry;
 
     /**
      * Initialize hardware wrapper. This constructor reverses motors and all that for you
@@ -44,7 +53,8 @@ public class Hardware {
 
         HardwareMap hardwareMap = opMode.hardwareMap;
 
-        opMode.telemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        this.dashboardTelemetry = new DashboardTelemetryWrapper(FtcDashboard.getInstance());
+        opMode.telemetry = new MultipleTelemetry(opMode.telemetry, this.dashboardTelemetry);
 
         fl = hardwareMap.get(DcMotorEx.class, "frontLeft");
         fr = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -95,34 +105,45 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
+        leftOdo = null; // TODO
+        backOdo = new Encoder(ramp);
+        rightOdo = new Encoder(intake);
+
         armL = hardwareMap.get(Servo.class, "armL");
         armR = hardwareMap.get(Servo.class, "armR");
         flap = hardwareMap.get(Servo.class, "flap");
         blocker = hardwareMap.get(Servo.class, "blocker");
 
         /*
-        * Measured 2023-12-30
+        * Measured 2024-01-05
         *           in    out
         * blocker: 0.40 - 0.75
-        *    armR: 0.73 - 0.3
-        *    armL: 0.13 - 0.58
-        *    flap: 0.90 - 0.65
+        *    armR: 0.41 - 0.08
+        *    armL: 0.30 - 0.65
+        *    flap: 0.80 - 0.65
         */
 
-        armR.scaleRange(0.3, 0.73);
-        armL.scaleRange(0.13, 0.58);
+        armR.scaleRange(0.08, 0.41);
+        armL.scaleRange(0.30, 0.65);
         armR.setDirection(Servo.Direction.REVERSE);
         armL.setDirection(Servo.Direction.FORWARD);
 
-        blocker.scaleRange(0.4, 0.75);
+        blocker.scaleRange(0.4, 0.9);
 
-        flap.scaleRange(0.65, 0.9);
+        flap.scaleRange(0.65, 0.8);
 
         launcherPin = hardwareMap.get(Servo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
+
+        top = hardwareMap.get(RevColorSensorV3.class, "top");
+        bottom = hardwareMap.get(RevColorSensorV3.class, "bottom");
+
+        ledLeft = hardwareMap.get(RevBlinkinLedDriver.class, "ledLeft");
+        ledRight = hardwareMap.get(RevBlinkinLedDriver.class, "ledRight");
+
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

@@ -1,44 +1,52 @@
 package org.firstinspires.ftc.teamcode.tune;
 
+import android.annotation.SuppressLint;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.inchworm.WormUtil;
-import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
-import org.firstinspires.ftc.teamcode.inchworm.PIDController;
-import org.firstinspires.ftc.teamcode.inchworm.units.Distance;
+import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.poser.PIDController;
+import org.firstinspires.ftc.teamcode.poser.Distance;
+import org.firstinspires.ftc.teamcode.poser.Localizer;
+import org.firstinspires.ftc.teamcode.poser.Pose;
+import org.firstinspires.ftc.teamcode.poser.Poser;
+import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
 
 @Config
 @TeleOp(group = "tune")
 public class TranslationalPIDTuner extends LinearOpMode {
-    public static final double MAX_VEL = 1721.398;
-    public static double TARGET = Distance.tiles(1).distInTicks();
+    public static final double MAX_VEL = 939.571; // mm / s
+    public static double TARGET = Distance.inTiles(1).valInMM();
     public static double Kp = 0;
     public static double Ki = 0;
     public static double Kd = 0;
     /*
      * This class should be used to tune translational PID for InchWorm.
      */
+    @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
-        WormUtil wormUtil = new WormUtil(this, InchWorm.GLOBAL_ORIENTATION);
-        InchWorm inchWorm = new InchWorm(this,
-                InchWorm.GLOBAL_ORIENTATION,
-                InchWorm.POSE_ZERO);
+        Hardware hw = new Hardware(this);
+        Localizer localizer = new TwoDeadWheelLocalizer(hw, Pose.ZERO);
+        Poser poser = new Poser(hw, 1, false, Pose.ZERO);
 
-        PIDController controller = new PIDController(Kp, Ki, Kd, TARGET);
+        PIDController controller = new PIDController(Kp, Ki, Kd);
         FtcDashboard dashboard = FtcDashboard.getInstance();
-        telemetry = dashboard.getTelemetry();
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        wormUtil.waitForStart();
+        waitForStart();
 
         while (opModeIsActive()) {
-            controller.setParams(Kp, Ki, Kd, TARGET);
+            controller.kp = Kp;
+            controller.ki = Ki;
+            controller.kd = Ki;
 
-            InchWorm.Pose current = inchWorm.tracker.currentPos;
-            double out = controller.calculate(current.x.distInTicks());
+            Pose current = localizer.getPoseEstimate();
+            double out = controller.update(Distance.inMM(TARGET).sub(current.pos.x)).valInMM();
             out /= MAX_VEL;
 
             if (gamepad1.x) {
@@ -47,12 +55,12 @@ public class TranslationalPIDTuner extends LinearOpMode {
             }
 
             telemetry.addData("out", out);
-            telemetry.addData("error", String.format("%.2f", TARGET - current.y.distInTicks()));
-            telemetry.addData("current", String.format("%.2f", current.x.distInTicks()));
+            telemetry.addData("error", String.format("%.2f", TARGET - current.pos.x.valInMM()));
+            telemetry.addData("current", String.format("%.2f", current.pos.x.valInMM()));
             telemetry.addData("target", String.format("%.2f", TARGET));
             telemetry.update();
-            inchWorm.moveWheels(out, 0, 0, 1);
-            inchWorm.tracker.update();
+            poser.move(out, 0, 0);
+            localizer.update();
         }
     }
 }

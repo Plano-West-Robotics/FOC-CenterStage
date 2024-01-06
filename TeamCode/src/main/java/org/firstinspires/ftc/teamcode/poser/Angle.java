@@ -84,4 +84,12 @@ public class Angle {
     public double cos() {
         return Math.cos(this.val);
     }
+
+    public double sinc() {
+        return this.isZero() ? 1 : (this.sin() / this.val);
+    }
+
+    public double cosc() {
+        return this.isZero() ? 0 : ((1 - this.cos()) / this.val);
+    }
 }

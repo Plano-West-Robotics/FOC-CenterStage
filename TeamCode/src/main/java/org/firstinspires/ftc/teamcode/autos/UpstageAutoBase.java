@@ -71,21 +71,14 @@ public abstract class UpstageAutoBase extends LinearOpMode {
             case LEFT:
                 yOffsetAtBackdrop = Distance.inInches(6);
                 poser.goTo(
-                        Distance.inTiles(0.5),
-                        Distance.inTiles(-1.5)
-                ).run();
-                poser.goTo(
-                        Angle.BACKWARD
-                ).run();
-                poser.moveBy(
-                        Distance.inInches(-2.5),
-                        Distance.inInches(1)
+                        Distance.inTiles(0),
+                        Distance.inTiles(-2).add(Distance.inInches(3))
                 ).run();
                 break;
             case MIDDLE:
                 poser.goTo(
                         Distance.inTiles(0.5).add(Distance.inInches(4.5)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(4))
+                        Distance.inTiles(-1.5).add(Distance.inInches(2))
                 ).run();
                 break;
             case RIGHT:
@@ -105,17 +98,10 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         intake.reverse();
         intake.update();
 
-        switch (randomization) {
-            case MIDDLE:
-            case RIGHT:
-                poser.moveBy(
-                        Distance.ZERO,
-                        Distance.inInches(-3)
-                ).run();
-                break;
-            default:
-                break;
-        }
+        poser.moveBy(
+                Distance.ZERO,
+                Distance.inInches(-3)
+        ).run();
 
         // arm up
         arm.setArmPosition(Arm.ArmPosition.UP);
@@ -125,39 +111,42 @@ public abstract class UpstageAutoBase extends LinearOpMode {
                 Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
                 Angle.BACKWARD
         ).run();
+        // move closer to backdrop
+        poser.moveBy(
+                Distance.inInches(5.35),
+                Distance.inInches(-2.5)
+        ).run();
         // lift up
         lift.setTarget(0.32);
         while (lift.update());
         lift.stop();
-        // move closer to backdrop
-        poser.moveBy(
-                Distance.inInches(7),
-                Distance.ZERO
-        ).run();
         // drop pixel
         arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(1000);
         arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         // move over
         poser.moveBy(
-                Distance.inInches(-7),
-                Distance.ZERO
+                // these should be negative of lines 130 and 131, i think
+                Distance.inInches(-5.35),
+                Distance.inInches(2.5)
         ).run();
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-2.6)
         ).run();
+        // move to final parking position
+        poser.moveBy(
+                Distance.inTiles(0.5),
+                Distance.ZERO
+        ).run();
+
         // lower slide and move arm in
         arm.setArmPosition(Arm.ArmPosition.DOWN);
+        arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(500);
         lift.setTarget(0.02);
         while (lift.update());
         lift.stop();
-        arm.setFlapPosition(Arm.FlapPosition.OPEN);
-        // move to final parking position
-        poser.goTo(
-                Distance.inTiles(2.5),
-                Distance.inTiles(-2.6)
-        ).run();
+        // all done!
     }
 }
