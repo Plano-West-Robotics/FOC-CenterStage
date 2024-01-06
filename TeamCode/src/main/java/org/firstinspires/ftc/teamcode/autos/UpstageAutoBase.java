@@ -71,8 +71,15 @@ public abstract class UpstageAutoBase extends LinearOpMode {
             case LEFT:
                 yOffsetAtBackdrop = Distance.inInches(6);
                 poser.goTo(
-                        Distance.inTiles(0),
-                        Distance.inTiles(-2).add(Distance.inInches(3))
+                        Distance.inTiles(0.5),
+                        Distance.inTiles(-1.5)
+                ).run();
+                poser.goTo(
+                        Angle.BACKWARD
+                ).run();
+                poser.moveBy(
+                        Distance.inInches(-2.5),
+                        Distance.inInches(1)
                 ).run();
                 break;
             case MIDDLE:
@@ -98,10 +105,17 @@ public abstract class UpstageAutoBase extends LinearOpMode {
         intake.reverse();
         intake.update();
 
-        poser.moveBy(
-                Distance.ZERO,
-                Distance.inInches(-3)
-        ).run();
+        switch (randomization) {
+            case MIDDLE:
+            case RIGHT:
+                poser.moveBy(
+                        Distance.ZERO,
+                        Distance.inInches(-3)
+                ).run();
+                break;
+            default:
+                break;
+        }
 
         // arm up
         arm.setArmPosition(Arm.ArmPosition.UP);
