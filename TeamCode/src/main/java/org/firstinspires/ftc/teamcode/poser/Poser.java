@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.macro.Action;
+import org.firstinspires.ftc.teamcode.macro.ControlFlow;
 
 public class Poser {
     private final Hardware hardware;
@@ -110,7 +112,7 @@ public class Poser {
         return this.new Motion(pose);
     }
 
-    public class Motion {
+    public class Motion implements Action {
         private final PIDController xCtrl = new PIDController(2.5, 0, 0);
         private final PIDController yCtrl = new PIDController(2.5, 0, 0);
         private final PIDController yawCtrl = new PIDController(1.5, 0, 0);
@@ -124,7 +126,7 @@ public class Poser {
 //            this.lastUpdate = System.nanoTime();
         }
 
-        public boolean update() {
+        public ControlFlow update() {
             Poser poser = Poser.this;
 
             if (ENABLE_DRAWING) {
@@ -158,16 +160,16 @@ public class Poser {
 
             poser.move(pow.x, pow.y, angPow);
 
-            return posError.magnitude().valInMM() > 15 || Math.abs(angError.valInDegrees()) > 4;
+            return ControlFlow.continueIf(
+                    posError.magnitude().valInMM() > 15 || Math.abs(angError.valInDegrees()) > 4
+            );
         }
 
         public void end() {
             Poser.this.move(0, 0, 0);
-        }
-
-        public void run() {
-            while (!Thread.interrupted() && this.update());
-            this.end();
+            xCtrl.reset();
+            yCtrl.reset();
+            yawCtrl.reset();
         }
     }
 }
