@@ -12,6 +12,7 @@ public class Controls {
     public static Gamepads.Button FIELD_ORIENTED = Gamepads.Button.GP1_SQUARE;
     public static Gamepads.Button RESET_IMU = Gamepads.Button.GP1_TRIANGLE;
     public static Gamepads.Button TOGGLE_INTAKE = Gamepads.Button.GP1_CROSS; // all of these are subject to change
+    public static Gamepads.Button INTAKE_REVERSE = Gamepads.Button.GP1_CIRCLE;
     public static Gamepads.Button INTAKE_DIR_TOG = Gamepads.Button.GP1_CIRCLE;
     public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP1_GUIDE;
 

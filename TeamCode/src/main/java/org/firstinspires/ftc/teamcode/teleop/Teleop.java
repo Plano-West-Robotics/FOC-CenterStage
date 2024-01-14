@@ -38,6 +38,7 @@ public class Teleop extends OpModeWrapper {
         lift = new Lift(hardware);
 
         arm = new Arm(hardware, telemetry);
+        arm.holdElbows();
 
         launcher = new PlaneLauncher(hardware);
         launcher.idle();

@@ -7,10 +7,10 @@ public class Arm {
     public enum ArmPosition {
         UP(1),
         DOWN(0);
-        private final double pos;
+        private final double wristPos;
 
-        ArmPosition(double p) {
-            this.pos = p;
+        ArmPosition(double wrist) {
+            this.wristPos = wrist;
         }
     }
     public enum FlapPosition {
@@ -46,8 +46,11 @@ public class Arm {
     public void setArmPosition(ArmPosition newPos) {
         currentArmPos = newPos;
 
-        hardware.armL.setPosition(newPos.pos);
-        hardware.armR.setPosition(newPos.pos);
+//        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
+//        hardware.elbowR.setPosition(newPos.elbow);
+
+        hardware.wristL.setPosition(newPos.wristPos); // todo: test this and see
+        hardware.wristR.setPosition(newPos.wristPos);
     }
 
     public void toggleArmPosition() {
@@ -93,5 +96,11 @@ public class Arm {
                 setBlockerPosition(BlockerPosition.BLOCK);
                 break;
         }
+    }
+
+    // call this during init or before start probably
+    public void holdElbows() {
+        hardware.elbowL.setPosition(0.4);
+        hardware.elbowR.setPosition(0.6);
     }
 }

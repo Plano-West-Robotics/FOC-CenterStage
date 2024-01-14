@@ -29,9 +29,10 @@ public class Hardware {
     public DcMotorEx intake, ramp;
     public DcMotorEx liftL, liftR;
     public Encoder leftOdo, backOdo, rightOdo;
-    public Servo armL, armR;
-    public Servo flap, blocker;
     public Servo launcherPin, launcherBase;
+    public Servo elbowL, elbowR;
+    public Servo wristL, wristR;
+    public Servo flap, blocker;
     public IMU imu;
     public VoltageSensor voltageSensor;
 
@@ -109,11 +110,14 @@ public class Hardware {
         backOdo = new Encoder(ramp);
         rightOdo = new Encoder(intake);
 
-        armL = hardwareMap.get(Servo.class, "armL");
-        armR = hardwareMap.get(Servo.class, "armR");
+        elbowL = hardwareMap.get(Servo.class, "elbowL");
+        elbowR = hardwareMap.get(Servo.class, "elbowR");
+        wristL = hardwareMap.get(Servo.class, "wristL");
+        wristR = hardwareMap.get(Servo.class, "wristR");
         flap = hardwareMap.get(Servo.class, "flap");
         blocker = hardwareMap.get(Servo.class, "blocker");
 
+        // TODO: redo these
         /*
         * Measured 2024-01-06
         *           in    out
@@ -123,12 +127,17 @@ public class Hardware {
         *    flap: 0.80 - 0.65
         */
 
-        armR.scaleRange(0.37, 0.7);
-        armL.scaleRange(0.20, 0.54);
-        armR.setDirection(Servo.Direction.REVERSE);
-        armL.setDirection(Servo.Direction.FORWARD);
-
         blocker.scaleRange(0.4, 0.9);
+        // no need to scale because they'll be holding position
+//        elbowL.scaleRange(0.05, 0.5);
+//        elbowR.scaleRange(0.4, 0.85);
+//        elbowL.setDirection(Servo.Direction.REVERSE);
+//        elbowR.setDirection(Servo.Direction.FORWARD);
+
+        wristL.scaleRange(0.1, 0.36);
+        wristR.scaleRange(0.64, 0.94);
+        wristR.setDirection(Servo.Direction.REVERSE);
+        wristL.setDirection(Servo.Direction.FORWARD);
 
         flap.scaleRange(0.65, 0.8);
 
