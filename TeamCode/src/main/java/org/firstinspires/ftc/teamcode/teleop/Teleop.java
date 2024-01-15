@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
+import org.firstinspires.ftc.teamcode.macro.Macro;
+import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
@@ -25,6 +27,8 @@ public class Teleop extends OpModeWrapper {
     double driveSpeed;
     double intakeSpeed;
 
+    Macro launchMacro;
+
     @Override
     public void setup() {
         driveSpeed = 1;
@@ -41,7 +45,15 @@ public class Teleop extends OpModeWrapper {
         arm.holdElbows();
 
         launcher = new PlaneLauncher(hardware);
-        launcher.idle();
+        launcher.idle().run();
+
+        launchMacro = new Macro(
+                Sequence.of(
+                        launcher.aim(),
+                        launcher.fire(),
+                        launcher.idle()
+                )
+        );
 
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
@@ -108,9 +120,10 @@ public class Teleop extends OpModeWrapper {
         }
 
         // press to aim and fire
-        if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
-            launcher.aim();
-            launcher.fire();
+        if (!launchMacro.isRunning()) {
+            if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
+                launchMacro.start();
+            }
         }
 
         double y = gamepads.getAnalogValue(Controls.STRAIGHT);
@@ -128,5 +141,7 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         intake.update();
+
+        launchMacro.update();
     }
 }

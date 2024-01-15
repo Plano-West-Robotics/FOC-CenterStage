@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.macro.Action;
+import org.firstinspires.ftc.teamcode.macro.MoveServo;
 
 public class PlaneLauncher {
     Hardware hardware;
@@ -13,15 +15,16 @@ public class PlaneLauncher {
 //        hardware.planeLauncher.setPosition(ENGAGED_POS);
     }
 
-    public void idle() {
-        hardware.launcherBase.setPosition(IDLE_POS);
+    public Action idle() {
+        return new MoveServo(hardware.launcherBase, IDLE_POS);
     }
 
-    public void fire() {
-        hardware.launcherPin.setPosition(LAUNCH_POS);
+    public Action fire() {
+        return new MoveServo(hardware.launcherPin, LAUNCH_POS);
+
     }
 
-    public void aim() {
-        hardware.launcherBase.setPosition(AIM);
+    public Action aim() {
+        return new MoveServo(hardware.launcherBase, AIM);
     }
 }
