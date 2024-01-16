@@ -13,56 +13,10 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
-public abstract class DownstageAutoBase extends LinearOpMode {
+public abstract class DownstageAutoBase extends AutoBase {
     public void runOpMode(Alliance alliance) {
-        Hardware hardware = new Hardware(this);
-        Intake intake = new Intake(hardware, 0.3);
-        Arm arm = new Arm(hardware, telemetry);
-        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
-        ControlledLift lift = new ControlledLift(hardware);
-
-        Pose startingPose = new Pose(Distance2.inTiles(-1.5, -2.5), Angle.LEFT);
-        boolean isFlipped = alliance.isBlue();
-        if (isFlipped) {
-            startingPose = startingPose.flippedAcrossXAxis();
-        }
-        startingPose = startingPose.then(new Pose(
-                new Distance2(
-                        // in the ROBOT's coordinate scheme (b/c .then)
-                        Distance.ONE_TILE_WITHOUT_BORDER.sub(Distance.inInches(16)).neg(),
-                        Distance.ONE_TILE_WITHOUT_BORDER.sub(Distance.inInches(18)).neg()
-                ).div(2),
-                Angle.ZERO
-        ));
-        if (alliance.isRed()) {
-            startingPose = startingPose.then(new Pose(
-                    new Distance2(
-                            Distance.ZERO,
-                            Distance.inInches(2)
-                    ),
-                    Angle.ZERO
-            ));
-        }
-        Poser poser = new Poser(hardware, 0.9, isFlipped, startingPose);
-
-        Vision vision = new Vision(hardware, alliance);
-
-        while (!isStarted()) {
-            telemetry.addData("Detection", vision.getSide());
-            telemetry.update();
-        }
-
-        FreeSightPipeline.Side randomization = vision.end();
-        if (isFlipped) switch (randomization) {
-            case LEFT:
-                randomization = FreeSightPipeline.Side.RIGHT;
-                break;
-            case RIGHT:
-                randomization = FreeSightPipeline.Side.LEFT;
-                break;
-            default:
-                break;
-        }
+        super.setup(alliance, UpOrDownStage.DOWNSTAGE);
+        FreeSightPipeline.Side randomization = super.runVisionUntilStart();
 
         poser.goTo(Distance2.inTiles(-1.5, -2.5)).run();
 
