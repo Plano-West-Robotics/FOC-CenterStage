@@ -17,6 +17,11 @@ public class Macro {
         running = true;
     }
 
+    public void stop() {
+        if (running) action.end();
+        running = false;
+    }
+
     public void update() {
         if (running) {
             if (action.update().shouldStop()) {
