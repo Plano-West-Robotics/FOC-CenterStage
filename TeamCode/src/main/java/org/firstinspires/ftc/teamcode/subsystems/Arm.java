@@ -5,12 +5,16 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(1),
-        DOWN(0);
-        private final double wristPos;
+        UP(1, 1),
+        DOWN(0.5, 0),
+        INTERMEDIATE(0.15, 0);
 
-        ArmPosition(double wrist) {
+        private final double wristPos;
+        private final double elbowPos;
+
+        ArmPosition(double wrist, double elbow) {
             this.wristPos = wrist;
+            this.elbowPos = elbow;
         }
     }
     public enum FlapPosition {
@@ -37,31 +41,19 @@ public class Arm {
     public FlapPosition currentFlapPos = FlapPosition.OPEN;
     public BlockerPosition currentBlockerPos = BlockerPosition.UNBLOCK;
     Hardware hardware;
-    Telemetry telemetry;
-    public Arm(Hardware hw, Telemetry telem) {
+
+    public Arm(Hardware hw) {
         hardware = hw;
-        telemetry = telem;
     }
 
     public void setArmPosition(ArmPosition newPos) {
         currentArmPos = newPos;
 
-//        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
-//        hardware.elbowR.setPosition(newPos.elbow);
+        hardware.elbowL.setPosition(newPos.elbowPos);
+        hardware.elbowR.setPosition(newPos.elbowPos);
 
-        hardware.wristL.setPosition(newPos.wristPos); // todo: test this and see
+        hardware.wristL.setPosition(newPos.wristPos);
         hardware.wristR.setPosition(newPos.wristPos);
-    }
-
-    public void toggleArmPosition() {
-        switch (currentArmPos) {
-            case UP:
-                setArmPosition(ArmPosition.DOWN);
-                break;
-            case DOWN:
-                setArmPosition(ArmPosition.UP);
-                break;
-        }
     }
 
     public void setFlapPosition(FlapPosition newPos) {
@@ -96,11 +88,5 @@ public class Arm {
                 setBlockerPosition(BlockerPosition.BLOCK);
                 break;
         }
-    }
-
-    // call this during init or before start probably
-    public void holdElbows() {
-        hardware.elbowL.setPosition(0.4);
-        hardware.elbowR.setPosition(0.6);
     }
 }

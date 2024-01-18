@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.poser.Poser;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
@@ -19,7 +20,7 @@ public abstract class AutoBase extends LinearOpMode {
 
     Hardware hardware;
     Intake intake;
-    Arm arm;
+    ControlledArm arm;
     ControlledLift lift;
     Poser poser;
 
@@ -33,8 +34,9 @@ public abstract class AutoBase extends LinearOpMode {
 
         this.hardware = new Hardware(this);
         this.intake = new Intake(hardware, 0.3);
-        this.arm = new Arm(hardware, telemetry);
+        this.arm = new ControlledArm(hardware);
         this.lift = new ControlledLift(hardware);
+        arm.arm.setArmPosition(Arm.ArmPosition.DOWN);
 
         // starting pose calculations
 

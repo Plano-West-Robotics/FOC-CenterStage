@@ -119,27 +119,28 @@ public class Hardware {
 
         // TODO: redo these
         /*
-        * Measured 2024-01-06
-        *           in    out
-        * blocker: 0.40 - 0.75
-        *    armR: 0.83 - 0.50
-        *    armL: 0.20 - 0.54
-        *    flap: 0.80 - 0.65
+        * Measured 2024-01-17
+        *            in - out
+        *  elbowR: 0.20 - 0.65
+        *  elbowL: 0.77 - 0.32
+        *  wristR: 0.31 - 0.51 (intermediate: 0.17)
+        *  wristL: 0.61 - 0.41 (intermediate: 0.75)
+        *             y - n
+        * blocker: 0.00 - 0.00 // unable to be tuned because the servo is broken
+        *        closed - open
+        *    flap: 0.02 - 0.3
         */
 
+        elbowR.scaleRange(0.20, 0.65);
+        elbowR.setDirection(Servo.Direction.FORWARD);
+        elbowL.scaleRange(0.32, 0.77);
+        elbowL.setDirection(Servo.Direction.REVERSE);
+        wristR.scaleRange(0.11, 0.51);
+        wristR.setDirection(Servo.Direction.FORWARD);
+        wristL.scaleRange(0.41, 0.81);
+        wristL.setDirection(Servo.Direction.REVERSE);
         blocker.scaleRange(0.4, 0.9);
-        // no need to scale because they'll be holding position
-//        elbowL.scaleRange(0.05, 0.5);
-//        elbowR.scaleRange(0.4, 0.85);
-//        elbowL.setDirection(Servo.Direction.REVERSE);
-//        elbowR.setDirection(Servo.Direction.FORWARD);
-
-        wristL.scaleRange(0.1, 0.36);
-        wristR.scaleRange(0.64, 0.94);
-        wristR.setDirection(Servo.Direction.REVERSE);
-        wristL.setDirection(Servo.Direction.FORWARD);
-
-        flap.scaleRange(0.65, 0.8);
+        flap.scaleRange(0.02, 0.3);
 
         launcherPin = hardwareMap.get(Servo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
@@ -152,7 +153,6 @@ public class Hardware {
 
         ledLeft = hardwareMap.get(RevBlinkinLedDriver.class, "ledLeft");
         ledRight = hardwareMap.get(RevBlinkinLedDriver.class, "ledRight");
-
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 

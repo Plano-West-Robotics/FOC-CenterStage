@@ -19,7 +19,7 @@ public class UpstageLeftAuto extends UpstageAutoBase {
     public void runOpMode() throws InterruptedException {
         Hardware hardware = new Hardware(this);
         Intake intake = new Intake(hardware, 0.3);
-        Arm arm = new Arm(hardware, telemetry);
+        Arm arm = new Arm(hardware);
         arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         ControlledLift lift = new ControlledLift(hardware);
 

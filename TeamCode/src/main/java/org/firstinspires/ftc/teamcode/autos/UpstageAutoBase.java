@@ -19,8 +19,6 @@ public abstract class UpstageAutoBase extends AutoBase {
         FreeSightPipeline.Side randomization = super.runVisionUntilStart();
 
         poser.goTo(Distance2.inTiles(0.5, -2.5)).run();
-        // arm up
-        arm.setArmPosition(Arm.ArmPosition.UP);
 
         Distance yOffsetAtBackdrop = Distance.ZERO;
         switch (randomization) {
@@ -86,12 +84,13 @@ public abstract class UpstageAutoBase extends AutoBase {
         ).run();
         // lift up
         lift.setTarget(0.25);
-        while (lift.update());
+        arm.moveUp();
+        while (lift.update() && arm.isBusy()) arm.update();
         lift.stop();
         // drop pixel
-        arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(1000);
-        arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         // move over
         poser.moveBy(
                 // these should be negative of lines 130 and 131, i think
@@ -104,8 +103,9 @@ public abstract class UpstageAutoBase extends AutoBase {
         ).run();
 
         // lower slide and move arm in
-        arm.setArmPosition(Arm.ArmPosition.DOWN);
-        arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        arm.moveDown();
+        while (arm.isBusy());
+        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(500);
         lift.setTarget(0.02);
         while (lift.update());

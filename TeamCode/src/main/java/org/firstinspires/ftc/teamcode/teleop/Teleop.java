@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.LED;
@@ -21,7 +22,7 @@ public class Teleop extends OpModeWrapper {
     Drive drive;
     Intake intake;
     Lift lift;
-    Arm arm;
+    ControlledArm arm;
     PlaneLauncher launcher;
     LED ledStrip;
     double driveSpeed;
@@ -41,8 +42,7 @@ public class Teleop extends OpModeWrapper {
 
         lift = new Lift(hardware);
 
-        arm = new Arm(hardware, telemetry);
-        arm.holdElbows();
+        arm = new ControlledArm(hardware);
 
         launcher = new PlaneLauncher(hardware);
         launcher.idle().run();
@@ -99,24 +99,24 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Intake running?", intake.isRunning());
 
         if (gamepads.justPressed(Controls.ARM_UP)) {
-            arm.setArmPosition(Arm.ArmPosition.UP);
+            arm.moveUp();
         }
         if (gamepads.justPressed(Controls.ARM_DOWN)) {
-            arm.setArmPosition(Arm.ArmPosition.DOWN);
+            arm.moveDown();
         }
 
         if (gamepads.justPressed(Controls.FLAP_OPEN)) {
-            arm.setFlapPosition(Arm.FlapPosition.OPEN);
+            arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
         }
         if (gamepads.justPressed(Controls.FLAP_CLOSED)) {
-            arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+            arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
         }
 
         if (gamepads.justPressed(Controls.BLOCKER_OPEN)) {
-            arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
+            arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
         }
         if (gamepads.justPressed(Controls.BLOCKER_CLOSED)) {
-            arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
+            arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
         }
 
         // press to aim and fire
@@ -141,6 +141,7 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         intake.update();
+        arm.update();
 
         launchMacro.update();
     }
