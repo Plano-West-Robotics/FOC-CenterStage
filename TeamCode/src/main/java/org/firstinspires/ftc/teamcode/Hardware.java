@@ -117,18 +117,19 @@ public class Hardware {
         flap = hardwareMap.get(Servo.class, "flap");
         blocker = hardwareMap.get(Servo.class, "blocker");
 
-        // TODO: redo these
         /*
-        * Measured 2024-01-17
+        * Measured 2024-01-18
         *            in - out
         *  elbowR: 0.20 - 0.65
         *  elbowL: 0.77 - 0.32
         *  wristR: 0.31 - 0.51 (intermediate: 0.17)
         *  wristL: 0.61 - 0.41 (intermediate: 0.75)
-        *             y - n
-        * blocker: 0.00 - 0.00 // unable to be tuned because the servo is broken
+        *
+        *       unblock - block
+        * blocker:  0.4 - 0.9
+        *
         *        closed - open
-        *    flap: 0.02 - 0.3
+        *    flap: 0.04 - 0.4
         */
 
         elbowR.scaleRange(0.20, 0.65);
@@ -140,7 +141,7 @@ public class Hardware {
         wristL.scaleRange(0.41, 0.81);
         wristL.setDirection(Servo.Direction.REVERSE);
         blocker.scaleRange(0.4, 0.9);
-        flap.scaleRange(0.02, 0.3);
+        flap.scaleRange(0.04, 0.4);
 
         launcherPin = hardwareMap.get(Servo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
