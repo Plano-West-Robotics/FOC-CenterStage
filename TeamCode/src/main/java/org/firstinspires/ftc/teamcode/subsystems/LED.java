@@ -43,8 +43,8 @@ public class LED {
     }
 
     private void idle() {
-        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
-        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE);
     }
 
     private void ejectOverride() {

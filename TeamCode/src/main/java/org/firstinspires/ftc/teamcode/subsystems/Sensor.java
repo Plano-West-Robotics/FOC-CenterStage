@@ -25,7 +25,7 @@ public class Sensor {
                 case PURPLE:
                     return RevBlinkinLedDriver.BlinkinPattern.HOT_PINK;
                 case YELLOW:
-                    return RevBlinkinLedDriver.BlinkinPattern.GOLD;
+                    return RevBlinkinLedDriver.BlinkinPattern.RED_ORANGE;
                 case WHITE:
                     return RevBlinkinLedDriver.BlinkinPattern.GRAY;
                 case NONE:
