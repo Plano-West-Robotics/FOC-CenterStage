@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.macro.MoveServo;
 public class PlaneLauncher {
     Hardware hardware;
     private static final double LAUNCH_POS = 0;
-    private static final double IDLE_POS = 0.45;
-    private static final double AIM = 0.65;
+    private static final double IDLE_POS = 0.2;
+    private static final double AIM = 0.38;
 
     public PlaneLauncher(Hardware hw) {
         hardware = hw;
