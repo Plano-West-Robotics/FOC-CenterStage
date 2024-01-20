@@ -55,6 +55,8 @@ public class Teleop extends OpModeWrapper {
                 )
         );
 
+        hardware.stwhacker.setPosition(1);
+
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
         ledStrip.update();
@@ -124,6 +126,13 @@ public class Teleop extends OpModeWrapper {
             if (gamepads.justPressed(Controls.LAUNCH_PLANE)) {
                 launchMacro.start();
             }
+        }
+
+        if (gamepads.justPressed(Controls.STWHACKER_UP)) {
+            hardware.stwhacker.setPosition(1);
+        }
+        if (gamepads.justPressed(Controls.STWHACKER_DOWN)) {
+            hardware.stwhacker.setPosition(0);
         }
 
         double y = gamepads.getAnalogValue(Controls.STRAIGHT);
