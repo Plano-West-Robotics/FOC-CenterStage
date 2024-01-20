@@ -126,10 +126,10 @@ public class Hardware {
         *  wristL: 0.61 - 0.41 (intermediate: 0.75)
         *
         *       unblock - block
-        * blocker:  0.4 - 0.9
+        * blocker: 0.40 - 0.90
         *
         *        closed - open
-        *    flap: 0.04 - 0.4
+        *    flap: 0.40 - 0.75
         */
 
         elbowR.scaleRange(0.20, 0.65);
@@ -140,8 +140,8 @@ public class Hardware {
         wristR.setDirection(Servo.Direction.FORWARD);
         wristL.scaleRange(0.41, 0.81);
         wristL.setDirection(Servo.Direction.REVERSE);
-        blocker.scaleRange(0.4, 0.9);
-        flap.scaleRange(0.04, 0.4);
+        blocker.scaleRange(0.40, 0.90);
+        flap.scaleRange(0.40, 0.75);
 
         launcherPin = hardwareMap.get(Servo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
