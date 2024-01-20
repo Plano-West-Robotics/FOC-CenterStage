@@ -12,11 +12,12 @@ public class ControlledLift {
     public ControlledLift(Hardware hardware) {
         this.hardware = hardware;
 
+        DcMotor.RunMode modeL = hardware.liftL.getMode();
+        DcMotor.RunMode modeR = hardware.liftR.getMode();
         this.hardware.liftL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.hardware.liftR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        this.hardware.liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        this.hardware.liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        this.hardware.liftL.setMode(modeL);
+        this.hardware.liftR.setMode(modeR);
     }
 
     public void setTarget(double target) {

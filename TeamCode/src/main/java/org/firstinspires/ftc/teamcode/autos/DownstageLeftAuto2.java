@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Downstage Right 1+0 Auto")
-public class DownstageRightAuto extends DownstageAutoBase {
+@Autonomous(name = "Downstage Left 2+0 Auto")
+public class DownstageLeftAuto2 extends DownstageAuto2Base {
     @Override
     public void runOpMode() throws InterruptedException {
-        this.runOpMode(Alliance.BLUE);
+        this.runOpMode(Alliance.RED);
     }
 }

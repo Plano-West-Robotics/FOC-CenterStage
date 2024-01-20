@@ -69,12 +69,31 @@ public class Angle {
         return new Angle(-this.val);
     }
 
-    public Angle mod() {
-        return new Angle(this.val % (2 * Math.PI));
+    public Angle modPositive() {
+//        return new Angle(this.val % (2 * Math.PI));
+
+        double val = this.val;
+        while (val >= 2 * Math.PI) val -= 2 * Math.PI;
+        while (val < 0) val += 2 * Math.PI;
+        return new Angle(val);
+    }
+
+    public Angle modNegative() {
+//        return new Angle((this.val % (2 * Math.PI)) - 2 * Math.PI);
+
+        double val = this.val;
+        while (val >= 0) val -= 2 * Math.PI;
+        while (val < -2 * Math.PI) val += 2 * Math.PI;
+        return new Angle(val);
     }
 
     public Angle modSigned() {
-        return new Angle(((this.val + Math.PI) % (2 * Math.PI)) - Math.PI);
+//        return new Angle(((this.val + Math.PI) % (2 * Math.PI)) - Math.PI);
+
+        double val = this.val;
+        while (val >= Math.PI) val -= 2 * Math.PI;
+        while (val < -Math.PI) val += 2 * Math.PI;
+        return new Angle(val);
     }
 
     public double sin() {

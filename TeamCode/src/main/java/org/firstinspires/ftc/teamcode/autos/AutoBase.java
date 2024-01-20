@@ -37,6 +37,7 @@ public abstract class AutoBase extends LinearOpMode {
         this.arm = new ControlledArm(hardware);
         this.lift = new ControlledLift(hardware);
         arm.arm.setArmPosition(Arm.ArmPosition.DOWN);
+        arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
 
         // starting pose calculations
 
@@ -47,7 +48,7 @@ public abstract class AutoBase extends LinearOpMode {
                 startingX = 0.5;
                 break;
             case DOWNSTAGE:
-                startingX = 1.5;
+                startingX = -1.5;
                 break;
             default:
                 throw new RuntimeException();
@@ -62,9 +63,13 @@ public abstract class AutoBase extends LinearOpMode {
         Pose initialPose = initialTile.then(new Pose(
                 new Distance2(
                         // in the ROBOT's coordinate scheme (b/c .then)
-                        Distance.ONE_TILE_WITHOUT_BORDER.sub(Distance.inInches(16)).neg(),
+                        Distance.ONE_TILE_WITHOUT_BORDER.sub(Distance.inInches(17)).neg(),
                         Distance.ONE_TILE_WITHOUT_BORDER.sub(Distance.inInches(18)).neg()
-                ).div(2),
+                ).div(2)
+                .add(new Distance2(
+                        Distance.inInches(1),
+                        Distance.ZERO
+                )),
                 Angle.ZERO
         ));
 

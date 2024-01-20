@@ -85,6 +85,14 @@ public class Poser {
         ));
     }
 
+    public Motion goToX(Distance x) {
+        return this.goTo(x, lastTarget.pos.y);
+    }
+
+    public Motion goToY(Distance y) {
+        return this.goTo(lastTarget.pos.x, y);
+    }
+
     public Motion goTo(Distance x, Distance y) {
         return this.goTo(new Distance2(x, y));
     }
@@ -112,18 +120,46 @@ public class Poser {
         return this.new Motion(pose);
     }
 
+    // should be in `Motion` but that's unsupported by the language
+    private enum RotationDirection {
+        CW,
+        CCW,
+        NONE,
+    }
+
     public class Motion implements Action {
         private final PIDController xCtrl = new PIDController(2.5, 0, 0);
         private final PIDController yCtrl = new PIDController(2.5, 0, 0);
         private final PIDController yawCtrl = new PIDController(1.5, 0, 0);
         private final Pose target;
+        private RotationDirection rotationDirection;
 
 //        private long lastUpdate;
 
         public Motion(Pose target) {
             this.target = target;
 
+            this.rotationDirection = RotationDirection.NONE;
+
 //            this.lastUpdate = System.nanoTime();
+        }
+
+        public Motion turningCw() {
+            if (Poser.this.flipped) {
+                this.rotationDirection = RotationDirection.CCW;
+            } else {
+                this.rotationDirection = RotationDirection.CW;
+            }
+            return this;
+        }
+
+        public Motion turningCcw() {
+            if (Poser.this.flipped) {
+                this.rotationDirection = RotationDirection.CW;
+            } else {
+                this.rotationDirection = RotationDirection.CCW;
+            }
+            return this;
         }
 
         public ControlFlow update() {
@@ -145,18 +181,25 @@ public class Poser {
 
             Distance2 posError = target.pos.sub(pose.pos);
             Distance2 targetVel = new Distance2(xCtrl.update(posError.x), yCtrl.update(posError.y))
-                    .rot(pose.yaw.neg())
-                    .mul(poser.speed);
+                    .rot(pose.yaw.neg());
 
-            Angle angError = target.yaw.sub(pose.yaw).modSigned();
-            Angle targetAngVel = yawCtrl.update(angError).mul(poser.speed);
+            Angle angError = target.yaw.sub(pose.yaw);
+            switch (rotationDirection) {
+                case CW:
+                    angError = angError.modNegative();
+                    break;
+                case CCW:
+                    angError = angError.modPositive();
+                    break;
+                default:
+                    angError = angError.modSigned();
+            }
+            Angle targetAngVel = yawCtrl.update(angError);
 
             Vector2 pow = targetVel.div(MAX_VEL);
+            pow = pow.normalized().mul(Range.clip(pow.magnitude(), 0, 1) * poser.speed);
             double angPow = targetAngVel.div(MAX_ANG_VEL);
-
-            hardware.opMode.telemetry.addData("xOut", pow.x);
-            hardware.opMode.telemetry.addData("yOut", pow.y);
-            hardware.opMode.telemetry.addData("angOut", angPow);
+            angPow = Range.clip(angPow, -1, 1) * poser.speed;
 
             poser.move(pow.x, pow.y, angPow);
 

@@ -18,15 +18,15 @@ public class ControlledArm {
         moveUp = new Macro(
                 Sequence.of(
                         Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.INTERMEDIATE)),
-                        Wait.millis(500),
+                        Wait.millis(100),
                         Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.UP)),
-                        Wait.millis(100)
+                        Wait.millis(270)
                 )
         );
         moveDown = new Macro(
                 Sequence.of(
                         Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.INTERMEDIATE)),
-                        Wait.millis(500),
+                        Wait.millis(270),
                         Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.DOWN)),
                         Wait.millis(100)
                 )
