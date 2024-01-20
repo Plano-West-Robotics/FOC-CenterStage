@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.macro;
 
+/**
+ * A dynamic boolean trench coat
+ */
 public enum ControlFlow {
     CONTINUE, BREAK;
 

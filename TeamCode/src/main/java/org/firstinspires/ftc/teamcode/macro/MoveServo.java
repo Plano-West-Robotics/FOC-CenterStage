@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.macro;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+/**
+ * The MoveServo class moves a servo. 'nuff said
+ */
 public class MoveServo implements Action {
     private final Servo servo;
     private final double pos;

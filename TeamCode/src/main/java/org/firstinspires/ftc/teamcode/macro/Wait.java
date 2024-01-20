@@ -1,3 +1,6 @@
+/**
+ * The Wait class is a user-defined pause Action
+ */
 package org.firstinspires.ftc.teamcode.macro;
 
 public class Wait implements Action {
@@ -8,10 +11,20 @@ public class Wait implements Action {
     private static final long NANOS_PER_SEC = 1000 * 1000 * 1000;
     private static final double NANOS_PER_MILLI = 1000 * 1000;
 
+    /**
+     * Waits given the amount of seconds
+     * @param secs how many to wait
+     * @return the Action to pause
+     */
     public static Wait seconds(double secs) {
         return new Wait((long)(secs * NANOS_PER_SEC));
     }
 
+    /**
+     * Waits given the amount of milliseconds
+     * @param millis how many to wait
+     * @return the Action to pause
+     */
     public static Wait millis(double millis) {
         return new Wait((long)(millis * NANOS_PER_MILLI));
     }

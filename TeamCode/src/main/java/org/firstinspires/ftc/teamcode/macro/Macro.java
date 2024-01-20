@@ -1,3 +1,6 @@
+/**
+ * The Macro class
+ */
 package org.firstinspires.ftc.teamcode.macro;
 
 public class Macro {
