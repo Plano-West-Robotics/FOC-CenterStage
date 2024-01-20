@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
+import org.firstinspires.ftc.teamcode.macro.Wait;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
@@ -50,7 +51,9 @@ public class Teleop extends OpModeWrapper {
         launchMacro = new Macro(
                 Sequence.of(
                         launcher.aim(),
+                        Wait.millis(1000),
                         launcher.fire(),
+                        Wait.millis(500),
                         launcher.idle()
                 )
         );
