@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.macro;
 
 /**
- * A dynamic boolean trench coat
+ * An enum indicating if an `Action` should `CONTINUE` running or `BREAK`.
  */
 public enum ControlFlow {
     CONTINUE, BREAK;

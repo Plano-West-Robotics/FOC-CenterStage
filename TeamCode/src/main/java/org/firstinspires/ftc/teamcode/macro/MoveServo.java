@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.macro;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
- * The MoveServo class moves a servo. 'nuff said
+ * An `Action` that moves a servo to a specific position upon being run.
+ *
+ * Has no delay.
  */
 public class MoveServo implements Action {
     private final Servo servo;

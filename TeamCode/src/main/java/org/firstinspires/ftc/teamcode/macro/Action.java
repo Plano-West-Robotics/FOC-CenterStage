@@ -7,18 +7,24 @@ package org.firstinspires.ftc.teamcode.macro;
 public interface Action {
 
     /**
-     * If the Action should continue running
-     * @return the state of run-age
+     * Updates the `Action` and returns whether it should keep running.
+     *
+     * After this returns `BREAK` you should call `end` before calling `update` again.
+     * @return whether the Action should keep running
      */
     ControlFlow update();
 
     /**
-     * Stops the Action
+     * Stops the Action.
+     *
+     * Should be called after `update` returns `BREAK`, but can be called at any time.
+     *
+     * The `Action` can be restarted again after this is called.
      */
     void end();
 
     /**
-     * The continued loop
+     * A helper method that runs the `Action` to completion by calling `update` in a loop.
      */
     default void run() {
         while (!Thread.interrupted() && this.update().shouldContinue());
@@ -26,32 +32,28 @@ public interface Action {
     }
 
     /**
-     * Generates an Action from a function
+     * Generates an `Action` from a function that will be run once whenever the `Action` is executed.
      * @param runnable the function
-     * @return an Action to be ran
+     * @return an Action that will run the function
      */
     static Action fromFn(Runnable runnable) {
         return new Oneshot(runnable);
     }
 
     /**
-     * A one time action created from a defined function
+     * An `Action` that executes a function when run.
      */
     class Oneshot implements Action {
         Runnable runnable;
 
         /**
-         * Constructs a Oneshot action
-         * @param runnable the function to be ran
+         * Constructs a `Oneshot` action.
+         * @param runnable the function to be run
          */
         public Oneshot(Runnable runnable) {
             this.runnable = runnable;
         }
 
-        /**
-         * Stops the action
-         * @return the stopped indicator
-         */
         public ControlFlow update() {
             return ControlFlow.BREAK;
         }

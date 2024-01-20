@@ -3,6 +3,9 @@
  */
 package org.firstinspires.ftc.teamcode.macro;
 
+/**
+ * An `Action` that waits for a specified amount of time.
+ */
 public class Wait implements Action {
     private boolean started;
     private long endTime;
@@ -12,18 +15,18 @@ public class Wait implements Action {
     private static final double NANOS_PER_MILLI = 1000 * 1000;
 
     /**
-     * Waits given the amount of seconds
-     * @param secs how many to wait
-     * @return the Action to pause
+     * Constructs a `Wait` with the given delay in seconds.
+     * @param secs how long to wait in seconds
+     * @return the `Wait`
      */
     public static Wait seconds(double secs) {
         return new Wait((long)(secs * NANOS_PER_SEC));
     }
 
     /**
-     * Waits given the amount of milliseconds
-     * @param millis how many to wait
-     * @return the Action to pause
+     * Constructs a `Wait` with the given delay in milliseconds.
+     * @param millis how long to wait in milliseconds
+     * @return the `Wait`
      */
     public static Wait millis(double millis) {
         return new Wait((long)(millis * NANOS_PER_MILLI));

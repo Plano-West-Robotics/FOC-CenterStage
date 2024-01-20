@@ -1,8 +1,8 @@
-/**
- * The Macro class
- */
 package org.firstinspires.ftc.teamcode.macro;
 
+/**
+ * A simple executor for a single `Action`.
+ */
 public class Macro {
     private boolean running;
     private final Action action;

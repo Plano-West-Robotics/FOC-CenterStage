@@ -3,14 +3,17 @@
  */
 package org.firstinspires.ftc.teamcode.macro;
 
+/**
+ * An `Action` that executes other `Actions` in sequence.
+ */
 public class Sequence implements Action {
     private final Action[] actions;
     private int i;
 
     /**
-     * Creating a Sequence from any amount of Actions
-     * @param actions to be used
-     * @return Sequence
+     * Creates a `Sequence` from any amount of `Actions`.
+     * @param actions the list of actions
+     * @return the `Sequence`
      */
     public static Action of(Action... actions) {
         return new Sequence(actions);
@@ -21,10 +24,6 @@ public class Sequence implements Action {
         i = 0;
     }
 
-    /**
-     * Running the actions till it needs to stop
-     * @return to continue running or not
-     */
     public ControlFlow update() {
         while (i < actions.length) {
             if (actions[i].update().shouldContinue()) {
