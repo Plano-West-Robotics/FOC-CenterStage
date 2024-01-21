@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class FreeSightPipeline extends OpenCvPipeline {
 
     public enum Prop {
-        PURPLE, ORANGE, NONE
+        BLUE, MAGENTA, NONE
     }
 
     public enum Side {
@@ -64,13 +64,13 @@ public class FreeSightPipeline extends OpenCvPipeline {
          * Scalar lowHSV = new Scalar(55.3, 62.3, 53.8);
          * Scalar highHSV = new Scalar(213.9, 240.8, 255);
          */
-        if (colorState == Prop.PURPLE) {
+        if (colorState == Prop.BLUE) {
             lowHSV = new Scalar(106.3, 134.6, 60.8);
             highHSV = new Scalar(151.9, 213.9, 255.0);
 
 //            lowHSV = new Scalar(55.3, 62.3, 53.8);
 //            highHSV = new Scalar(213.9, 240.8, 255.0);
-        } else if (colorState == Prop.ORANGE) {
+        } else if (colorState == Prop.MAGENTA) {
             lowHSV = new Scalar(0, 162.9, 107.7);
             highHSV = new Scalar(15.6, 255, 184.2);
         }
@@ -90,7 +90,7 @@ public class FreeSightPipeline extends OpenCvPipeline {
         masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
 
         double strictLowS;
-        if (colorState == Prop.PURPLE)
+        if (colorState == Prop.BLUE)
             strictLowS = 62.3;
         else
             strictLowS = 86.4;
