@@ -17,7 +17,7 @@ public class RedVisionAuto extends LinearOpMode {
         Hardware hardware = new Hardware(this);
         FreeSight vision = new FreeSight(hardware, this.telemetry);
         vision.init();
-        vision.pipe.colorState = FreeSightPipeline.Prop.PURPLE; // todo: change
+        vision.pipe.colorState = FreeSightPipeline.Prop.BLUE; // todo: change
         Intake intake = new Intake(hardware, 0.7);
         intake.stop();
         intake.reverse();

@@ -10,7 +10,7 @@ public class Vision {
     public Vision(Hardware hardware, Alliance alliance) {
         this.freeSight = new FreeSight(hardware, hardware.opMode.telemetry, false);
         this.freeSight.init();
-        this.freeSight.pipe.colorState = alliance.isRed() ? FreeSightPipeline.Prop.ORANGE : FreeSightPipeline.Prop.PURPLE;
+        this.freeSight.pipe.colorState = alliance.isRed() ? FreeSightPipeline.Prop.MAGENTA : FreeSightPipeline.Prop.BLUE;
     }
 
     public FreeSightPipeline.Side getSide() {
