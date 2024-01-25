@@ -45,14 +45,12 @@ public class Drive {
             powerY = y;
         }
 
-        double volComp = getVoltageCompensation();
+        double flPower = (powerY + powerX + turn);
+        double frPower = (powerY - powerX - turn);
+        double blPower = (powerY - powerX + turn);
+        double brPower = (powerY + powerX - turn);
 
-        double flPower = (powerY + powerX + turn) * volComp;
-        double frPower = (powerY - powerX - turn) * volComp;
-        double blPower = (powerY - powerX + turn) * volComp;
-        double brPower = (powerY + powerX - turn) * volComp;
-
-        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX)) * Math.abs(volComp)); // shortcut for max(abs([fl, fr, bl, br]))
+        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX))); // shortcut for max(abs([fl, fr, bl, br]))
         flPower /= scale;
         frPower /= scale;
         blPower /= scale;
@@ -62,11 +60,6 @@ public class Drive {
         hardware.fr.setPower(frPower * speed);
         hardware.bl.setPower(blPower * speed);
         hardware.br.setPower(brPower * speed);
-    }
-
-    public double getVoltageCompensation() {
-        double voltage = hardware.voltageSensor.getVoltage();
-        return 12 / voltage;
     }
 
     public void stop() {
