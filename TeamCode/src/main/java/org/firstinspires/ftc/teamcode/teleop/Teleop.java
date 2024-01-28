@@ -36,7 +36,7 @@ public class Teleop extends OpModeWrapper {
         driveSpeed = 1;
         intakeSpeed = 1; // change this speed if you have to
         drive = new Drive(hardware, driveSpeed);
-        drive.setFieldOriented(false);
+        drive.setFieldOriented(true);
 
         intake = new Intake(hardware, intakeSpeed);
         intake.stop();
@@ -57,8 +57,6 @@ public class Teleop extends OpModeWrapper {
                         launcher.idle()
                 )
         );
-
-        hardware.stwhacker.setPosition(1);
 
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
@@ -131,17 +129,20 @@ public class Teleop extends OpModeWrapper {
             }
         }
 
-        if (gamepads.justPressed(Controls.STWHACKER_UP)) {
-            hardware.stwhacker.setPosition(1);
+        if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
+            drive.toggleFieldOriented();
         }
-        if (gamepads.justPressed(Controls.STWHACKER_DOWN)) {
-            hardware.stwhacker.setPosition(0);
+
+        if (gamepads.justPressed(Controls.RESET_IMU)) {
+            drive.resetYaw();
         }
 
         double y = gamepads.getAnalogValue(Controls.STRAIGHT);
         double x = gamepads.getAnalogValue(Controls.STRAFE);
         double turn = gamepads.getAnalogValue(Controls.TURN);
         drive.drive(x, y, turn);
+
+        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
 
         lift.run(gamepads.getAnalogValue(Controls.LIFT));
 

@@ -33,7 +33,6 @@ public class Hardware {
     public Servo elbowL, elbowR;
     public Servo wristL, wristR;
     public Servo flap, blocker;
-    public Servo stwhacker;
     public IMU imu;
     public VoltageSensor voltageSensor;
 
@@ -146,8 +145,6 @@ public class Hardware {
 
         launcherPin = hardwareMap.get(Servo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
-
-        stwhacker = hardwareMap.get(Servo.class, "whacker");
 
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));

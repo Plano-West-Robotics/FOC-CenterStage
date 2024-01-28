@@ -9,8 +9,8 @@ public class Controls {
     public static Gamepads.AnalogInput TURN = Gamepads.AnalogInput.GP1_RIGHT_STICK_X;
     public static Gamepads.Button SLOW_SPEED = Gamepads.Button.GP1_LEFT_BUMPER;
     public static Gamepads.Button SUPER_SLOW_SPEED = Gamepads.Button.GP1_RIGHT_BUMPER;
-    public static Gamepads.Button FIELD_ORIENTED = Gamepads.Button.GP1_SQUARE;
-    public static Gamepads.Button RESET_IMU = Gamepads.Button.GP1_TRIANGLE;
+    public static Gamepads.Button FIELD_ORIENTED = Gamepads.Button.GP1_DPAD_LEFT;
+    public static Gamepads.Button RESET_IMU = Gamepads.Button.GP1_DPAD_UP;
     public static Gamepads.Button TOGGLE_INTAKE = Gamepads.Button.GP1_CROSS; // all of these are subject to change
     public static Gamepads.Button INTAKE_REVERSE = Gamepads.Button.GP1_CIRCLE;
     public static Gamepads.Button INTAKE_DIR_TOG = Gamepads.Button.GP1_CIRCLE;
@@ -24,6 +24,4 @@ public class Controls {
     public static Gamepads.Button FLAP_CLOSED = Gamepads.Button.GP2_CROSS;
     public static Gamepads.Button BLOCKER_OPEN = Gamepads.Button.GP2_TRIANGLE;
     public static Gamepads.Button BLOCKER_CLOSED = Gamepads.Button.GP2_CIRCLE;
-    public static Gamepads.Button STWHACKER_DOWN = Gamepads.Button.GP2_LEFT_BUMPER;
-    public static Gamepads.Button STWHACKER_UP = Gamepads.Button.GP2_RIGHT_BUMPER;
 }
