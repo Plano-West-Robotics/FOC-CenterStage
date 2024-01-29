@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
+import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.macro.Wait;
@@ -31,6 +32,7 @@ public class Teleop extends OpModeWrapper {
     boolean armManual;
 
     Macro launchMacro;
+    Macro stackro;
 
     @Override
     public void setup() {
@@ -60,6 +62,17 @@ public class Teleop extends OpModeWrapper {
                 )
         );
 
+        stackro = new Macro(
+                Sequence.of(
+                        Action.fromFn(() -> intake.setReversed(false)),
+                        Action.fromFn(() -> intake.start()),
+                        Action.fromFn(() -> intake.update()),
+                        Wait.millis(100),
+                        Action.fromFn(() -> intake.stop()),
+                        Action.fromFn(() -> intake.update())
+                )
+        );
+
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
         ledStrip.update();
@@ -86,17 +99,24 @@ public class Teleop extends OpModeWrapper {
         drive.setSpeed(driveSpeed);
         telemetry.addData("Drive speed", String.format("%.2f", drive.getSpeed()));
 
-        if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
-            intake.toggleRunning();
-        }
-        if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
-            intake.reverse();
-            if (intake.isReversed()) {
-                ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
-            } else {
-                ledStrip.setMode(LED.Mode.RUNNING);
+        if (!stackro.isRunning()) {
+            if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
+                intake.toggleRunning();
+            }
+            if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
+                intake.reverse();
+                if (intake.isReversed()) {
+                    ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
+                } else {
+                    ledStrip.setMode(LED.Mode.RUNNING);
+                }
             }
         }
+
+        if (gamepads.justPressed(Controls.STACKRO)) {
+            stackro.start();
+        }
+
         intakeSpeed = Range.clip(intakeSpeed, 0.1, 1.0);
         intake.setSpeed(intakeSpeed);
         telemetry.addData("Intake speed", String.format("%.2f", intakeSpeed));
@@ -176,5 +196,6 @@ public class Teleop extends OpModeWrapper {
         arm.update();
 
         launchMacro.update();
+        stackro.update();
     }
 }

@@ -15,6 +15,7 @@ public class Controls {
     public static Gamepads.Button INTAKE_REVERSE = Gamepads.Button.GP1_CIRCLE;
     public static Gamepads.Button INTAKE_DIR_TOG = Gamepads.Button.GP1_CIRCLE;
     public static Gamepads.Button LAUNCH_PLANE = Gamepads.Button.GP1_GUIDE;
+    public static Gamepads.Button STACKRO = Gamepads.Button.GP1_TRIANGLE;
 
     // ======================= GAMEPAD 2 ============================
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;

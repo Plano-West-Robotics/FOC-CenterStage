@@ -42,6 +42,10 @@ public class Intake {
         reversed = !reversed;
     }
 
+    public void setReversed(boolean rev) {
+        reversed = rev;
+    }
+
     public boolean isReversed() {
         return reversed;
     }
