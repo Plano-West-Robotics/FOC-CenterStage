@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.poser;
 
 public class Angle {
+    private static final double TAU = 2 * Math.PI;
+
     private final double val; // in radians
 
     public static final Angle ZERO = new Angle(0);
@@ -69,31 +71,24 @@ public class Angle {
         return new Angle(-this.val);
     }
 
-    public Angle modPositive() {
-//        return new Angle(this.val % (2 * Math.PI));
+    private double modTau(double v) {
+        v = v % TAU;
+        if (v < 0) {
+            v += TAU;
+        }
+        return v;
+    }
 
-        double val = this.val;
-        while (val >= 2 * Math.PI) val -= 2 * Math.PI;
-        while (val < 0) val += 2 * Math.PI;
-        return new Angle(val);
+    public Angle modPositive() {
+        return new Angle(modTau(this.val));
     }
 
     public Angle modNegative() {
-//        return new Angle((this.val % (2 * Math.PI)) - 2 * Math.PI);
-
-        double val = this.val;
-        while (val >= 0) val -= 2 * Math.PI;
-        while (val < -2 * Math.PI) val += 2 * Math.PI;
-        return new Angle(val);
+        return new Angle(modTau(this.val) - TAU);
     }
 
     public Angle modSigned() {
-//        return new Angle(((this.val + Math.PI) % (2 * Math.PI)) - Math.PI);
-
-        double val = this.val;
-        while (val >= Math.PI) val -= 2 * Math.PI;
-        while (val < -Math.PI) val += 2 * Math.PI;
-        return new Angle(val);
+        return new Angle(modTau(this.val + Math.PI) - Math.PI);
     }
 
     public double sin() {
