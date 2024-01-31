@@ -162,13 +162,13 @@ public abstract class UpstageAuto2Base extends AutoBase {
                     ),
                     // but also pull the pixels into the box at the same time
                     Sequence.of(
-                            Wait.seconds(300),
+                            Wait.millis(300),
                             Action.fromFn(() -> {
                                 arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
                                 intake.start();
                                 intake.update();
                             }),
-                            Wait.seconds(1500),
+                            Wait.millis(1500),
                             Action.fromFn(() -> {
                                 arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
                                 intake.stop();
