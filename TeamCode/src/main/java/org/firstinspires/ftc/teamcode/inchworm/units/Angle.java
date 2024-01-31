@@ -57,7 +57,6 @@ public class Angle {
         // convert to degrees because mod 2pi doesn't work?
         double angle = theta.angleInDegrees();
 
-        angle += 360.0;
         angle %= 360.0;
 
         // convert back when done

@@ -5,68 +5,87 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(0, 0),
-        DOWN(1, 1);
-        private final double elbow, wrist;
+        UP(1, 1),
+        DOWN(0.5, 0),
+        INTERMEDIATE(0.15, 0);
 
-        ArmPosition(double elbow, double wrist) {
-            this.elbow = elbow;
-            this.wrist = wrist;
+        private final double wristPos;
+        private final double elbowPos;
+
+        ArmPosition(double wrist, double elbow) {
+            this.wristPos = wrist;
+            this.elbowPos = elbow;
         }
     }
-    public enum PegPosition {
-        ENGAGED(1), DISENGAGED(0);
+    public enum FlapPosition {
+        CLOSED(0), OPEN(1);
 
         private final double pos;
 
-        PegPosition(double p) {
+        FlapPosition(double p) {
+            pos = p;
+        }
+    }
+
+    public enum BlockerPosition {
+        BLOCK(0), UNBLOCK(1); // todo: change these if needed
+
+        private final double pos;
+
+        BlockerPosition(double p) {
             pos = p;
         }
     }
 
     public ArmPosition currentArmPos = ArmPosition.DOWN;
-    public PegPosition currentPegPos = PegPosition.DISENGAGED;
+    public FlapPosition currentFlapPos = FlapPosition.OPEN;
+    public BlockerPosition currentBlockerPos = BlockerPosition.UNBLOCK;
     Hardware hardware;
-    Telemetry telemetry;
-    public Arm(Hardware hw, Telemetry telem) {
+
+    public Arm(Hardware hw) {
         hardware = hw;
-        telemetry = telem;
     }
 
     public void setArmPosition(ArmPosition newPos) {
         currentArmPos = newPos;
 
-        hardware.elbowL.setPosition(newPos.elbow); // todo: test this and see
-        hardware.elbowR.setPosition(1-newPos.elbow);
+        hardware.elbowL.setPosition(newPos.elbowPos);
+        hardware.elbowR.setPosition(newPos.elbowPos);
 
-        hardware.wristL.setPosition(newPos.wrist); // todo: test this and see
-        hardware.wristR.setPosition(1-newPos.wrist);
+        hardware.wristL.setPosition(newPos.wristPos);
+        hardware.wristR.setPosition(newPos.wristPos);
     }
 
-    public void toggleArmPosition() {
-        switch (currentArmPos) {
-            case UP:
-                setArmPosition(ArmPosition.DOWN);
+    public void setFlapPosition(FlapPosition newPos) {
+        currentFlapPos = newPos;
+
+        hardware.flap.setPosition(newPos.pos);
+    }
+
+    public void toggleFlapPosition() {
+        switch (currentFlapPos) {
+            case CLOSED:
+                setFlapPosition(FlapPosition.OPEN);
                 break;
-            case DOWN:
-                setArmPosition(ArmPosition.UP);
+            case OPEN:
+                setFlapPosition(FlapPosition.CLOSED);
                 break;
         }
     }
 
-    public void setPegPosition(PegPosition newPos) {
-        currentPegPos = newPos;
+    public void setBlockerPosition(BlockerPosition newPos) {
+        currentBlockerPos = newPos;
 
-        hardware.peg.setPosition(newPos.pos);
+        hardware.blocker.setPosition(newPos.pos);
     }
 
-    public void togglePegPosition() {
-        switch (currentPegPos) {
-            case ENGAGED:
-                setPegPosition(PegPosition.DISENGAGED);
+    public void toggleBlockerPosition() {
+        switch (currentBlockerPos) {
+            case BLOCK:
+                setBlockerPosition(BlockerPosition.UNBLOCK);
                 break;
-            case DISENGAGED:
-                setPegPosition(PegPosition.ENGAGED);
+            case UNBLOCK:
+                setBlockerPosition(BlockerPosition.BLOCK);
                 break;
         }
     }

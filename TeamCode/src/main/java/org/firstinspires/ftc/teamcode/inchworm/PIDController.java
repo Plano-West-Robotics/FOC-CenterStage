@@ -46,7 +46,7 @@ public class PIDController {
 
         double deltaTime = timer.seconds();
 
-        double currentFilterEstimate = (0.6 * lastFilterEstimate) + (1-0.6) * (error - lastError);
+        double currentFilterEstimate = (0.6 * lastFilterEstimate) + (1 - 0.6) * (error - lastError);
         lastFilterEstimate = currentFilterEstimate;
 
         // derivative, AKA rate of change of the error

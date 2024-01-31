@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.freesight.pipelines;
 
-import com.acmerobotics.dashboard.config.Config;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -14,11 +12,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 
 
-@Config
 public class FreeSightPipeline extends OpenCvPipeline {
 
     public enum Prop {
-        BLUE, ORANGE, NONE
+        BLUE, MAGENTA, NONE
     }
 
     public enum Side {
@@ -33,14 +30,13 @@ public class FreeSightPipeline extends OpenCvPipeline {
     public Scalar outline = new Scalar(0, 255, 0);
     public Prop colorState = Prop.NONE;
 
-    private Mat empty = new Mat();
-    private Mat main = new Mat();
-    private Mat masked = new Mat();
-    private Mat scaledThresh = new Mat();
-    private Mat scaledMask = new Mat();
-    private Mat threshold = new Mat();
-    private Mat hierarchy = new Mat();
-
+    private final Mat empty = new Mat();
+    private final Mat main = new Mat();
+    private final Mat masked = new Mat();
+    private final Mat scaledThresh = new Mat();
+    private final Mat scaledMask = new Mat();
+    private final Mat threshold = new Mat();
+    private final Mat hierarchy = new Mat();
 
     /**
      * @param input the frame to be manipulated
@@ -69,15 +65,16 @@ public class FreeSightPipeline extends OpenCvPipeline {
          * Scalar highHSV = new Scalar(213.9, 240.8, 255);
          */
         if (colorState == Prop.BLUE) {
-            lowHSV = new Scalar(55.3, 62.3, 53.8);
-            highHSV = new Scalar(213.9, 240.8, 255);
-        } else if (colorState == Prop.ORANGE) {
-            lowHSV = new Scalar(0, 106.3, 198.3);
-            highHSV = new Scalar(14.2, 255, 255);
+            lowHSV = new Scalar(77.9, 79.3, 109.1);
+            highHSV = new Scalar(106.3, 154.4, 255.0);
+        } else if (colorState == Prop.MAGENTA) {
+            lowHSV = new Scalar(171.4, 92.1, 0);
+            highHSV = new Scalar(208.3, 212.5, 255);
         }
         //Mat threshold = new Mat();
 
         Core.inRange(main, lowHSV, highHSV, threshold);
+        Imgproc.cvtColor(threshold, input, Imgproc.COLOR_GRAY2RGB);
 
         //masked = new Mat();
 
@@ -89,16 +86,13 @@ public class FreeSightPipeline extends OpenCvPipeline {
 
         masked.convertTo(scaledMask, -1, 150 / avg.val[1], 0);
 
-        //scaledThresh = new Mat();
         double strictLowS;
-        //you probably want to tune this
         if (colorState == Prop.BLUE)
             strictLowS = 62.3;
         else
-            strictLowS = 86.4; // orange
-        Scalar strictLowHSV = new Scalar(0, strictLowS, 0); //strict lower bound HSV for yellow
-        Scalar strictHighHSV = new Scalar(255, 255, 255); //strict higher bound HSV for yellow
-        //apply strict HSV filter onto scaledMask to get rid of any yellow other than pole
+            strictLowS = 86.4;
+        Scalar strictLowHSV = new Scalar(0, strictLowS, 0);
+        Scalar strictHighHSV = new Scalar(255, 255, 255);
         Core.inRange(scaledMask, strictLowHSV, strictHighHSV, scaledThresh);
 
         //contours, apply post processing to information
@@ -159,8 +153,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
             Imgproc.circle(
                     input,
                     new Point(
-                            boundingRect.x + boundingRect.width / 2,
-                            boundingRect.y + boundingRect.height / 2
+                            boundingRect.x + boundingRect.width / 2.0,
+                            boundingRect.y + boundingRect.height / 2.0
                     ),
                     10,
                     outline
@@ -169,8 +163,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
                     input,
                     positionState.toString(),
                     new Point(
-                            boundingRect.x + boundingRect.width / 2,
-                            boundingRect.y + boundingRect.height / 2
+                            boundingRect.x + boundingRect.width / 2.0,
+                            boundingRect.y + boundingRect.height / 2.0
                     ),
                     Imgproc.FONT_ITALIC,
                     0.5,

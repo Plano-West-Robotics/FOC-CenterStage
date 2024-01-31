@@ -15,11 +15,11 @@ public class Distance {
     /**
      * Encoder ticks per motor revolution for your drive motors. You can find this information online.
      */
-    public static final double TICKS_PER_REV = 560;
+    public static final double TICKS_PER_REV = 538;
     /**
      * Diameter of your mecanum wheels in inches.
      */
-    public static final Distance WHEEL_DIAMETER = Distance.inches(3);
+    public static final Distance WHEEL_DIAMETER = Distance.centimeters(9.6);
     /**
      * Encoder ticks per inch rotated
      */

@@ -1,58 +1,62 @@
 package org.firstinspires.ftc.teamcode.tune;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
+import org.firstinspires.ftc.teamcode.poser.Localizer;
+import org.firstinspires.ftc.teamcode.poser.Pose;
+import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
-@Autonomous(group="tune")
+@TeleOp(group = "tune")
 public class SpeedTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
-        InchWorm inchWorm = new InchWorm(this,
-                InchWorm.GLOBAL_ORIENTATION,
-                InchWorm.POSE_ZERO);
-
+        Hardware hardware = new Hardware(this);
+        Localizer localizer = new TwoDeadWheelLocalizer(hardware, Pose.ZERO);
+        Drive drive = new Drive(hardware, 1);
 
         waitForStart();
 
-        double lastY = 0;
+        double lastX = 0;
         double veloSum = 0;
         int numMeasurements = 0;
 
         ElapsedTime timer = new ElapsedTime();
         double time = getRuntime() + 1;
-        inchWorm.moveWheels(0, 1, 0, 1);
+        drive.drive(0, 1, 0);
         while (getRuntime() < time) {
-            double y = inchWorm.tracker.currentPos.y.distInTicks();
+            double x = localizer.getPoseEstimate().pos.x.valInMM();
 
-            double velo = (y - lastY) / timer.seconds();
+            double velo = (x - lastX) / timer.seconds();
             veloSum += velo;
             numMeasurements++;
 
             timer.reset();
-            lastY = y;
-            inchWorm.tracker.update();
+            lastX = x;
+            localizer.update();
         }
 
-        inchWorm.moveWheels(0, 0, 0, 0);
+        drive.stop();
         time = getRuntime() + 1;
-        inchWorm.moveWheels(0, 0, 1, 1);
+        drive.drive(0, 0, 1);
 
         double angSum = 0;
         int angMeasurements = 0;
 
         while (getRuntime() < time) {
-            double current = Math.abs(inchWorm.imu.getRobotAngularVelocity(AngleUnit.DEGREES).zRotationRate);
+            double current = Math.abs(hardware.imu.getRobotAngularVelocity(AngleUnit.DEGREES).zRotationRate);
             angSum += current;
             angMeasurements++;
         }
 
-        inchWorm.moveWheels(0, 0, 0, 0);
+        drive.stop();
         while (opModeIsActive()) {
-            telemetry.addData("max velocity", veloSum / numMeasurements);
+            telemetry.addData("max velocity in mm / s", veloSum / numMeasurements);
             telemetry.addData("max angular velocity", angSum / angMeasurements);
             telemetry.update();
         }
