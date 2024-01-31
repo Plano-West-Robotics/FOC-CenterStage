@@ -28,6 +28,7 @@ public class Teleop extends OpModeWrapper {
     LED ledStrip;
     double driveSpeed;
     double intakeSpeed;
+    boolean armManual;
 
     Macro launchMacro;
 
@@ -44,6 +45,7 @@ public class Teleop extends OpModeWrapper {
         lift = new Lift(hardware);
 
         arm = new ControlledArm(hardware);
+        armManual = false;
 
         launcher = new PlaneLauncher(hardware);
         launcher.idle().run();
@@ -101,11 +103,25 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Intake reversed?", intake.isReversed());
         telemetry.addData("Intake running?", intake.isRunning());
 
-        if (gamepads.justPressed(Controls.ARM_UP)) {
-            arm.moveUp();
+        if (gamepads.isPressed(Controls.ARM_BACK_TO_AUTO)) {
+            armManual = false;
         }
-        if (gamepads.justPressed(Controls.ARM_DOWN)) {
-            arm.moveDown();
+        if (gamepads.isPressed(Controls.ARM_UP) || gamepads.isPressed(Controls.ARM_DOWN)) {
+            armManual = true;
+        }
+        if (armManual) {
+            if (gamepads.justPressed(Controls.ARM_UP)) {
+                arm.moveUp();
+            }
+            if (gamepads.justPressed(Controls.ARM_DOWN)) {
+                arm.moveDown();
+            }
+        } else {
+            if (hardware.slideLimitSwitch.isPressed()) {
+                arm.moveDown();
+            } else {
+                arm.moveUp();
+            }
         }
 
         if (gamepads.justPressed(Controls.FLAP_OPEN)) {
@@ -152,6 +168,9 @@ public class Teleop extends OpModeWrapper {
         ledStrip.update();
         telemetry.addData("Top state", ledStrip.sensor.top_state);
         telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
+
+        telemetry.addData("Magnet sensed", hardware.slideLimitSwitch.isPressed());
+        telemetry.addData("Auto arm state", armManual ? "manual" : "auto");
 
         intake.update();
         arm.update();

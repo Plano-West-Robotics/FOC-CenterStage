@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -38,6 +39,8 @@ public class Hardware {
 
     public RevColorSensorV3 top, bottom;
     public RevBlinkinLedDriver ledLeft, ledRight;
+
+    public RevTouchSensor slideLimitSwitch;
 
     public OpenCvCamera webcam;
 
@@ -154,6 +157,8 @@ public class Hardware {
 
         ledLeft = hardwareMap.get(RevBlinkinLedDriver.class, "ledLeft");
         ledRight = hardwareMap.get(RevBlinkinLedDriver.class, "ledRight");
+
+        slideLimitSwitch = hardwareMap.get(RevTouchSensor.class, "slideLimitSwitch");
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
