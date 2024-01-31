@@ -53,7 +53,7 @@ public class Teleop extends OpModeWrapper {
         launchMacro = new Macro(
                 Sequence.of(
                         launcher.aim(),
-                        Wait.millis(1000),
+                        Wait.millis(500),
                         launcher.fire(),
                         Wait.millis(500),
                         launcher.idle()
