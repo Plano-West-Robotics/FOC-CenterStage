@@ -15,7 +15,7 @@ public class Sequence implements Action {
      * @param actions the list of actions
      * @return the `Sequence`
      */
-    public static Action of(Action... actions) {
+    public static Sequence of(Action... actions) {
         return new Sequence(actions);
     }
 
