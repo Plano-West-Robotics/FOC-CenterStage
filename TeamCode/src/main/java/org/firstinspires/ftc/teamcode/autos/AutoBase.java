@@ -13,6 +13,11 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.openftc.easyopencv.PipelineRecordingParameters;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public abstract class AutoBase extends LinearOpMode {
     Alliance alliance;
@@ -86,7 +91,7 @@ public abstract class AutoBase extends LinearOpMode {
             ));
         }
 
-        this.poser = new Poser(hardware, 0.9, isFlipped, initialPose);
+        this.poser = new Poser(hardware, 0.7, isFlipped, initialPose);
     }
 
     public FreeSightPipeline.Side runVisionUntilStart() {

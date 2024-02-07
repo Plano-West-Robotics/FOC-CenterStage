@@ -12,17 +12,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
-import org.firstinspires.ftc.teamcode.poser.Encoder;
+import org.firstinspires.ftc.teamcode.poser.localization.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvPipeline;
 
 /**
  * Hardware wrapper to abstract motors and stuff. I recommend you use this to keep yourself sane.
@@ -44,7 +41,8 @@ public class Hardware {
 
     public RevTouchSensor slideLimitSwitch;
 
-    public OpenCvCamera webcam;
+    public OpenCvCamera frontCam;
+    public OpenCvCamera rearCam;
 
     public OpMode opMode;
     public DashboardTelemetryWrapper dashboardTelemetry;
@@ -164,7 +162,9 @@ public class Hardware {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"));
+        OpenCvCameraFactory cameraFactory = OpenCvCameraFactory.getInstance();
+        frontCam = cameraFactory.createWebcam(hardwareMap.get(WebcamName.class, "frontCam"));
+        rearCam = cameraFactory.createWebcam(hardwareMap.get(WebcamName.class, "rearCam"));
     }
 
     /**
@@ -191,19 +191,5 @@ public class Hardware {
      */
     public double getYaw() {
         return getYaw(AngleUnit.RADIANS);
-    }
-
-    public void openCamera(OpenCvPipeline pipeline) {
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.setPipeline(pipeline);
-                webcam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
-                FtcDashboard.getInstance().startCameraStream(webcam, 0);
-            }
-
-            @Override
-            public void onError(int errorCode) {}
-        });
     }
 }

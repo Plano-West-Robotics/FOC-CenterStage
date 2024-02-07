@@ -21,6 +21,20 @@ public class Pose {
         );
     }
 
+    public Pose sub(Pose base) {
+        return new Pose(
+                this.pos.sub(base.pos).rot(base.yaw.neg()),
+                this.yaw.sub(base.yaw)
+        );
+    }
+
+    public Pose scale(double k) {
+        return new Pose(
+                this.pos.mul(k),
+                this.yaw.mul(k)
+        );
+    }
+
     public Pose flippedAcrossXAxis() {
         return new Pose(
                 new Distance2(this.pos.x, this.pos.y.neg()),

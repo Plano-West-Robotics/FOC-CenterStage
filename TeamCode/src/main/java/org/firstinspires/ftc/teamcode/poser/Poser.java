@@ -1,17 +1,21 @@
 package org.firstinspires.ftc.teamcode.poser;
 
-import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.apriltag.AprilTagDetector;
+import org.firstinspires.ftc.teamcode.poser.localization.AprilTagLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.KalmanFilter;
+import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
+import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ControlFlow;
+import org.openftc.apriltag.AprilTagDetectorJNI;
 
 public class Poser {
     private final Hardware hardware;
-    private final Localizer localizer;
+    public final Localizer localizer;
 
     private double speed;
     private Pose lastTarget;
@@ -20,12 +24,18 @@ public class Poser {
     private static Distance MAX_VEL = Distance.inMM(939.571); // mm/s
     private static Angle MAX_ANG_VEL = Angle.inDegrees(156.941); // deg/s
 
-    private static final boolean ENABLE_DRAWING = false;
+    private static final boolean ENABLE_DRAWING = true;
 
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
-        this.localizer = new TwoDeadWheelLocalizer(hardware, initialPose);
-
+        AprilTagDetector detector = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        this.localizer = new KalmanFilter(
+                initialPose,
+                new TwoDeadWheelLocalizer(hardware),
+                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.FRONT),
+                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.REAR)
+        );
+//        this.localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), initialPose);
         this.speed = speed;
         // flip it back if needed
         // TODO: cursed
@@ -36,6 +46,14 @@ public class Poser {
             this.hardware.dashboardTelemetry.drawRobot(initialPose);
             this.hardware.dashboardTelemetry.update();
         }
+    }
+
+    public double getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public void move(double powerX, double powerY, double turn) {
@@ -128,20 +146,20 @@ public class Poser {
     }
 
     public class Motion implements Action {
-        private final PIDController xCtrl = new PIDController(2.5, 0, 0);
-        private final PIDController yCtrl = new PIDController(2.5, 0, 0);
-        private final PIDController yawCtrl = new PIDController(1.5, 0, 0);
+        private final PIDController xCtrl = new PIDController(2.5, 0, 0.15);
+        private final PIDController yCtrl = new PIDController(2.5, 0, 0.15);
+        private final PIDController yawCtrl = new PIDController(1.5, 0, 0.15);
         private final Pose target;
         private RotationDirection rotationDirection;
 
-//        private long lastUpdate;
+        private long lastUpdate;
 
         public Motion(Pose target) {
             this.target = target;
 
             this.rotationDirection = RotationDirection.NONE;
 
-//            this.lastUpdate = System.nanoTime();
+            this.lastUpdate = System.nanoTime();
         }
 
         public Motion turningCw() {
@@ -171,10 +189,10 @@ public class Poser {
                 hardware.dashboardTelemetry.update();
             }
 
-//            long now = System.nanoTime();
-//            long dtNanos = now - lastUpdate;
-//            lastUpdate = now;
-//            double dt = dtNanos / (1000 * 1000 * 1000.);
+            long now = System.nanoTime();
+            long dtNanos = now - lastUpdate;
+            lastUpdate = now;
+            double dt = dtNanos / (1000 * 1000 * 1000.);
 
             poser.localizer.update();
             Pose pose = poser.localizer.getPoseEstimate();
@@ -198,6 +216,7 @@ public class Poser {
 
             Vector2 pow = targetVel.div(MAX_VEL);
             pow = pow.normalized().mul(Range.clip(pow.magnitude(), 0, 1) * poser.speed);
+            pow = pow.rot(targetAngVel.mul(dt).div(2).neg()); // "reverse pose exp"
             double angPow = targetAngVel.div(MAX_ANG_VEL);
             angPow = Range.clip(angPow, -1, 1) * poser.speed;
 

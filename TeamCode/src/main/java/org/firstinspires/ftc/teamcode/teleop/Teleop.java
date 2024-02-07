@@ -2,14 +2,21 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import android.annotation.SuppressLint;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
+import org.firstinspires.ftc.teamcode.apriltag.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.macro.Wait;
+import org.firstinspires.ftc.teamcode.poser.Pose;
+import org.firstinspires.ftc.teamcode.poser.localization.AprilTagLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.KalmanFilter;
+import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
+import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
@@ -18,6 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.LED;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 import org.firstinspires.ftc.teamcode.subsystems.Sensor;
+import org.openftc.apriltag.AprilTagDetectorJNI;
 
 @TeleOp(name = "CCCCCCCCC")
 public class Teleop extends OpModeWrapper {
@@ -34,8 +42,20 @@ public class Teleop extends OpModeWrapper {
     Macro launchMacro;
     Macro stackro;
 
+    Localizer localizer;
+
     @Override
     public void setup() {
+        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        this.localizer = new KalmanFilter(
+                Pose.ZERO,
+                new TwoDeadWheelLocalizer(hardware),
+                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+                new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
+        );
+        FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
+
         driveSpeed = 1;
         intakeSpeed = 1; // change this speed if you have to
         drive = new Drive(hardware, driveSpeed);
@@ -86,6 +106,9 @@ public class Teleop extends OpModeWrapper {
     @SuppressLint("DefaultLocale")
     @Override
     public void run() {
+        localizer.update();
+        hardware.dashboardTelemetry.drawRobot(localizer.getPoseEstimate());
+
         telemetry.addData("Yaw", hardware.getYaw());
 
         if (gamepads.isPressed(Controls.SLOW_SPEED)) {

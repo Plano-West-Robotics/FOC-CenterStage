@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 @Autonomous(name = "Upstage Right Auto")
-public class UpstageRightAuto extends UpstageAutoBase {
+public class UpstageRightAuto extends UpstageAuto2Base {
     @Override
     public void runOpMode() throws InterruptedException {
         this.runOpMode(Alliance.BLUE);

@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.poser;
+package org.firstinspires.ftc.teamcode.poser.localization;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Pose;
 
-public class DriveEncoderLocalizer implements Localizer {
+public class DriveEncoderLocalizer implements DeltaLocalizer {
     Hardware hardware;
-
-    private Pose poseEstimate;
 
     // sensor readings
     int fl;
@@ -22,9 +22,8 @@ public class DriveEncoderLocalizer implements Localizer {
     private static final double X_AXIS_CALIB = 1.0390625;
     private static final double Y_AXIS_CALIB = 1.2734375;
 
-    public DriveEncoderLocalizer(Hardware hardware, Pose initialPose) {
+    public DriveEncoderLocalizer(Hardware hardware) {
         this.hardware = hardware;
-        this.poseEstimate = initialPose;
 
         this.fl = hardware.fl.getCurrentPosition();
         this.fr = hardware.fr.getCurrentPosition();
@@ -35,7 +34,7 @@ public class DriveEncoderLocalizer implements Localizer {
         this.imuYaw = Angle.inRadians(hardware.getYaw(AngleUnit.RADIANS));
     }
 
-    public void update() {
+    public Pose updateWithDelta() {
         int newFl = hardware.fl.getCurrentPosition();
         int newFr = hardware.fr.getCurrentPosition();
         int newBl = hardware.bl.getCurrentPosition();
@@ -59,16 +58,14 @@ public class DriveEncoderLocalizer implements Localizer {
         // double yawDiff = ((flDiff - frDiff + blDiff - brDiff) / 4.) * MM_PER_ENCODER_TICK * DEGREES_PER_MM;
         // double noopDiff = (flDiff + frDiff - blDiff - brDiff) / 4.;
 
-        this.poseEstimate = this.poseEstimate.then(Localizer.poseExpHelper(relativeXDiff, relativeYDiff, imuYawDiff));
+        Pose delta = DeltaLocalizer.poseExpHelper(relativeXDiff, relativeYDiff, imuYawDiff);
 
         this.fl = newFl;
         this.fr = newFr;
         this.bl = newBl;
         this.br = newBr;
         this.imuYaw = newImuYaw;
-    }
 
-    public Pose getPoseEstimate() {
-        return this.poseEstimate;
+        return delta;
     }
 }

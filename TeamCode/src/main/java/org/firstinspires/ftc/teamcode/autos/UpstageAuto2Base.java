@@ -36,15 +36,17 @@ public abstract class UpstageAuto2Base extends AutoBase {
                 break;
             case MIDDLE:
                 poser.goTo(
-                        Distance.inTiles(0.5).add(Distance.inInches(4.5)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(2))
+                        Distance.inTiles(1),
+                        Distance.inTiles(-1).sub(Distance.inInches(3)),
+                        Angle.BACKWARD.sub(Angle.inRadians(Math.PI / 16))
                 ).run();
                 break;
             case RIGHT:
                 yOffsetAtBackdrop = Distance.inInches(-6);
                 poser.goTo(
-                        Distance.inTiles(1),
-                        Distance.inTiles(-2).add(Distance.inInches(3))
+                        Distance.inTiles(1.5).sub(Distance.inInches(4)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(1)),
+                        Angle.BACKWARD
                 ).run();
                 break;
         }
@@ -57,29 +59,26 @@ public abstract class UpstageAuto2Base extends AutoBase {
         intake.reverse();
         intake.update();
 
-        switch (randomization) {
-            case MIDDLE:
-            case RIGHT:
-                poser.moveBy(
-                        Distance.ZERO,
-                        Distance.inInches(-3)
-                ).run();
-                break;
-            default:
-                break;
-        }
+//        switch (randomization) {
+//            case MIDDLE:
+//            case RIGHT:
+//                poser.moveBy(
+//                        Distance.ZERO,
+//                        Distance.inInches(-3)
+//                ).run();
+//                break;
+//            default:
+//                break;
+//        }
 
         // go in front of backdrop
         poser.goTo(
-                Distance.inTiles(1.5),
-                Distance.inTiles(-2)
-        ).run();
-        poser.goTo(Angle.BACKWARD).run();
-        poser.goTo(
                 Distance.inTiles(2),
-                Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
+                Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
+                Angle.BACKWARD
         ).run();
 
+        // for cycling
         if (yOffsetAtBackdrop.isZero()) yOffsetAtBackdrop = Distance.inInches(6);
 
         Runnable dropPixels = () -> {
@@ -115,19 +114,27 @@ public abstract class UpstageAuto2Base extends AutoBase {
         Runnable takePixels = () -> {
             // start in front of the backdrop
             // move into the C/D file
+            poser.setSpeed(poser.getSpeed()*2/3);
             poser.goTo(
                     Distance.inTiles(2),
-                    Distance.inTiles(-0.5)
+                    Distance.inTiles(-0.4)
             ).run();
+            poser.setSpeed(poser.getSpeed()*3/2);
             // cross the field to the stack
             poser.goTo(
-                    Distance.inTiles(-2.5).sub(Distance.inInches(3)),
+                    Distance.inTiles(-1.5),
+                    Distance.inTiles(-0.4)
+            ).run();
+            poser.setSpeed(poser.getSpeed() / 3);
+            poser.goTo(
+                    Distance.inTiles(-2.5).sub(Distance.inInches(2)),
                     Distance.inTiles(-0.5)
             ).run();
+            poser.setSpeed(poser.getSpeed() * 3);
             RunUntil.firstCompletes(
                     // pick up the pixels
                     Sequence.of(
-                            Wait.millis(100),
+                            Wait.millis(750),
                             Action.fromFn(() -> {
                                 intake.start();
                                 intake.update();
@@ -149,16 +156,22 @@ public abstract class UpstageAuto2Base extends AutoBase {
             ).run();
             ConcurrentSet.of(
                     Sequence.of(
+                            // move away from the stack
+                            poser.goTo(
+                                    Distance.inTiles(-1.5),
+                                    Distance.inTiles(-0.4)
+                            ),
                             // move back to the other side of the field
                             poser.goTo(
-                                    Distance.inTiles(2),
-                                    Distance.inTiles(-0.5)
+                                    Distance.inTiles(1.6),
+                                    Distance.inTiles(-0.4)
                             ),
                             // and back in front of the backdrop
                             poser.goTo(
-                                    Distance.inTiles(2),
+                                    Distance.inTiles(1.6),
                                     Distance.inTiles(-1.5).add(finalYOffsetAtBackdrop)
-                            )
+                            ),
+                            poser.goToX(Distance.inTiles(2))
                     ),
                     // but also pull the pixels into the box at the same time
                     Sequence.of(
@@ -168,7 +181,7 @@ public abstract class UpstageAuto2Base extends AutoBase {
                                 intake.start();
                                 intake.update();
                             }),
-                            Wait.millis(1500),
+                            Wait.millis(2000),
                             Action.fromFn(() -> {
                                 arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
                                 intake.stop();

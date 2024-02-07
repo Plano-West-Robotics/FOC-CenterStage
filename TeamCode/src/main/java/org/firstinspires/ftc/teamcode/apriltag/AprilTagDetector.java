@@ -40,13 +40,13 @@ public class AprilTagDetector {
                 324.831,
                 246.725
         );
-        public static final LensIntrinsics FOR_C920_CAMERA_AT_800X448 = new AprilTagDetector.LensIntrinsics(
+        public static final LensIntrinsics FOR_C920_CAMERA_AT_800X448 = new LensIntrinsics(
                 578.272,
                 578.272,
                 402.145,
                 221.506
         );
-        public static final LensIntrinsics FOR_C270_CAMERA_AT_800X448 = new AprilTagDetector.LensIntrinsics(
+        public static final LensIntrinsics FOR_C270_CAMERA_AT_800X448 = new LensIntrinsics(
                 857.212,
                 853.720,
                 405.908,
@@ -99,8 +99,8 @@ public class AprilTagDetector {
     }
 
     public static class AprilTagDetection {
-        // this backreference prevents the `AprilTagDetections` class from being finalized and freeing `this.ptr`
-        private AprilTagDetections origin;
+        // this backreference prevents the `AprilTagDetections` class from being finalized and freeing `this.detectionPtr`
+        private final AprilTagDetections origin;
 
         public final int id;
         public final int hamming;
@@ -162,9 +162,9 @@ public class AprilTagDetector {
     }
 
     public static class AprilTagDetections implements Iterable<AprilTagDetection> {
-        private long detectionsPtr; // needed to free the memory
-        private long[] detectionPtrs;
-        private LensIntrinsics intrinsics; // needed to get the pose estimate
+        private final long detectionsPtr; // needed to free the memory
+        private final long[] detectionPtrs;
+        private final LensIntrinsics intrinsics; // needed to get the pose estimate
 
         private AprilTagDetections(long detectionsPtr, LensIntrinsics intrinsics) {
             this.detectionsPtr = detectionsPtr; // may be zero if nothing was detected
@@ -192,9 +192,9 @@ public class AprilTagDetector {
 
     public static class AprilTagDetectionIterator implements Iterator<AprilTagDetection> {
         // this backreference prevents the `AprilTagDetections` class from being finalized and freeing `this.detectionPtrs`
-        private AprilTagDetections origin;
+        private final AprilTagDetections origin;
 
-        private long[] detectionPtrs;
+        private final long[] detectionPtrs;
         private int index;
 
         private AprilTagDetectionIterator(AprilTagDetections origin) {

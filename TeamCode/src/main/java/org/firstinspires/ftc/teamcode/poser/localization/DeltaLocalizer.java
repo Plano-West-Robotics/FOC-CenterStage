@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.poser;
+package org.firstinspires.ftc.teamcode.poser.localization;
 
-public interface Localizer {
-    Pose getPoseEstimate();
+import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Distance2;
+import org.firstinspires.ftc.teamcode.poser.Pose;
 
-    void update();
+public interface DeltaLocalizer {
+    Pose updateWithDelta();
 
     static Pose poseExpHelper(double xDiff, double yDiff, double yawDiff) {
         return poseExpHelper(xDiff, yDiff, Angle.inRadians(yawDiff));

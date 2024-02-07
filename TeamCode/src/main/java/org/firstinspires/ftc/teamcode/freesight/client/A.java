@@ -4,32 +4,24 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.freesight.pipelines.APipeline;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FSTuner;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
-import org.openftc.easyopencv.*;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
-public class FreeSight {
-    public FreeSightPipeline pipe;
+public class A {
+    public APipeline pipe;
     private final OpenCvCamera web;
     private final Telemetry telemetry;
-    private boolean debug = false;
 
-    public FreeSight(Hardware hardware, Telemetry telemetry) {
+    public A(Hardware hardware, Telemetry telemetry) {
         web = hardware.frontCam;
         this.telemetry = telemetry;
     }
-    public FreeSight(Hardware hardware, Telemetry telemetry, boolean debug) {
-        web = hardware.frontCam;
-        this.telemetry = telemetry;
-        this.debug = debug;
-    }
-
 
     public void init() {
-        if(!debug)
-            pipe = new FreeSightPipeline();
-        else
-            pipe = new FSTuner();
+        pipe = new APipeline();
         web.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -46,7 +38,7 @@ public class FreeSight {
         });
     }
 
-    public FreeSightPipeline.Side getPosition() {
+    public double getPosition() {
         return pipe.positionState;
     }
 

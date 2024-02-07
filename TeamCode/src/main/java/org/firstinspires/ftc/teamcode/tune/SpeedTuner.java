@@ -6,10 +6,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
-import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
-import org.firstinspires.ftc.teamcode.poser.Localizer;
+import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
-import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 @TeleOp(group = "tune")
@@ -17,7 +16,7 @@ public class SpeedTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
         Hardware hardware = new Hardware(this);
-        Localizer localizer = new TwoDeadWheelLocalizer(hardware, Pose.ZERO);
+        Localizer localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), Pose.ZERO);
         Drive drive = new Drive(hardware, 1);
 
         waitForStart();

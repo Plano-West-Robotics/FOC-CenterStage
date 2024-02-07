@@ -11,9 +11,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.inchworm.PIDController;
 import org.firstinspires.ftc.teamcode.poser.Angle;
-import org.firstinspires.ftc.teamcode.poser.Localizer;
+import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
-import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 @Config
@@ -31,7 +31,7 @@ public class TurnPIDTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
         Hardware hardware = new Hardware(this);
-        Localizer localizer = new TwoDeadWheelLocalizer(hardware, Pose.ZERO);
+        Localizer localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), Pose.ZERO);
         Drive drive = new Drive(hardware, 1);
 
         PIDController controller = new PIDController(Kp, Ki, Kd, TARGET);

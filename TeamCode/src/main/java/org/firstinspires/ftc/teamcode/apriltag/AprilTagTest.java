@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode.apriltag;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
+import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Distance2;
+import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.teleop.Controls;
+import org.opencv.core.MatOfDouble;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @TeleOp(name="AprilTag Test")
 public class AprilTagTest extends OpModeWrapper {
@@ -15,24 +21,38 @@ public class AprilTagTest extends OpModeWrapper {
 
     @Override
     public void setup() {
-        pipeline = new AprilTagPipeline();
-        hardware.openCamera(pipeline);
+        // 10 deg right, 20 deg down
+
+        pipeline = new AprilTagPipeline(new Pose3D(
+                new MatOfDouble(-9 * 25.4, -3 * 25.4, 3 * 25.4),
+                AprilTagPipeline.AUDIENCE_WALL_RVEC
+        ), telemetry);
+        hardware.rearCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                hardware.rearCam.setPipeline(pipeline);
+                hardware.rearCam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
         drive = new Drive(hardware, 0.3);
+
+        hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
+        hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
     }
 
     @Override
     public void run() {
-        TelemetryPacket packet = new TelemetryPacket();
-        packet.fieldOverlay().setFill("blue");
-
-        for (int i = 0; i < pipeline.cameraPoseEstimates.length; i++) {
-            if (pipeline.isVisible[i]) {
-                double[] xyz = pipeline.cameraPoseEstimates[i].tvec.toArray();
-                packet.fieldOverlay().fillCircle(xyz[0] / 25.4, xyz[1] / 25.4, 1);
-            }
+        Pose2D pose = pipeline.getPoseEstimate();
+        if (pose != null) {
+            hardware.dashboardTelemetry.drawRobot(new Pose(
+                    Distance2.inMM(pose.x, pose.y),
+                    Angle.inRadians(pose.yaw)
+            ));
         }
-
-        FtcDashboard.getInstance().sendTelemetryPacket(packet);
 
         drive.drive(
                 gamepads.getAnalogValue(Controls.STRAFE),

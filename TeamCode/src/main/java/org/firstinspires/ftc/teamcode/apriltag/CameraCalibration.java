@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.apriltag;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
 import org.firstinspires.ftc.teamcode.subsystems.Gamepads;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @TeleOp(name="Calibrate Camera Intrinsics")
 public class CameraCalibration extends OpModeWrapper {
@@ -12,7 +15,17 @@ public class CameraCalibration extends OpModeWrapper {
     @Override
     public void setup() {
         pipeline = new CalibrationPipeline();
-        hardware.openCamera(pipeline);
+        hardware.frontCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                hardware.rearCam.setPipeline(pipeline);
+                hardware.rearCam.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
+            }
+
+            @Override
+            public void onError(int errorCode) {}
+        });
     }
 
     @Override

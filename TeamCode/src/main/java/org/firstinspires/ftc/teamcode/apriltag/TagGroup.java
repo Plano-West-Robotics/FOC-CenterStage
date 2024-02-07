@@ -15,10 +15,10 @@ public class TagGroup {
         }
     }
 
-    public Pose pose;
+    public Pose3D pose;
     public Tag[] tags;
 
-    public TagGroup(Pose pose, Tag... tags) {
+    public TagGroup(Pose3D pose, Tag... tags) {
         this.pose = pose;
         this.tags = tags;
     }

@@ -15,6 +15,7 @@ public class DashboardTelemetryWrapper implements Telemetry {
     private TelemetryPacket packet;
     private boolean canvasHoldingStaleData;
     private final TelemetryLog log;
+    private final Object lock = new Object();
 
     private static final Canvas DEFAULT_FIELD = new TelemetryPacket().fieldOverlay();
 
@@ -71,30 +72,34 @@ public class DashboardTelemetryWrapper implements Telemetry {
     }
 
     public void drawRobot(Pose pose) {
-        Canvas canvas = this.getCanvasForDrawing();
-        canvas.setStrokeWidth(1);
-        canvas.setFill("gray");
-        canvas.setStroke("black");
+        synchronized (lock) {
+            Canvas canvas = this.getCanvasForDrawing();
+            canvas.setStrokeWidth(1);
+            canvas.setFill("gray");
+            canvas.setStroke("black");
 
-        this.rawDrawRobot(pose);
+            this.rawDrawRobot(pose);
+        }
     }
 
     public void drawTarget(Pose target, Pose current) {
-        Canvas canvas = this.getCanvasForDrawing();
-        canvas.setStrokeWidth(1);
-        canvas.setFill("lightgreen");
-        canvas.setStroke("lightgreen");
+        synchronized (lock) {
+            Canvas canvas = this.getCanvasForDrawing();
+            canvas.setStrokeWidth(1);
+            canvas.setFill("lightgreen");
+            canvas.setStroke("lightgreen");
 
-        canvas.fillCircle(target.pos.x.valInInches(), target.pos.y.valInInches(), 1);
-        canvas.strokeLine(
-                current.pos.x.valInInches(),
-                current.pos.y.valInInches(),
-                target.pos.x.valInInches(),
-                target.pos.y.valInInches()
-        );
+            canvas.fillCircle(target.pos.x.valInInches(), target.pos.y.valInInches(), 1);
+            canvas.strokeLine(
+                    current.pos.x.valInInches(),
+                    current.pos.y.valInInches(),
+                    target.pos.x.valInInches(),
+                    target.pos.y.valInInches()
+            );
 
-        canvas.setFill("transparent");
-        this.rawDrawRobot(target);
+            canvas.setFill("transparent");
+            this.rawDrawRobot(target);
+        }
     }
 
     @Override
@@ -156,12 +161,15 @@ public class DashboardTelemetryWrapper implements Telemetry {
 
     @Override
     public boolean update() {
-        TelemetryPacket oldPacket = this.packet;
-        this.packet = new TelemetryPacket();
-        this.packet.fieldOverlay().getOperations().addAll(oldPacket.fieldOverlay().getOperations());
-        this.canvasHoldingStaleData = true;
-        this.dashboard.sendTelemetryPacket(oldPacket);
-        return true;
+        synchronized (lock) {
+            TelemetryPacket oldPacket = this.packet;
+            this.packet = new TelemetryPacket();
+            this.packet.fieldOverlay().clear();
+            this.packet.fieldOverlay().getOperations().addAll(oldPacket.fieldOverlay().getOperations());
+            this.canvasHoldingStaleData = true;
+            this.dashboard.sendTelemetryPacket(oldPacket);
+            return true;
+        }
     }
 
     @Override

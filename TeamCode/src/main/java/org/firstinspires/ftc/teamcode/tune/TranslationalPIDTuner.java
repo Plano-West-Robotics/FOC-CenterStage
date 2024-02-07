@@ -11,10 +11,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.poser.PIDController;
 import org.firstinspires.ftc.teamcode.poser.Distance;
-import org.firstinspires.ftc.teamcode.poser.Localizer;
+import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.poser.Poser;
-import org.firstinspires.ftc.teamcode.poser.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 
 @Config
 @TeleOp(group = "tune")
@@ -31,7 +31,7 @@ public class TranslationalPIDTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
         Hardware hw = new Hardware(this);
-        Localizer localizer = new TwoDeadWheelLocalizer(hw, Pose.ZERO);
+        Localizer localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hw), Pose.ZERO);
         Poser poser = new Poser(hw, 1, false, Pose.ZERO);
 
         PIDController controller = new PIDController(Kp, Ki, Kd);

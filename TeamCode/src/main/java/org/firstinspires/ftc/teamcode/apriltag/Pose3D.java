@@ -8,7 +8,7 @@ import org.opencv.core.MatOfDouble;
 import org.opencv.core.Scalar;
 import org.openftc.apriltag.AprilTagPose;
 
-public class Pose {
+public class Pose3D {
 //    public static class Rvec {
 //        public final MatOfDouble inner;
 //
@@ -66,16 +66,35 @@ public class Pose {
     public final MatOfDouble tvec; // translation vector
     public final MatOfDouble rvec; // rotation vector; direction is axis, magnitude is angle
 
-    public Pose() {
+    public static Pose3D FRONT_CAMERA_POSE = new Pose3D(
+            new MatOfDouble(2 * 25.4, 6 * 25.4, 10 * 25.4),
+            // i give up
+            new MatOfDouble(-1.35176352811, 1.61096904096, -1.12801266631)
+    );
+
+    public static Pose3D REAR_CAMERA_POSE = new Pose3D(
+            new MatOfDouble(-8.5 * 25.4, -2.5 * 25.4, 2.75 * 25.4),
+            AprilTagPipeline.AUDIENCE_WALL_RVEC
+    );
+
+    public Pose3D() {
         this(new MatOfDouble(0, 0, 0), new MatOfDouble(0, 0, 0));
     }
 
-    public Pose(
+    public Pose3D(
             MatOfDouble tvec,
             MatOfDouble rvec
     ) {
         this.tvec = tvec;
         this.rvec = rvec;
+    }
+
+    public Pose3D duplicate() {
+        MatOfDouble tvec = new MatOfDouble();
+        MatOfDouble rvec = new MatOfDouble();
+        this.tvec.copyTo(tvec);
+        this.rvec.copyTo(rvec);
+        return new Pose3D(tvec, rvec);
     }
 
     public void copyFromAprilTagPose(AprilTagPose pose) {
@@ -103,6 +122,24 @@ public class Pose {
         R.release();
     }
 
+    public void compose(Pose3D other) {
+        Mat R1 = new Mat();
+        Calib3d.Rodrigues(this.rvec, R1);
+        Mat R2 = new Mat();
+        Calib3d.Rodrigues(other.rvec, R2);
+
+        Mat tvec2 = R1.matMul(other.tvec);
+        Core.add(this.tvec, tvec2, this.tvec);
+        tvec2.release();
+
+        Mat R3 = R1.matMul(R2);
+        Calib3d.Rodrigues(R3, this.rvec);
+        R3.release();
+
+        R1.release();
+        R2.release();
+    }
+
     /**
      * Modify this <code>Pose</code> in-place to be a pose representing
      * <code>this</code> composed after <code>other</code>.
@@ -114,7 +151,7 @@ public class Pose {
      *
      * @param other The other pose to be composed before this one.
      */
-    public void composeAfter(Pose other) {
+    public void composeAfter(Pose3D other) {
         Mat R1 = new Mat();
         Calib3d.Rodrigues(other.rvec, R1);
         Mat R2 = new Mat();
