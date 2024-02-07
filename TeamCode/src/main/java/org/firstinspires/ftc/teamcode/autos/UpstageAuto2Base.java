@@ -127,14 +127,13 @@ public abstract class UpstageAuto2Base extends AutoBase {
             ).run();
             poser.setSpeed(poser.getSpeed() / 3);
             poser.goTo(
-                    Distance.inTiles(-2.5).sub(Distance.inInches(2)),
-                    Distance.inTiles(-0.5)
+                    Distance.inTiles(-2.5).sub(Distance.inInches(0.5)),
+                    Distance.inTiles(-0.5).add(Distance.inInches(2))
             ).run();
             poser.setSpeed(poser.getSpeed() * 3);
             RunUntil.firstCompletes(
                     // pick up the pixels
                     Sequence.of(
-                            Wait.millis(750),
                             Action.fromFn(() -> {
                                 intake.start();
                                 intake.update();

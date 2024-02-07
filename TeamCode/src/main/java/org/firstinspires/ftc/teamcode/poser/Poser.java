@@ -146,9 +146,9 @@ public class Poser {
     }
 
     public class Motion implements Action {
-        private final PIDController xCtrl = new PIDController(2.5, 0, 0.15);
-        private final PIDController yCtrl = new PIDController(2.5, 0, 0.15);
-        private final PIDController yawCtrl = new PIDController(1.5, 0, 0.15);
+        private final PIDController xCtrl = new PIDController(2.5, 0.02, 0.25);
+        private final PIDController yCtrl = new PIDController(2.5, 0.02, 0.25);
+        private final PIDController yawCtrl = new PIDController(1.5, 0.02, 0.25);
         private final Pose target;
         private RotationDirection rotationDirection;
 
