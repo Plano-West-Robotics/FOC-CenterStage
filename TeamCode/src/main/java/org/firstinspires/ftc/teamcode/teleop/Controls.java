@@ -8,7 +8,7 @@ public class Controls {
     public static Gamepads.AnalogInput STRAFE = Gamepads.AnalogInput.GP1_LEFT_STICK_X;
     public static Gamepads.AnalogInput TURN = Gamepads.AnalogInput.GP1_RIGHT_STICK_X;
     public static Gamepads.Button SLOW_SPEED = Gamepads.Button.GP1_LEFT_BUMPER;
-    public static Gamepads.Button SUPER_SLOW_SPEED = Gamepads.Button.GP1_RIGHT_BUMPER;
+    public static Gamepads.Button TURBO_SPEED = Gamepads.Button.GP1_RIGHT_BUMPER;
     public static Gamepads.Button FIELD_ORIENTED = Gamepads.Button.GP1_DPAD_LEFT;
     public static Gamepads.Button RESET_IMU = Gamepads.Button.GP1_DPAD_UP;
     public static Gamepads.Button TOGGLE_INTAKE = Gamepads.Button.GP1_CROSS; // all of these are subject to change

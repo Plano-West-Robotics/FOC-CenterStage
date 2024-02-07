@@ -24,7 +24,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.LED;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
-import org.firstinspires.ftc.teamcode.subsystems.Sensor;
 import org.openftc.apriltag.AprilTagDetectorJNI;
 
 @TeleOp(name = "CCCCCCCCC")
@@ -43,6 +42,10 @@ public class Teleop extends OpModeWrapper {
     Macro stackro;
 
     Localizer localizer;
+
+    private static final double DEFAULT_SPEED = 312/435.;
+    private static final double TURBO_SPEED = 1;
+    private static final double SLOW_SPEED = 0.35;
 
     @Override
     public void setup() {
@@ -111,14 +114,13 @@ public class Teleop extends OpModeWrapper {
 
         telemetry.addData("Yaw", hardware.getYaw());
 
-        if (gamepads.isPressed(Controls.SLOW_SPEED)) {
-            driveSpeed = 0.7;
-        } else if (gamepads.isPressed(Controls.SUPER_SLOW_SPEED)) {
-            driveSpeed = 0.35;
+        if (gamepads.isPressed(Controls.TURBO_SPEED)) {
+            driveSpeed = TURBO_SPEED;
+        } else if (gamepads.isPressed(Controls.SLOW_SPEED)) {
+            driveSpeed = SLOW_SPEED;
         } else {
-            driveSpeed = 1;
+            driveSpeed = DEFAULT_SPEED;
         }
-        driveSpeed = Range.clip(driveSpeed, 0.1, 1.0);
         drive.setSpeed(driveSpeed);
         telemetry.addData("Drive speed", String.format("%.2f", drive.getSpeed()));
 
