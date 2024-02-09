@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 import org.openftc.easyopencv.PipelineRecordingParameters;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +44,11 @@ public abstract class AutoBase extends LinearOpMode {
         this.lift = new ControlledLift(hardware);
         arm.arm.setArmPosition(Arm.ArmPosition.DOWN);
         arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+
+        // i could have sworn we did this somewhere else but ig not
+        PlaneLauncher launcher = new PlaneLauncher(hardware);
+        launcher.idle().run();
+
 
         // starting pose calculations
 
