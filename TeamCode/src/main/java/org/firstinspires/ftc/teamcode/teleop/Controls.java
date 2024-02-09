@@ -26,4 +26,5 @@ public class Controls {
     public static Gamepads.Button FLAP_CLOSED = Gamepads.Button.GP2_CROSS;
     public static Gamepads.Button BLOCKER_OPEN = Gamepads.Button.GP2_TRIANGLE;
     public static Gamepads.Button BLOCKER_CLOSED = Gamepads.Button.GP2_CIRCLE;
+    public static Gamepads.Button PIXEL_SWITCH = Gamepads.Button.GP2_RIGHT_BUMPER;
 }

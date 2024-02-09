@@ -40,6 +40,7 @@ public class Teleop extends OpModeWrapper {
 
     Macro launchMacro;
     Macro stackro;
+    Macro pixelSwitchMacro;
 
     Localizer localizer;
 
@@ -93,6 +94,16 @@ public class Teleop extends OpModeWrapper {
                         Wait.millis(100),
                         Action.fromFn(() -> intake.stop()),
                         Action.fromFn(() -> intake.update())
+                )
+        );
+
+        pixelSwitchMacro = new Macro(
+                Sequence.of(
+                        Action.fromFn(() -> arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK)),
+                        Wait.millis(100),
+                        Action.fromFn(() -> arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED)),
+                        Wait.millis(300),
+                        Action.fromFn(() -> arm.arm.setFlapPosition(Arm.FlapPosition.OPEN))
                 )
         );
 
@@ -169,18 +180,24 @@ public class Teleop extends OpModeWrapper {
             }
         }
 
-        if (gamepads.justPressed(Controls.FLAP_OPEN)) {
-            arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
-        }
-        if (gamepads.justPressed(Controls.FLAP_CLOSED)) {
-            arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        if (!pixelSwitchMacro.isRunning()) {
+            if (gamepads.justPressed(Controls.FLAP_OPEN)) {
+                arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+            }
+            if (gamepads.justPressed(Controls.FLAP_CLOSED)) {
+                arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+            }
+
+            if (gamepads.justPressed(Controls.BLOCKER_OPEN)) {
+                arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
+            }
+            if (gamepads.justPressed(Controls.BLOCKER_CLOSED)) {
+                arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
+            }
         }
 
-        if (gamepads.justPressed(Controls.BLOCKER_OPEN)) {
-            arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
-        }
-        if (gamepads.justPressed(Controls.BLOCKER_CLOSED)) {
-            arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
+        if (gamepads.justPressed(Controls.PIXEL_SWITCH)) {
+            pixelSwitchMacro.start();
         }
 
         // press to aim and fire
@@ -222,5 +239,6 @@ public class Teleop extends OpModeWrapper {
 
         launchMacro.update();
         stackro.update();
+        pixelSwitchMacro.update();
     }
 }
