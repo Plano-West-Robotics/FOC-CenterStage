@@ -124,10 +124,10 @@ public class Hardware {
         /*
         * Measured 2024-01-18
         *            in - out
-        *  elbowR: 0.20 - 0.65
-        *  elbowL: 0.77 - 0.32
-        *  wristR: 0.31 - 0.51 (intermediate: 0.17)
-        *  wristL: 0.61 - 0.41 (intermediate: 0.75)
+        *  elbowR: 0.15 - 0.65
+        *  elbowL: 0.82 - 0.32
+        *  wristR: 0.26 - 0.51 (intermediate: 0.17)
+        *  wristL: 0.66 - 0.41 (intermediate: 0.75)
         *
         *       unblock - block
         * blocker: 0.40 - 0.90
@@ -136,13 +136,13 @@ public class Hardware {
         *    flap: 0.40 - 0.75
         */
 
-        elbowR.scaleRange(0.20, 0.65);
+        elbowR.scaleRange(0.15, 0.65);
         elbowR.setDirection(Servo.Direction.FORWARD);
-        elbowL.scaleRange(0.32, 0.77);
+        elbowL.scaleRange(0.32, 0.82);
         elbowL.setDirection(Servo.Direction.REVERSE);
-        wristR.scaleRange(0.11, 0.51);
+        wristR.scaleRange(0.17, 0.51);
         wristR.setDirection(Servo.Direction.FORWARD);
-        wristL.scaleRange(0.41, 0.81);
+        wristL.scaleRange(0.41, 0.75);
         wristL.setDirection(Servo.Direction.REVERSE);
         blocker.scaleRange(0.40, 0.90);
         flap.scaleRange(0.40, 0.75);
