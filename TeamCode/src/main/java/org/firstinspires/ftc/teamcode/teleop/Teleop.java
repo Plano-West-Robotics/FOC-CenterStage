@@ -99,11 +99,9 @@ public class Teleop extends OpModeWrapper {
 
         pixelSwitchMacro = new Macro(
                 Sequence.of(
-                        Action.fromFn(() -> arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK)),
-                        Wait.millis(100),
                         Action.fromFn(() -> arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED)),
                         Wait.millis(300),
-                        Action.fromFn(() -> arm.arm.setFlapPosition(Arm.FlapPosition.OPEN))
+                        Action.fromFn(() -> arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK))
                 )
         );
 

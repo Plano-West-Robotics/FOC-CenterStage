@@ -28,7 +28,7 @@ public class Arm {
     }
 
     public enum BlockerPosition {
-        BLOCK(0), UNBLOCK(1); // todo: change these if needed
+        BLOCK(1), UNBLOCK(0); // todo: change these if needed
 
         private final double pos;
 
