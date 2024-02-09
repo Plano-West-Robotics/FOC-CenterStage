@@ -6,6 +6,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -36,7 +37,7 @@ public class Hardware {
     public IMU imu;
     public VoltageSensor voltageSensor;
 
-    public RevColorSensorV3 top, bottom;
+    public ColorRangeSensor top, bottom;
     public RevBlinkinLedDriver ledLeft, ledRight;
 
     public RevTouchSensor slideLimitSwitch;
@@ -152,8 +153,8 @@ public class Hardware {
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(InchWorm.GLOBAL_ORIENTATION));
 
-        top = hardwareMap.get(RevColorSensorV3.class, "top");
-        bottom = hardwareMap.get(RevColorSensorV3.class, "bottom");
+        top = hardwareMap.get(ColorRangeSensor.class, "top");
+        bottom = hardwareMap.get(ColorRangeSensor.class, "bottom");
 
         ledLeft = hardwareMap.get(RevBlinkinLedDriver.class, "ledLeft");
         ledRight = hardwareMap.get(RevBlinkinLedDriver.class, "ledRight");

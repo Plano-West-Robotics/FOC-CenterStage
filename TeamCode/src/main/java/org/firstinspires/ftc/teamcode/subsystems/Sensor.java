@@ -71,19 +71,23 @@ public class Sensor {
         double h = scr.val[0];
         double s = scr.val[1];
 
-        if (dist > 20) {
+        // this is 2.36 inches, which is longer than the box is tall, so physically impossible
+        // in other words, the color sensor v2 distance sensor is Very Bad.
+        // change this back to a reasonable value if you switch back to v3s later on
+        if (dist > 60) {
             return State.NONE;
         }
 
-        
+
         if (h >= 95 && h <= 145) {
-            return State.GREEN;
+            if (s <= 25) {
+                return State.WHITE;
+            }
+            else return State.GREEN;
         } else if (h >= 200 && h <= 290) {
             return State.PURPLE;
-        } else if (h >= 40 && h <= 90) {
+        } else if (h >= 30 && h <= 90) {
             return State.YELLOW;
-        } else if (s <= 50) {
-            return State.WHITE;
         }
 
         return State.NONE;

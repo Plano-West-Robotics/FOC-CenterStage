@@ -1,23 +1,25 @@
 package org.firstinspires.ftc.teamcode.tune;
 
-import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.subsystems.Sensor;
 
 @Autonomous(group = "test")
 public class ColorSensorTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        RevColorSensorV3 top = hardwareMap.get(RevColorSensorV3.class, "top");
-        RevColorSensorV3 bottom = hardwareMap.get(RevColorSensorV3.class, "bottom");
+        ColorRangeSensor top = hardwareMap.get(ColorRangeSensor.class, "top");
+        ColorRangeSensor bottom = hardwareMap.get(ColorRangeSensor.class, "bottom");
+        FtcDashboard dashboard = FtcDashboard.getInstance();
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        top.enableLed(false);
-        bottom.enableLed(false);
+        top.enableLed(true);
+        bottom.enableLed(true);
 
         waitForStart();
         while (opModeIsActive()) {
