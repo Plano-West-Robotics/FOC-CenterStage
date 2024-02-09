@@ -88,12 +88,22 @@ public class Teleop extends OpModeWrapper {
 
         stackro = new Macro(
                 Sequence.of(
-                        Action.fromFn(() -> intake.setReversed(false)),
-                        Action.fromFn(() -> intake.start()),
-                        Action.fromFn(() -> intake.update()),
+                        Action.fromFn(() -> {
+                            intake.setReversed(false);
+                            intake.start();
+                            intake.update();
+                        }),
+                        Wait.millis(500),
+                        Action.fromFn(() -> {
+                            intake.setReversed(true);
+                            intake.update();
+                        }),
                         Wait.millis(100),
-                        Action.fromFn(() -> intake.stop()),
-                        Action.fromFn(() -> intake.update())
+                        Action.fromFn(() -> {
+                            intake.setReversed(false);
+                            intake.stop();
+                            intake.update();
+                        })
                 )
         );
 
