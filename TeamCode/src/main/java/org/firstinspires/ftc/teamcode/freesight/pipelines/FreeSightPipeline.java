@@ -65,8 +65,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
          * Scalar highHSV = new Scalar(213.9, 240.8, 255);
          */
         if (colorState == Prop.BLUE) {
-            lowHSV = new Scalar(77.9, 79.3, 109.1);
-            highHSV = new Scalar(106.3, 154.4, 255.0);
+            lowHSV = new Scalar(70.8, 21.3, 158.7);
+            highHSV = new Scalar(179.9, 178.5, 255.0);
         } else if (colorState == Prop.MAGENTA) {
             lowHSV = new Scalar(171.4, 92.1, 0);
             highHSV = new Scalar(208.3, 212.5, 255);
