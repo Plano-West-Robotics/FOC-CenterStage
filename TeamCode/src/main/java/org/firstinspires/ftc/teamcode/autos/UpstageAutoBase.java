@@ -38,15 +38,17 @@ public abstract class UpstageAutoBase extends AutoBase {
                 break;
             case MIDDLE:
                 poser.goTo(
-                        Distance.inTiles(0.5).add(Distance.inInches(4.5)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(2))
+                        Distance.inTiles(1),
+                        Distance.inTiles(-1).sub(Distance.inInches(3)),
+                        Angle.BACKWARD.sub(Angle.inRadians(Math.PI / 16))
                 ).run();
                 break;
             case RIGHT:
                 yOffsetAtBackdrop = Distance.inInches(-6);
                 poser.goTo(
-                        Distance.inTiles(1),
-                        Distance.inTiles(-2).add(Distance.inInches(3))
+                        Distance.inTiles(1.5).sub(Distance.inInches(4)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(1)),
+                        Angle.BACKWARD
                 ).run();
                 break;
         }
@@ -58,18 +60,6 @@ public abstract class UpstageAutoBase extends AutoBase {
         intake.stop();
         intake.reverse();
         intake.update();
-
-        switch (randomization) {
-            case MIDDLE:
-            case RIGHT:
-                poser.moveBy(
-                        Distance.ZERO,
-                        Distance.inInches(-3)
-                ).run();
-                break;
-            default:
-                break;
-        }
 
         // go in front of backdrop
         poser.goTo(

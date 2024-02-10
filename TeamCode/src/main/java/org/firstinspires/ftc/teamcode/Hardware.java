@@ -122,7 +122,7 @@ public class Hardware {
         blocker = hardwareMap.get(Servo.class, "blocker");
 
         /*
-        * Measured 2024-01-18
+        * Measured 2024-02-09
         *            in - out
         *  elbowR: 0.15 - 0.65
         *  elbowL: 0.82 - 0.32
