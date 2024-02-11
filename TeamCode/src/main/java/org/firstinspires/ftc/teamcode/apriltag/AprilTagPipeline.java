@@ -103,24 +103,24 @@ public class AprilTagPipeline extends OpenCvPipeline {
                     new TagGroup.Tag(4, new Point(-6 * MM_PER_INCH, -5 * MM_PER_INCH), 2 * MM_PER_INCH),
                     new TagGroup.Tag(5, new Point(0, -5 * MM_PER_INCH), 2 * MM_PER_INCH),
                     new TagGroup.Tag(6, new Point(6 * MM_PER_INCH, -5 * MM_PER_INCH), 2 * MM_PER_INCH)
-            ),
+//            ),
             // Red Alliance Audience Wall (Tile E1)
-            new TagGroup(
-                    new Pose3D(
-                            new MatOfDouble(-(70.5 + 1) * MM_PER_INCH, -35.4375 * MM_PER_INCH, 4 * MM_PER_INCH),
-                            AUDIENCE_WALL_RVEC
-                    ),
-                    new TagGroup.Tag(7, new Point(-5.5 * MM_PER_INCH, -1.5 * MM_PER_INCH), 5 * MM_PER_INCH),
-                    new TagGroup.Tag(8, new Point(0, 0), 2 * MM_PER_INCH)
-            ),
+//            new TagGroup(
+//                    new Pose3D(
+//                            new MatOfDouble(-(70.5 + 1) * MM_PER_INCH, -35.4375 * MM_PER_INCH, 4 * MM_PER_INCH),
+//                            AUDIENCE_WALL_RVEC
+//                    ),
+//                    new TagGroup.Tag(7, new Point(-5.5 * MM_PER_INCH, -1.5 * MM_PER_INCH), 5 * MM_PER_INCH),
+//                    new TagGroup.Tag(8, new Point(0, 0), 2 * MM_PER_INCH)
+//            ),
             // Blue Alliance Audience Wall (Tile B1)
-            new TagGroup(
-                    new Pose3D(
-                            new MatOfDouble(-(70.5 + 1) * MM_PER_INCH, 35.4375 * MM_PER_INCH, 4 * MM_PER_INCH),
-                            AUDIENCE_WALL_RVEC
-                    ),
-                    new TagGroup.Tag(9, new Point(0, 0), 2 * MM_PER_INCH),
-                    new TagGroup.Tag(10, new Point(5.5 * MM_PER_INCH, -1.5 * MM_PER_INCH), 5 * MM_PER_INCH)
+//            new TagGroup(
+//                    new Pose3D(
+//                            new MatOfDouble(-(70.5 + 1) * MM_PER_INCH, 35.4375 * MM_PER_INCH, 4 * MM_PER_INCH),
+//                            AUDIENCE_WALL_RVEC
+//                    ),
+//                    new TagGroup.Tag(9, new Point(0, 0), 2 * MM_PER_INCH),
+//                    new TagGroup.Tag(10, new Point(5.5 * MM_PER_INCH, -1.5 * MM_PER_INCH), 5 * MM_PER_INCH)
             )
     };
 

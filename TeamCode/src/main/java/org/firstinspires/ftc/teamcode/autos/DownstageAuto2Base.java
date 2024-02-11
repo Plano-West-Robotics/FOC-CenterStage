@@ -71,27 +71,32 @@ public abstract class DownstageAuto2Base extends AutoBase {
         // now in position to cross to the other side of the field
 
         // configurable delay goes here, if you wish
+        sleep(6000);
 
         // migrate
         poser.goTo(
-                Distance.inTiles(2),
+                Distance.inTiles(1.6),
                 crossingYCoord,
                 Angle.BACKWARD
         ).run();
         // go in front of backdrop
+        poser.goTo(
+                Distance.inTiles(1.6),
+                Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
+        ).run();
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
         ).run();
 
         // lift up
-        lift.setTarget(0.30);
+        lift.setTarget(0.40);
         arm.moveUp();
         while (lift.update() && arm.isBusy()) arm.update();
         lift.stop();
         // move closer to backdrop
         poser.moveBy(
-                Distance.inInches(4.75),
+                Distance.inInches(3),
                 Distance.ZERO
         ).run();
         // drop pixel
@@ -101,7 +106,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
 
         // move over
         poser.moveBy(
-                Distance.inInches(-4.75),
+                Distance.inInches(-3),
                 Distance.ZERO
         ).run();
         poser.goTo(
