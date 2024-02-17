@@ -127,7 +127,7 @@ public class Hardware {
         *  elbowR: 0.15 - 0.65
         *  elbowL: 0.82 - 0.32
         *  wristR: 0.26 - 0.51 (intermediate: 0.17)
-        *  wristL: 0.66 - 0.41 (intermediate: 0.75)
+        *  wristL: 0.71 - 0.46 (intermediate: 0.8)
         *
         *       unblock - block
         * blocker: 0.40 - 0.90
@@ -142,7 +142,7 @@ public class Hardware {
         elbowL.setDirection(Servo.Direction.REVERSE);
         wristR.scaleRange(0.17, 0.51);
         wristR.setDirection(Servo.Direction.FORWARD);
-        wristL.scaleRange(0.41, 0.75);
+        wristL.scaleRange(0.46, 0.8);
         wristL.setDirection(Servo.Direction.REVERSE);
         blocker.scaleRange(0.40, 0.90);
         flap.scaleRange(0.40, 0.75);

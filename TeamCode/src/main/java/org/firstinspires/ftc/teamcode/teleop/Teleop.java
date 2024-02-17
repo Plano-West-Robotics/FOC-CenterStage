@@ -63,7 +63,7 @@ public class Teleop extends OpModeWrapper {
         driveSpeed = 1;
         intakeSpeed = 1; // change this speed if you have to
         drive = new Drive(hardware, driveSpeed);
-        drive.setFieldOriented(false);
+        drive.setFieldOriented(true);
 
         intake = new Intake(hardware, intakeSpeed);
         intake.stop();
