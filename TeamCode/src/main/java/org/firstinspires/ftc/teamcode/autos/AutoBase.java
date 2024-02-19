@@ -97,7 +97,7 @@ public abstract class AutoBase extends LinearOpMode {
             ));
         }
 
-        this.poser = new Poser(hardware, 0.7, isFlipped, initialPose);
+        this.poser = new Poser(hardware, 0.9, isFlipped, initialPose);
     }
 
     public FreeSightPipeline.Side runVisionUntilStart() {

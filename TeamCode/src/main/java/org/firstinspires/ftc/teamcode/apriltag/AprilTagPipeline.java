@@ -274,11 +274,11 @@ public class AprilTagPipeline extends OpenCvPipeline {
             pose.invert();
             pose.composeAfter(group.pose);
             pose.compose(robotPoseInCameraSpace);
-            telemetry.addLine("group " + i + " tvec " + pose.tvec.dump());
-            telemetry.addLine("group " + i + " rvec " + pose.rvec.dump());
+//            telemetry.addLine("group " + i + " tvec " + pose.tvec.dump());
+//            telemetry.addLine("group " + i + " rvec " + pose.rvec.dump());
             Double yaw = yawFromRobotPose(pose);
             if (yaw == null) {
-                telemetry.addLine("group " + i + " rvec was too crazy");
+//                telemetry.addLine("group " + i + " rvec was too crazy");
                 // the robot is pitched or rolled too much to be reasonable
                 continue;
             }
@@ -288,14 +288,14 @@ public class AprilTagPipeline extends OpenCvPipeline {
             double z = pose.tvec.get(2, 0)[0];
 
             if (z <= -75 || z >= 75) {
-                telemetry.addLine("group " + i + " z was too crazy");
+//                telemetry.addLine("group " + i + " z was too crazy");
                 // the robot is in the ground or in the air too far to be reasonable
                 continue;
             }
 
-            telemetry.addLine("group " + i + " x " + x);
-            telemetry.addLine("group " + i + " y " + y);
-            telemetry.addLine("group " + i + " yaw " + yaw);
+//            telemetry.addLine("group " + i + " x " + x);
+//            telemetry.addLine("group " + i + " y " + y);
+//            telemetry.addLine("group " + i + " yaw " + yaw);
 
             xTotal += x;
             yTotal += y;

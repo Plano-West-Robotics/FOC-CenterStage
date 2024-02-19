@@ -24,12 +24,13 @@ public class LocalizerTest extends OpMode {
         hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
         hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 
-        AprilTagDetector detector = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         localizer = new KalmanFilter(
                 Pose.ZERO,
                 new TwoDeadWheelLocalizer(hardware),
-                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.FRONT),
-                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.REAR)
+                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+                new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
         );
         drive = new Drive(hardware, 0.35);
 

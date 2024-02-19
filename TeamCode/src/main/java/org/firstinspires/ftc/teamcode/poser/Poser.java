@@ -28,12 +28,13 @@ public class Poser {
 
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
-        AprilTagDetector detector = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+        AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         this.localizer = new KalmanFilter(
                 initialPose,
                 new TwoDeadWheelLocalizer(hardware),
-                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.FRONT),
-                new AprilTagLocalizer(detector, hardware, AprilTagLocalizer.Camera.REAR)
+                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+                new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
         );
 //        this.localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), initialPose);
         this.speed = speed;
@@ -146,10 +147,10 @@ public class Poser {
     }
 
     public class Motion implements Action {
-        private final PIDController xCtrl = new PIDController(2.5, 0.02, 0.25);
-        private final PIDController yCtrl = new PIDController(2.5, 0.02, 0.25);
-        private final PIDController yawCtrl = new PIDController(1.5, 0.02, 0.25);
-        private final Pose target;
+        protected final PIDController xCtrl = new PIDController(2.5, 0.02, 0.25);
+        protected final PIDController yCtrl = new PIDController(2.5, 0.02, 0.25);
+        protected final PIDController yawCtrl = new PIDController(1.5, 0.02, 0.25);
+        protected Pose target;
         private RotationDirection rotationDirection;
 
         private long lastUpdate;
@@ -232,6 +233,32 @@ public class Poser {
             xCtrl.reset();
             yCtrl.reset();
             yawCtrl.reset();
+        }
+    }
+
+    public class TuningMotion extends Motion {
+        public TuningMotion(Pose target) {
+            super(target);
+        }
+
+        public void setTarget(Pose target) {
+            this.target = target;
+        }
+
+        public void setTransCoeffs(double kp, double ki, double kd) {
+            this.xCtrl.kp = kp;
+            this.xCtrl.ki = ki;
+            this.xCtrl.kd = kd;
+
+            this.yCtrl.kp = kp;
+            this.yCtrl.ki = ki;
+            this.yCtrl.kd = kd;
+        }
+
+        public void setYawCoeffs(double kp, double ki, double kd) {
+            this.yawCtrl.kp = kp;
+            this.yawCtrl.ki = ki;
+            this.yawCtrl.kd = kd;
         }
     }
 }

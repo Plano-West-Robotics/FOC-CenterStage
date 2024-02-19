@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autos;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ConcurrentSet;
+import org.firstinspires.ftc.teamcode.macro.ControlFlow;
 import org.firstinspires.ftc.teamcode.macro.RunUntil;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.macro.Wait;
@@ -115,20 +116,39 @@ public abstract class UpstageAuto2Base extends AutoBase {
             // start in front of the backdrop
             // move into the C/D file
             poser.setSpeed(poser.getSpeed()*2/3);
-            poser.goTo(
-                    Distance.inTiles(2),
-                    Distance.inTiles(-0.4)
+            RunUntil.firstCompletes(
+                    Wait.seconds(9),
+                    new Action() {
+                        Action foo = poser.goTo(
+                                Distance.inTiles(2),
+                                Distance.inTiles(-0.4)
+                        );
+
+                        @Override
+                        public ControlFlow update() {
+                            foo.update();
+                            return ControlFlow.CONTINUE;
+                        }
+
+                        @Override
+                        public void end() {
+                            foo.end();
+                        }
+                    }
             ).run();
+            hardware.log.addLine("UpstageAuto2Base", "" + poser.localizer.getPoseEstimate());
             poser.setSpeed(poser.getSpeed()*3/2);
             // cross the field to the stack
+            poser.setSpeed(poser.getSpeed()/2);
             poser.goTo(
                     Distance.inTiles(-1.5),
                     Distance.inTiles(-0.4)
             ).run();
+            poser.setSpeed(poser.getSpeed()*2);
             poser.setSpeed(poser.getSpeed() / 3);
             poser.goTo(
                     Distance.inTiles(-2.5).sub(Distance.inInches(0.5)),
-                    Distance.inTiles(-0.5).add(Distance.inInches(2))
+                    Distance.inTiles(-0.5)
             ).run();
             poser.setSpeed(poser.getSpeed() * 3);
             RunUntil.firstCompletes(

@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.poser.localization;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.log.Plank;
 import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 
 public class KalmanFilter implements Localizer {
     Pose poseEstimate;
-    DeltaLocalizer input;
+    public DeltaLocalizer input;
     FallibleLocalizer[] sensors;
     Angle justKillMeAlready;
 
@@ -26,6 +29,9 @@ public class KalmanFilter implements Localizer {
         // sourced from https://www.ctrlaltftc.com/advanced/the-kalman-filter (with modifications)
 
         Pose u = input.updateWithDelta();
+        Plank foo = ((TwoDeadWheelLocalizer) input).hardware.log.chop("KalmanFilter");
+        Distance2 bar = u.pos.rot(poseEstimate.yaw);
+        foo.addData("posDiff", bar);
         poseEstimate = poseEstimate.then(u);
         justKillMeAlready = justKillMeAlready.add(u.yaw);
 
@@ -44,6 +50,8 @@ public class KalmanFilter implements Localizer {
         }
 
         p = (1 - k) * p;
+
+        foo.addData("fml", poseEstimate.yaw.valInDegrees());
     }
 
     @Override

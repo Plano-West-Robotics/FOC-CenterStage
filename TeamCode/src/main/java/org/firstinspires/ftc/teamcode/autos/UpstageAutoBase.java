@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
+import org.firstinspires.ftc.teamcode.macro.Action;
+import org.firstinspires.ftc.teamcode.macro.ConcurrentSet;
+import org.firstinspires.ftc.teamcode.macro.ControlFlow;
+import org.firstinspires.ftc.teamcode.macro.Sequence;
 import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Distance2;
@@ -56,41 +60,44 @@ public abstract class UpstageAutoBase extends AutoBase {
         intake.reverse();
         intake.start();
         intake.update();
-        sleep(500);
+        sleep(250);
         intake.stop();
         intake.reverse();
         intake.update();
 
-        // go in front of backdrop
-        poser.goTo(
-                Distance.inTiles(1.5),
-                Distance.inTiles(-2)
-        ).run();
-        poser.goTo(Angle.BACKWARD).run();
-        poser.goTo(
-                Distance.inTiles(2),
-                Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
+        ConcurrentSet.of(
+                // go in front of backdrop
+                poser.goTo(
+                        Distance.inTiles(2).add(Distance.inInches(3.5)),
+                        Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
+                        Angle.BACKWARD
+                ),
+                // lift up
+                Sequence.of(
+                        Action.fromFn(() -> {
+                            lift.setTarget(0.35);
+                            arm.moveUp();
+                        }),
+                        new Action() {
+                            @Override
+                            public ControlFlow update() {
+                                arm.update();
+                                return ControlFlow.continueIf(lift.update() && arm.isBusy());
+                            }
+
+                            @Override
+                            public void end() {
+                                lift.stop();
+                            }
+                        }
+                )
         ).run();
 
-        // lift up
-        lift.setTarget(0.30);
-        arm.moveUp();
-        while (lift.update() && arm.isBusy()) arm.update();
-        lift.stop();
-        // move closer to backdrop
-        poser.moveBy(
-                Distance.inInches(4),
-                Distance.ZERO
-        ).run();
         // drop pixel
         arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
-        sleep(1000);
+        sleep(500);
         arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
-        // move over
-        poser.moveBy(
-                Distance.inInches(-4),
-                Distance.ZERO
-        ).run();
+
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-2.5)

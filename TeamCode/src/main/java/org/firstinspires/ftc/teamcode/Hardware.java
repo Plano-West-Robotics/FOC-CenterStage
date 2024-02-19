@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.inchworm.InchWorm;
+import org.firstinspires.ftc.teamcode.log.Log;
 import org.firstinspires.ftc.teamcode.poser.localization.Encoder;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -46,6 +47,7 @@ public class Hardware {
     public OpenCvCamera rearCam;
 
     public OpMode opMode;
+    public Log log;
     public DashboardTelemetryWrapper dashboardTelemetry;
 
     /**
@@ -60,6 +62,8 @@ public class Hardware {
 
         this.dashboardTelemetry = new DashboardTelemetryWrapper(FtcDashboard.getInstance());
         opMode.telemetry = new MultipleTelemetry(opMode.telemetry, this.dashboardTelemetry);
+
+        this.log = new Log(opMode);
 
         fl = hardwareMap.get(DcMotorEx.class, "frontLeft");
         fr = hardwareMap.get(DcMotorEx.class, "frontRight");

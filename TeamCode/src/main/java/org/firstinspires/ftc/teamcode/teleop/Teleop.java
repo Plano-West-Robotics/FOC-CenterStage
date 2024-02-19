@@ -130,6 +130,7 @@ public class Teleop extends OpModeWrapper {
     public void run() {
         localizer.update();
         hardware.dashboardTelemetry.drawRobot(localizer.getPoseEstimate());
+        hardware.log.addData("TeleOp", "pose", localizer.getPoseEstimate());
 
         telemetry.addData("Yaw", hardware.getYaw());
 
