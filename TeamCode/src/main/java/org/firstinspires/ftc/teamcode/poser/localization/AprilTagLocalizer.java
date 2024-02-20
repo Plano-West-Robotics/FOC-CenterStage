@@ -59,10 +59,10 @@ public class AprilTagLocalizer implements FallibleLocalizer {
 
     public Pose getPoseEstimate() {
         if (
-                Math.abs(hardware.fl.getPower()) > 0.1
-                || Math.abs(hardware.fr.getPower()) > 0.1
-                || Math.abs(hardware.bl.getPower()) > 0.1
-                || Math.abs(hardware.br.getPower()) > 0.1
+                Math.abs(hardware.fl.getPower()) > 0.18
+                || Math.abs(hardware.fr.getPower()) > 0.18
+                || Math.abs(hardware.bl.getPower()) > 0.18
+                || Math.abs(hardware.br.getPower()) > 0.18
         ) {
             return null;
         }

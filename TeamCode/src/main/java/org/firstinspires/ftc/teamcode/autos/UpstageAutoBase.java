@@ -7,7 +7,9 @@ import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ConcurrentSet;
 import org.firstinspires.ftc.teamcode.macro.ControlFlow;
+import org.firstinspires.ftc.teamcode.macro.RunUntil;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
+import org.firstinspires.ftc.teamcode.macro.Wait;
 import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Distance2;
@@ -22,22 +24,20 @@ public abstract class UpstageAutoBase extends AutoBase {
         super.setup(alliance, UpOrDownStage.UPSTAGE);
         FreeSightPipeline.Side randomization = super.runVisionUntilStart();
 
-        poser.goTo(Distance2.inTiles(0.5, -2.5)).run();
+//        poser.goTo(Distance2.inTiles(0.5, -2.5)).run();
 
         Distance yOffsetAtBackdrop = Distance.ZERO;
         switch (randomization) {
             case LEFT:
                 yOffsetAtBackdrop = Distance.inInches(6);
-                poser.goTo(
-                        Distance.inTiles(0.5),
-                        Distance.inTiles(-1.5)
+                RunUntil.firstCompletes(
+                        Wait.millis(500),
+                        poser.goTo(Distance.inTiles(1), Distance.inTiles(-1.5))
                 ).run();
                 poser.goTo(
+                        Distance.inTiles(0.5).sub(Distance.inInches(2.5)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(2.5)),
                         Angle.BACKWARD
-                ).run();
-                poser.moveBy(
-                        Distance.inInches(-2.5),
-                        Distance.inInches(1)
                 ).run();
                 break;
             case MIDDLE:
