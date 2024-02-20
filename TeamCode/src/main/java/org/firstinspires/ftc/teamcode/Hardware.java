@@ -6,6 +6,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -31,7 +32,8 @@ public class Hardware {
     public DcMotorEx intake, ramp;
     public DcMotorEx liftL, liftR;
     public Encoder leftOdo, backOdo, rightOdo;
-    public Servo launcherPin, launcherBase;
+    public Servo launcherBase;
+    public CRServo launcherPin;
     public Servo elbowL, elbowR;
     public Servo wristL, wristR;
     public Servo flap, blocker;
@@ -151,7 +153,7 @@ public class Hardware {
         blocker.scaleRange(0.40, 0.90);
         flap.scaleRange(0.40, 0.75);
 
-        launcherPin = hardwareMap.get(Servo.class, "launcherPin");
+        launcherPin = hardwareMap.get(CRServo.class, "launcherPin");
         launcherBase = hardwareMap.get(Servo.class, "launcherBase");
 
         imu = hardwareMap.get(IMU.class, "imu");
