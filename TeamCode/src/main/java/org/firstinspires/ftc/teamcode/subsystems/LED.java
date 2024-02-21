@@ -8,7 +8,8 @@ public class LED {
     public enum Mode {
         RUNNING,
         IDLE,
-        EJECT_OVERRIDE
+        EJECT_OVERRIDE,
+        FIXEL_OVERRIDE
     }
 
     private Mode currentMode = Mode.IDLE;
@@ -27,6 +28,9 @@ public class LED {
                 break;
             case EJECT_OVERRIDE:
                 ejectOverride();
+                break;
+            case FIXEL_OVERRIDE:
+                fixelOverride();
                 break;
             case IDLE:
             default: // technically not needed but whatever
@@ -50,6 +54,11 @@ public class LED {
     private void ejectOverride() {
         this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
         this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+    }
+
+    private void fixelOverride() {
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
     }
 
     public void setMode(Mode newMode) {

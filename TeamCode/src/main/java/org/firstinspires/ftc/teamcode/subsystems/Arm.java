@@ -5,8 +5,9 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Arm {
     public enum ArmPosition {
-        UP(1, 1),
-        DOWN(0.3529411765, 0),
+        FIXEL(1, 1),
+        UP(0.894736842105263, 1),
+        DOWN(0.31578947368421045, 0),
         INTERMEDIATE(0, 0);
 
         private final double wristPos;

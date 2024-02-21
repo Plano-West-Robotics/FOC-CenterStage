@@ -120,11 +120,6 @@ public class Teleop extends OpModeWrapper {
         ledStrip.update();
     }
 
-    @Override
-    public void start() {
-        ledStrip.setMode(LED.Mode.RUNNING);
-    }
-
     @SuppressLint("DefaultLocale")
     @Override
     public void run() {
@@ -150,11 +145,6 @@ public class Teleop extends OpModeWrapper {
             }
             if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
                 intake.reverse();
-                if (intake.isReversed()) {
-                    ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
-                } else {
-                    ledStrip.setMode(LED.Mode.RUNNING);
-                }
             }
         }
 
@@ -171,7 +161,7 @@ public class Teleop extends OpModeWrapper {
         if (gamepads.isPressed(Controls.ARM_BACK_TO_AUTO)) {
             armManual = false;
         }
-        if (gamepads.isPressed(Controls.ARM_UP) || gamepads.isPressed(Controls.ARM_DOWN)) {
+        if (gamepads.isPressed(Controls.ARM_UP) || gamepads.isPressed(Controls.ARM_DOWN) || gamepads.isPressed(Controls.ARM_FIXEL)) {
             armManual = true;
         }
         if (armManual) {
@@ -180,6 +170,9 @@ public class Teleop extends OpModeWrapper {
             }
             if (gamepads.justPressed(Controls.ARM_DOWN)) {
                 arm.moveDown();
+            }
+            if (gamepads.justPressed(Controls.ARM_FIXEL)) {
+                arm.moveToFixel();
             }
         } else {
             if (hardware.slideLimitSwitch.isPressed()) {
@@ -236,12 +229,21 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
 
+        if (arm.arm.currentArmPos == Arm.ArmPosition.FIXEL) {
+            ledStrip.setMode(LED.Mode.FIXEL_OVERRIDE);
+        } else if (intake.isReversed()) {
+            ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
+        } else {
+            ledStrip.setMode(LED.Mode.RUNNING);
+        }
+
         ledStrip.update();
         telemetry.addData("Top state", ledStrip.sensor.top_state);
         telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         telemetry.addData("Magnet sensed", hardware.slideLimitSwitch.isPressed());
         telemetry.addData("Auto arm state", armManual ? "manual" : "auto");
+        telemetry.addData("arm position", arm.arm.currentArmPos);
 
         intake.update();
         arm.update();
