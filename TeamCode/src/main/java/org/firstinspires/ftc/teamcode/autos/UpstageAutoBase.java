@@ -75,7 +75,7 @@ public abstract class UpstageAutoBase extends AutoBase {
                 // lift up
                 Sequence.of(
                         Action.fromFn(() -> {
-                            lift.setTarget(0.35);
+                            lift.setTarget(0.4);
                             arm.moveUp();
                         }),
                         new Action() {
@@ -108,7 +108,7 @@ public abstract class UpstageAutoBase extends AutoBase {
         while (arm.isBusy()) arm.update();
         arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(500);
-        lift.setTarget(0.02);
+        lift.setTarget(0.00);
         while (lift.update());
         lift.stop();
 
