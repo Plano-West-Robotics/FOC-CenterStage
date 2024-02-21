@@ -8,8 +8,5 @@ while True:
         break
 
     tuned = (upper_bound-pos) / (upper_bound - lower_bound)
-    if tuned > 0.5:
-        tuned = 1 - tuned;
-
     print(tuned)
 
