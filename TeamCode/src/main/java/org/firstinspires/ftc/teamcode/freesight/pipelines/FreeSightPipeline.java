@@ -130,15 +130,15 @@ public class FreeSightPipeline extends OpenCvPipeline {
             );
 
             int bigX;
-            if (point < width / 3) {
+            if (point < width * 2 / 5) {
                 positionState = Side.LEFT;
                 bigX = 0;
-            } else if (point > width / 1.5) {
-                positionState = Side.RIGHT;
-                bigX = width * 2 / 3;
-            } else {
+            } else if (point < width * 4 / 5) {
                 positionState = Side.MIDDLE;
-                bigX = width / 3;
+                bigX = width * 2 / 5;
+            } else {
+                positionState = Side.RIGHT;
+                bigX = width * 4 / 5;
             }
 
             Imgproc.rectangle(
