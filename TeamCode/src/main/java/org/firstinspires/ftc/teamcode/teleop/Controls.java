@@ -19,6 +19,7 @@ public class Controls {
 
     // ======================= GAMEPAD 2 ============================
     public static Gamepads.AnalogInput LIFT = Gamepads.AnalogInput.GP2_LEFT_STICK_Y;
+    public static Gamepads.Button LIFT_SLOW = Gamepads.Button.GP2_LEFT_BUMPER;
     public static Gamepads.Button ARM_UP = Gamepads.Button.GP2_DPAD_UP;
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
     public static Gamepads.Button ARM_FIXEL = Gamepads.Button.GP2_DPAD_RIGHT;

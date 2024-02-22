@@ -224,7 +224,7 @@ public class Teleop extends OpModeWrapper {
 
         telemetry.addData("Field oriented enabled", drive.getFieldOriented());
 
-        lift.run(gamepads.getAnalogValue(Controls.LIFT));
+        lift.run(gamepads.getAnalogValue(Controls.LIFT) * (gamepads.isPressed(Controls.LIFT_SLOW) ? 0.35 : 1));
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());

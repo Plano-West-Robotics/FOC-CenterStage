@@ -57,8 +57,8 @@ public class LED {
     }
 
     private void fixelOverride() {
-        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
-        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLUE);
+        this.hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE);
+        this.hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.DARK_BLUE);
     }
 
     public void setMode(Mode newMode) {
