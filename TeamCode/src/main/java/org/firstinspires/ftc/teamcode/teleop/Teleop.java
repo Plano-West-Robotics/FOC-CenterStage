@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.LED;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
+import org.firstinspires.ftc.teamcode.subsystems.Lift2;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 import org.openftc.apriltag.AprilTagDetectorJNI;
 
@@ -30,7 +31,7 @@ import org.openftc.apriltag.AprilTagDetectorJNI;
 public class Teleop extends OpModeWrapper {
     Drive drive;
     Intake intake;
-    Lift lift;
+    Lift2 lift;
     ControlledArm arm;
     PlaneLauncher launcher;
     LED ledStrip;
@@ -68,7 +69,7 @@ public class Teleop extends OpModeWrapper {
         intake = new Intake(hardware, intakeSpeed);
         intake.stop();
 
-        lift = new Lift(hardware);
+        lift = new Lift2(hardware);
 
         arm = new ControlledArm(hardware);
         armManual = false;
@@ -175,7 +176,7 @@ public class Teleop extends OpModeWrapper {
                 arm.moveToFixel();
             }
         } else {
-            if (hardware.slideLimitSwitch.isPressed()) {
+            if (lift.getPos() < Lift2.NEAR_BOTTOM_RANGE) {
                 arm.moveDown();
             } else {
                 arm.moveUp();
@@ -224,10 +225,11 @@ public class Teleop extends OpModeWrapper {
 
         telemetry.addData("Field oriented enabled", drive.getFieldOriented());
 
-        lift.run(gamepads.getAnalogValue(Controls.LIFT) * (gamepads.isPressed(Controls.LIFT_SLOW) ? 0.35 : 1));
+        lift.setPower(gamepads.getAnalogValue(Controls.LIFT) * (gamepads.isPressed(Controls.LIFT_SLOW) ? 0.35 : 1));
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
+        telemetry.addData("Lift Position", lift.getPos());
 
         if (arm.arm.currentArmPos == Arm.ArmPosition.FIXEL) {
             ledStrip.setMode(LED.Mode.FIXEL_OVERRIDE);
@@ -246,6 +248,7 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("arm position", arm.arm.currentArmPos);
 
         intake.update();
+        lift.update();
         arm.update();
 
         launchMacro.update();

@@ -8,7 +8,6 @@ public class ControlledLift {
     private Hardware hardware;
     private int target;
 
-
     public ControlledLift(Hardware hardware) {
         this.hardware = hardware;
 
