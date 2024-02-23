@@ -18,17 +18,15 @@ public abstract class DownstageAuto3Base extends AutoBase {
             case LEFT:
                 yOffsetAtBackdrop = Distance.inInches(7);
                 poser.goTo(
-                        Distance.inTiles(-2).add(Distance.inInches(1.5)),
-                        Distance.inTiles(-1).add(Distance.inInches(6))
+                        Distance.inTiles(-2),
+                        Distance.inTiles(-2).add(Distance.inInches(3))
                 ).run();
-                poser.goTo(Angle.RIGHT).run();
                 break;
             case MIDDLE:
                 poser.goTo(
-                        Distance.inTiles(-1.5).sub(Distance.inInches(2.5)),
-                        Distance.inTiles(-0.5).sub(Distance.inInches(3.5))
+                        Distance.inTiles(-1.5).sub(Distance.inInches(4.5)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(4))
                 ).run();
-                poser.goTo(Angle.RIGHT).run();
                 break;
             case RIGHT:
                 yOffsetAtBackdrop = Distance.inInches(-7);
@@ -54,7 +52,7 @@ public abstract class DownstageAuto3Base extends AutoBase {
         intake.reverse();
         intake.update();
 
-        Distance crossingYCoord = Distance.inTiles(-2.5);
+        Distance crossingYCoord = Distance.inTiles(-2.5).add(Distance.inInches(1));
         switch (randomization) {
             case LEFT:
             case MIDDLE:
@@ -67,7 +65,7 @@ public abstract class DownstageAuto3Base extends AutoBase {
                 break;
         }
         poser.goToY(crossingYCoord).run();
-        poser.goTo(Angle.BACKWARD.sub(Angle.inDegrees(5))).run();
+        poser.goTo(Angle.BACKWARD).run();
         // now in position to cross to the other side of the field
 
         // configurable delay goes here, if you wish
