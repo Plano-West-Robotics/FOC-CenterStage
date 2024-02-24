@@ -21,6 +21,8 @@ public class Gamepads {
         GP1_TRIANGLE,
         GP1_LEFT_BUMPER,
         GP1_RIGHT_BUMPER,
+        GP1_LEFT_TRIGGER,
+        GP1_RIGHT_TRIGGER,
         GP1_LEFT_STICK_BUTTON,
         GP1_RIGHT_STICK_BUTTON,
         GP1_DPAD_UP,
@@ -35,6 +37,8 @@ public class Gamepads {
         GP2_TRIANGLE,
         GP2_LEFT_BUMPER,
         GP2_RIGHT_BUMPER,
+        GP2_LEFT_TRIGGER,
+        GP2_RIGHT_TRIGGER,
         GP2_LEFT_STICK_BUTTON,
         GP2_RIGHT_STICK_BUTTON,
         GP2_DPAD_UP,
@@ -93,6 +97,8 @@ public class Gamepads {
             case GP1_TRIANGLE: return gp1.y;
             case GP1_LEFT_BUMPER: return gp1.left_bumper;
             case GP1_RIGHT_BUMPER: return gp1.right_bumper;
+            case GP1_LEFT_TRIGGER: return gp1.left_trigger > 0.5;
+            case GP1_RIGHT_TRIGGER: return gp1.right_trigger > 0.5;
             case GP1_LEFT_STICK_BUTTON: return gp1.left_stick_button;
             case GP1_RIGHT_STICK_BUTTON: return gp1.right_stick_button;
             case GP1_DPAD_UP: return gp1.dpad_up;
@@ -107,6 +113,8 @@ public class Gamepads {
             case GP2_TRIANGLE: return gp2.y;
             case GP2_LEFT_BUMPER: return gp2.left_bumper;
             case GP2_RIGHT_BUMPER: return gp2.right_bumper;
+            case GP2_LEFT_TRIGGER: return gp2.left_trigger > 0.5;
+            case GP2_RIGHT_TRIGGER: return gp2.right_trigger > 0.5;
             case GP2_LEFT_STICK_BUTTON: return gp2.left_stick_button;
             case GP2_RIGHT_STICK_BUTTON: return gp2.right_stick_button;
             case GP2_DPAD_UP: return gp2.dpad_up;
