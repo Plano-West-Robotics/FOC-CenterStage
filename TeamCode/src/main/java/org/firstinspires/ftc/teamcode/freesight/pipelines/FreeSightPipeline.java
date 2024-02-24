@@ -68,8 +68,8 @@ public class FreeSightPipeline extends OpenCvPipeline {
             lowHSV = new Scalar(70.8, 21.3, 158.7);
             highHSV = new Scalar(179.9, 178.5, 255.0);
         } else if (colorState == Prop.MAGENTA) {
-            lowHSV = new Scalar(171.4, 92.1, 0);
-            highHSV = new Scalar(208.3, 212.5, 255);
+            lowHSV = new Scalar(165.8, 63.8, 93.5);
+            highHSV = new Scalar(178.5, 199.8, 255);
         }
         //Mat threshold = new Mat();
 

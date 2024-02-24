@@ -90,7 +90,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
         ).run();
 
         // lift up
-        lift.setTarget(0.40);
+        lift.setTarget(0.35);
         arm.moveUp();
         while (lift.update() && arm.isBusy()) arm.update();
         lift.stop();

@@ -20,7 +20,7 @@ public class Vision {
     public FreeSightPipeline.Side end() {
         this.freeSight.stop();
         FreeSightPipeline.Side side = freeSight.getPosition();
-        if (side == null) side = FreeSightPipeline.Side.MIDDLE;
+        if (side == null) side = FreeSightPipeline.Side.RIGHT;
         return side;
     }
 }

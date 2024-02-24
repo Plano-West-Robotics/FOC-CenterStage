@@ -75,7 +75,7 @@ public abstract class UpstageAutoBase extends AutoBase {
                 // lift up
                 Sequence.of(
                         Action.fromFn(() -> {
-                            lift.setTarget(0.4);
+                            lift.setTarget(0.35);
                             arm.moveUp();
                         }),
                         new Action() {
@@ -98,9 +98,36 @@ public abstract class UpstageAutoBase extends AutoBase {
         sleep(500);
         arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
 
+//        poser.goTo(
+//                Distance.inTiles(2),
+//                Distance.inTiles(-2.5)
+//        ).run();
+//
+//        // lower slide and move arm in
+//        arm.moveDown();
+//        while (arm.isBusy()) arm.update();
+//        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+//        sleep(500);
+//        lift.setTarget(0.00);
+//        while (lift.update());
+//        lift.stop();
+//
+//        // move to final parking position
+//        poser.goTo(
+//                Distance.inTiles(2.5),
+//                Distance.inTiles(-2.5)
+//        ).run();
+//
+//        // all done!
+
+        // move over
+        poser.moveBy(
+                Distance.inInches(-3),
+                Distance.ZERO
+        ).run();
         poser.goTo(
                 Distance.inTiles(2),
-                Distance.inTiles(-2.5)
+                Distance.inTiles(-0.4)
         ).run();
 
         // lower slide and move arm in
@@ -108,14 +135,14 @@ public abstract class UpstageAutoBase extends AutoBase {
         while (arm.isBusy()) arm.update();
         arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
         sleep(500);
-        lift.setTarget(0.00);
+        lift.setTarget(0.02);
         while (lift.update());
         lift.stop();
 
         // move to final parking position
         poser.goTo(
                 Distance.inTiles(2.5),
-                Distance.inTiles(-2.5)
+                Distance.inTiles(-0.4)
         ).run();
 
         // all done!
