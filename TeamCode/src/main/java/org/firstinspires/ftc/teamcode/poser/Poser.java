@@ -28,12 +28,12 @@ public class Poser {
 
     public Poser(Hardware hardware, double speed, boolean flipped, Pose initialPose) {
         this.hardware = hardware;
-        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+//        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         this.localizer = new KalmanFilter(
                 initialPose,
                 new TwoDeadWheelLocalizer(hardware),
-                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+//                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
                 new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
         );
 //        this.localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), initialPose);
