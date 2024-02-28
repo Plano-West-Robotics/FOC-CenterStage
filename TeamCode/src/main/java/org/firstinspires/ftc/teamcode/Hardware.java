@@ -132,7 +132,7 @@ public class Hardware {
         *            in - out
         *  elbowR: 0.17 - 0.65
         *  elbowL: 0.80 - 0.32
-        *  wristR: 0.29 - 0.51 (intermediate: 0.17) (fixel: 0.55)
+        *  wristR: 0.24 - 0.46 (intermediate: 0.12) (fixel: 0.5)
         *  wristL: 0.68 - 0.46 (intermediate: 0.8) (fixel: 0.42)
         *
         *       unblock - block
@@ -146,10 +146,10 @@ public class Hardware {
         elbowR.setDirection(Servo.Direction.FORWARD);
         elbowL.scaleRange(0.32, 0.80);
         elbowL.setDirection(Servo.Direction.REVERSE);
-        wristR.scaleRange(0.17, 0.55);
-        wristR.setDirection(Servo.Direction.FORWARD);
-        wristL.scaleRange(0.42, 0.8);
-        wristL.setDirection(Servo.Direction.REVERSE);
+        wristR.scaleRange(0.17, 0.55); // todo: retune these once it's fixed
+        wristR.setDirection(Servo.Direction.REVERSE);
+        wristL.scaleRange(0.12, 0.5);
+        wristL.setDirection(Servo.Direction.FORWARD);
         blocker.scaleRange(0.40, 0.90);
         flap.scaleRange(0.37, 0.72);
 
