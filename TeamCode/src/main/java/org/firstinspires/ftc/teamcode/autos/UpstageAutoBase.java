@@ -118,6 +118,8 @@ public abstract class UpstageAutoBase extends AutoBase {
                 Distance.inTiles(-2.5)
         ).run();
 
+        poser.goTo(Angle.LEFT);
+
 //        // all done!
 
 //        // move over
@@ -144,6 +146,8 @@ public abstract class UpstageAutoBase extends AutoBase {
 //                Distance.inTiles(2.5),
 //                Distance.inTiles(-0.4)
 //        ).run();
+
+        poser.goTo(Angle.LEFT);
 
         // all done!
     }
