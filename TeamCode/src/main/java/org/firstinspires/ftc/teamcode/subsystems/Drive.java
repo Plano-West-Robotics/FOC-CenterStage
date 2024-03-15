@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Vector2;
 
 public class Drive {
     Hardware hardware;
@@ -46,25 +47,36 @@ public class Drive {
         setYawOffset(getYaw().add(yawOffset));
     }
 
+    /**
+     * Inputs are interpreted in the OLD coordinate scheme.
+     *
+     * @param x right is positive
+     * @param y forward is positive
+     * @param turn cw is positive
+     */
+    public void driveOld(double x, double y, double turn) {
+        this.drive(y, -x, -turn);
+    }
+
+    /**
+     * Inputs are interpreted in the NEW coordinate scheme.
+     *
+     * @param x forward is positive
+     * @param y left is positive
+     * @param turn ccw is positive
+     */
     public void drive(double x, double y, double turn) {
-        double powerX, powerY;
+        Vector2 pow = new Vector2(x, y);
         if (getFieldOriented()) {
-            double yaw = getYaw().valInRadians();
-            double sin = Math.sin(-yaw);
-            double cos = Math.cos(-yaw);
-            powerX = x * cos - y * sin;
-            powerY = x * sin + y * cos;
-        } else {
-            powerX = x;
-            powerY = y;
+            pow = pow.rot(getYaw());
         }
 
-        double flPower = (powerY + powerX + turn);
-        double frPower = (powerY - powerX - turn);
-        double blPower = (powerY - powerX + turn);
-        double brPower = (powerY + powerX - turn);
+        double flPower = (pow.x - pow.y - turn);
+        double frPower = (pow.x + pow.y + turn);
+        double blPower = (pow.x + pow.y - turn);
+        double brPower = (pow.x - pow.y + turn);
 
-        double scale = Math.max(1, (Math.abs(powerY) + Math.abs(turn) + Math.abs(powerX))); // shortcut for max(abs([fl, fr, bl, br]))
+        double scale = Math.max(1, (Math.abs(pow.x) + Math.abs(pow.y) + Math.abs(turn))); // shortcut for max(abs([fl, fr, bl, br]))
         flPower /= scale;
         frPower /= scale;
         blPower /= scale;
@@ -77,6 +89,6 @@ public class Drive {
     }
 
     public void stop() {
-        drive(0, 0, 0);
+        driveOld(0, 0, 0);
     }
 }

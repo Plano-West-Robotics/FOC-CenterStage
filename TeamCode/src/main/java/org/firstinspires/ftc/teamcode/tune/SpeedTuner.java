@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
-import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 
 @TeleOp(group = "tune")
@@ -16,7 +16,7 @@ public class SpeedTuner extends LinearOpMode {
     @Override
     public void runOpMode() {
         Hardware hardware = new Hardware(this);
-        Localizer localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), Pose.ZERO);
+        Localizer localizer = new Localizer.FromDelta(new ThreeDeadWheelLocalizer(hardware), Pose.ZERO);
         Drive drive = new Drive(hardware, 1);
 
         waitForStart();
@@ -27,7 +27,7 @@ public class SpeedTuner extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
         double time = getRuntime() + 1;
-        drive.drive(0, 1, 0);
+        drive.driveOld(0, 1, 0);
         while (getRuntime() < time) {
             double x = localizer.getPoseEstimate().pos.x.valInMM();
 
@@ -42,7 +42,7 @@ public class SpeedTuner extends LinearOpMode {
 
         drive.stop();
         time = getRuntime() + 1;
-        drive.drive(0, 0, 1);
+        drive.driveOld(0, 0, 1);
 
         double angSum = 0;
         int angMeasurements = 0;

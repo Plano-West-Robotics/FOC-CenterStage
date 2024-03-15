@@ -8,7 +8,7 @@ public class Lift {
     public static final int LOWER_LIMIT = 0;
     public static final int UPPER_LIMIT = 2000;
 
-    public static double GRAVITY_FEEDFORWARD = 0.05;
+    public static double GRAVITY_FEEDFORWARD = 0.08;
 
     public Lift(Hardware hardware) {
         this.hardware = hardware;

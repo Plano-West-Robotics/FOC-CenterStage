@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.poser.localization;
 
+import androidx.annotation.NonNull;
+
 import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 
 public interface Localizer extends FallibleLocalizer {
-    // not @Nullable
+    @NonNull
     Pose getPoseEstimate();
 
     class FromDelta implements Localizer {

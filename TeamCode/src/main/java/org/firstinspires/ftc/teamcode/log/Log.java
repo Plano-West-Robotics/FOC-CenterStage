@@ -9,6 +9,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonWriter;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
@@ -51,7 +52,8 @@ public class Log {
     public void addLine(String origin, String line) {
         if (!ENABLED) return;
 
-        System.out.format("[%s] %s\n", origin, line);
+//        System.out.format("[%s] %s\n", origin, line);
+        RobotLog.ii(origin, line);
         if (telemetry != null) telemetry.addLine(line);
         if (logFile != null) {
             JsonObject obj = new JsonObject();
@@ -63,10 +65,15 @@ public class Log {
         }
     }
 
+    public void addLine(String origin, String format, Object... args) {
+        this.addLine(origin, String.format(format, args));
+    }
+
     public void addData(String origin, String key, Object value) {
         if (!ENABLED) return;
 
-        System.out.format("[%s] %s : %s\n", origin, key, value);
+//        System.out.format("[%s] %s : %s\n", origin, key, value);
+        RobotLog.ii(origin, "%s : %s", key, value);
         if (telemetry != null) telemetry.addData(key, value);
         if (logFile != null) {
             JsonObject obj = new JsonObject();

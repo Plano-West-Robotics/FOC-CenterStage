@@ -13,6 +13,10 @@ public class Plank {
         this.log.addLine(this.origin, line);
     }
 
+    public void addLine(String format, Object... args) {
+        this.log.addLine(this.origin, format, args);
+    }
+
     public void addData(String key, Object value) {
         this.log.addData(this.origin, key, value);
     }

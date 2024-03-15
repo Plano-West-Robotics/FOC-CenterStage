@@ -10,7 +10,9 @@ import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.poser.Poser;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Box;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
+import org.firstinspires.ftc.teamcode.subsystems.ControlledArmOld;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
@@ -26,7 +28,8 @@ public abstract class AutoBase extends LinearOpMode {
 
     Hardware hardware;
     Intake intake;
-    ControlledArm arm;
+    Box box;
+    ControlledArmOld arm;
     ControlledLift lift;
     Poser poser;
 
@@ -40,10 +43,10 @@ public abstract class AutoBase extends LinearOpMode {
 
         this.hardware = new Hardware(this);
         this.intake = new Intake(hardware, 0.3);
-        this.arm = new ControlledArm(hardware);
+        this.box = new Box(hardware);
+        this.arm = new ControlledArmOld(hardware);
         this.lift = new ControlledLift(hardware);
-        arm.arm.setArmPosition(Arm.ArmPosition.DOWN);
-        arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        box.setFlapPosition(Box.FlapPosition.CLOSED);
 
         // i could have sworn we did this somewhere else but ig not
         PlaneLauncher launcher = new PlaneLauncher(hardware);

@@ -54,7 +54,7 @@ public class AprilTagTest extends OpModeWrapper {
             ));
         }
 
-        drive.drive(
+        drive.driveOld(
                 gamepads.getAnalogValue(Controls.STRAFE),
                 gamepads.getAnalogValue(Controls.STRAIGHT),
                 gamepads.getAnalogValue(Controls.TURN)

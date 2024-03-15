@@ -4,84 +4,95 @@ import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
+import org.firstinspires.ftc.teamcode.macro.SimpleExecutor;
 import org.firstinspires.ftc.teamcode.macro.Wait;
 
 public class ControlledArm {
-    public Arm arm;
+    private Arm arm;
 
-    private final Macro moveUp;
-    private final Macro moveDown;
-    private final Macro moveToFixel;
+    private final SimpleExecutor waiter = new SimpleExecutor();
+
+    private ArmPosition position;
+
+    public enum ArmPosition {
+        UP,
+        DOWN,
+        FIXEL,
+    }
 
     public ControlledArm(Hardware hardware) {
         this.arm = new Arm(hardware);
-
-        moveUp = new Macro(
-                Sequence.of(
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.INTERMEDIATE)),
-                        Wait.millis(100),
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.UP)),
-                        Wait.millis(270)
-                )
-        );
-        moveDown = new Macro(
-                Sequence.of(
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.INTERMEDIATE)),
-                        Wait.millis(270),
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.DOWN)),
-                        Wait.millis(100)
-                )
-        );
-        moveToFixel = new Macro(
-                Sequence.of(
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.INTERMEDIATE)),
-                        Wait.millis(300),
-                        Action.fromFn(() -> arm.setArmPosition(Arm.ArmPosition.FIXEL)),
-                        Wait.millis(300)
-                )
-        );
+        this.position = ArmPosition.DOWN;
     }
 
     public void moveUp() {
-        if (this.moveUp.isRunning() || arm.currentArmPos == Arm.ArmPosition.UP) return;
-
-        this.moveDown.stop();
-        this.moveToFixel.stop();
-        this.moveUp.start();
+        switch (position) {
+            case UP:
+                return;
+            case DOWN:
+                waiter.run(Wait.millis(350));
+                break;
+            case FIXEL:
+                waiter.run(Wait.millis(50));
+                break;
+        }
+        arm.setArmPosition(Arm.ArmPosition.UP);
+        position = ArmPosition.UP;
     }
 
     public void moveDown() {
-        if (this.moveDown.isRunning() || arm.currentArmPos == Arm.ArmPosition.DOWN) return;
-
-        this.moveUp.stop();
-        this.moveToFixel.stop();
-        this.moveDown.start();
+        switch (position) {
+            case DOWN:
+                return;
+            case UP:
+                waiter.run(Wait.millis(350));
+                break;
+            case FIXEL:
+                waiter.run(Wait.millis(350));
+                break;
+        }
+        arm.setArmPosition(Arm.ArmPosition.DOWN);
+        position = ArmPosition.DOWN;
     }
 
     public void moveToFixel() {
-        if (this.moveToFixel.isRunning() || arm.currentArmPos == Arm.ArmPosition.FIXEL) return;
-
-        this.moveUp.stop();
-        this.moveDown.stop();
-        this.moveToFixel.start();
+        switch (position) {
+            case FIXEL:
+                return;
+            case UP:
+                waiter.run(Wait.millis(50));
+                break;
+            case DOWN:
+                waiter.run(Wait.millis(350));
+                break;
+        }
+        arm.setArmPosition(Arm.ArmPosition.FIXEL);
+        position = ArmPosition.FIXEL;
     }
 
-    /**
-     * Note: can leave the arm in an invalid, intermediate state
-     */
-    public void stop() {
-        this.moveUp.stop();
-        this.moveDown.stop();
-        this.moveToFixel.stop();
+    public void moveTo(ArmPosition position) {
+        switch (position) {
+            case UP:
+                this.moveUp();
+                break;
+            case DOWN:
+                this.moveDown();
+                break;
+            case FIXEL:
+                this.moveToFixel();
+                break;
+        }
     }
 
     public boolean isBusy() {
-        return this.moveUp.isRunning() || this.moveDown.isRunning() || this.moveToFixel.isRunning();
+        return this.waiter.isRunning();
+    }
+
+    public ArmPosition getCurrentPosition() {
+        return position;
     }
 
     public void update() {
-        this.moveUp.update();
-        this.moveDown.update();
-        this.moveToFixel.update();
+        this.waiter.update();
     }
 }

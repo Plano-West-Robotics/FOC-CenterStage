@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.poser.Poser;
-import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
 
 @Config
 @TeleOp(group = "tune")

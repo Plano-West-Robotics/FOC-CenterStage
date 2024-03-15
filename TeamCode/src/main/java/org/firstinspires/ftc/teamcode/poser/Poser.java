@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.apriltag.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.poser.localization.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.poser.localization.KalmanFilter;
 import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
-import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.poser.localization.ThreeDeadWheelLocalizer;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ControlFlow;
 import org.openftc.apriltag.AprilTagDetectorJNI;
@@ -32,11 +32,11 @@ public class Poser {
         AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         this.localizer = new KalmanFilter(
                 initialPose,
-                new TwoDeadWheelLocalizer(hardware),
+                new ThreeDeadWheelLocalizer(hardware),
 //                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
                 new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
         );
-//        this.localizer = new Localizer.FromDelta(new TwoDeadWheelLocalizer(hardware), initialPose);
+//        this.localizer = new Localizer.FromDelta(new ThreeDeadWheelLocalizer(hardware), initialPose);
         this.speed = speed;
         // flip it back if needed
         // TODO: cursed

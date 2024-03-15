@@ -24,13 +24,15 @@ public class ControlledLift {
     }
 
     public boolean update() {
-        int liftLError = target - this.hardware.liftL.getCurrentPosition();
+//        int liftLError = target - this.hardware.liftL.getCurrentPosition();
         int liftRError = target - this.hardware.liftR.getCurrentPosition();
 
-        this.hardware.liftL.setPower(helper(liftLError) + Lift.GRAVITY_FEEDFORWARD);
+//        this.hardware.liftL.setPower(helper(liftLError) + Lift.GRAVITY_FEEDFORWARD);
+        this.hardware.liftL.setPower(helper(liftRError) + Lift.GRAVITY_FEEDFORWARD);
         this.hardware.liftR.setPower(helper(liftRError) + Lift.GRAVITY_FEEDFORWARD);
 
-        return Math.abs(liftLError) > 25 || Math.abs(liftRError) > 25;
+//        return Math.abs(liftLError) > 25 || Math.abs(liftRError) > 25;
+        return Math.abs(liftRError) > 25;
     }
 
     public void stop() {

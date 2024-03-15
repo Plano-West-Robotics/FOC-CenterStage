@@ -17,19 +17,23 @@ public class KalmanFilter implements Localizer {
     private static final double Q = 0.4; // your model covariance
     private static final double R = 0.1; // your sensor covariance
 
+    Pose inital;
+
     public KalmanFilter(Pose initialPose, DeltaLocalizer input, FallibleLocalizer... sensors) {
         this.poseEstimate = initialPose;
         this.input = input;
         this.sensors = sensors;
 
         justKillMeAlready = initialPose.yaw;
+
+        this.inital = initialPose;
     }
 
     public void update() {
         // sourced from https://www.ctrlaltftc.com/advanced/the-kalman-filter (with modifications)
 
         Pose u = input.updateWithDelta();
-        Plank foo = ((TwoDeadWheelLocalizer) input).hardware.log.chop("KalmanFilter");
+        Plank foo = ((ThreeDeadWheelLocalizer) input).hardware.log.chop("KalmanFilter");
         Distance2 bar = u.pos.rot(poseEstimate.yaw);
         foo.addData("posDiff", bar);
         poseEstimate = poseEstimate.then(u);
@@ -47,6 +51,15 @@ public class KalmanFilter implements Localizer {
             Pose diff = z.sub(poseEstimate);
             diff = new Pose(diff.pos, diff.yaw.modSigned());
             poseEstimate = poseEstimate.then(diff.scale(k));
+
+//            Distance2 aaa = z.pos.sub(inital.pos);
+//            Distance2 bbb = poseEstimate.pos.sub(inital.pos);
+//            Angle ccc = aaa.angle().sub(bbb.angle()).modSigned().mul(k);
+//            double ddd = aaa.magnitude().div(bbb.magnitude().mul(k).add(aaa.magnitude().mul(1 - k)));
+//            poseEstimate = new Pose(
+//                    bbb.rot(ccc).mul(ddd).add(inital.pos),
+//                    poseEstimate.yaw.add(ccc)
+//            );
         }
 
         p = (1 - k) * p;
@@ -57,5 +70,6 @@ public class KalmanFilter implements Localizer {
     @Override
     public Pose getPoseEstimate() {
         return new Pose(poseEstimate.pos, justKillMeAlready);
+//        return poseEstimate;
     }
 }

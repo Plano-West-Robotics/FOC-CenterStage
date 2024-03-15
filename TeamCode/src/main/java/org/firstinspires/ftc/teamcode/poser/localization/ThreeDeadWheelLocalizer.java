@@ -13,14 +13,15 @@ public class ThreeDeadWheelLocalizer implements DeltaLocalizer {
     int rightOdo;
 
     public static final double MM_PER_ENCODER_TICK = (35 * Math.PI) / 8192;
+    public static final double MM_PER_ENCODER_TICK_2 = (48 * Math.PI) / 2000;
 
-    public static final Distance LEFT_ODO_LEVER_ARM = null; // TODO
+    public static final Distance LEFT_ODO_LEVER_ARM = Distance.inMM(161);
     public static final Distance BACK_ODO_LEVER_ARM = Distance.inMM(174.5);
     public static final Distance RIGHT_ODO_LEVER_ARM = Distance.inMM(162);
-    public static int LEFT_ODO_DIR = 0; // TODO
-    public static int BACK_ODO_DIR = -1; // 1 for CCW positive, -1 for CW
+    public static int LEFT_ODO_DIR = 1; // 1 for CCW positive, -1 for CW
+    public static int BACK_ODO_DIR = -1;
     public static int RIGHT_ODO_DIR = -1;
-
+// as
     public ThreeDeadWheelLocalizer(Hardware hardware) {
         this.hardware = hardware;
 
@@ -34,7 +35,7 @@ public class ThreeDeadWheelLocalizer implements DeltaLocalizer {
         int newBackOdo = hardware.backOdo.getCurrentPosition();
         int newRightOdo = hardware.rightOdo.getCurrentPosition();
 
-        double leftOdoDiff = (newLeftOdo - this.leftOdo) * LEFT_ODO_DIR * MM_PER_ENCODER_TICK;
+        double leftOdoDiff = (newLeftOdo - this.leftOdo) * LEFT_ODO_DIR * MM_PER_ENCODER_TICK_2; // this one is gobilda
         double backOdoDiff = (newBackOdo - this.backOdo) * BACK_ODO_DIR * MM_PER_ENCODER_TICK;
         double rightOdoDiff = (newRightOdo - this.rightOdo) * RIGHT_ODO_DIR * MM_PER_ENCODER_TICK;
 

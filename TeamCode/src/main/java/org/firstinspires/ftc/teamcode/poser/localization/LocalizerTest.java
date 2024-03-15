@@ -24,12 +24,12 @@ public class LocalizerTest extends OpMode {
         hardware.ledLeft.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
         hardware.ledRight.setPattern(RevBlinkinLedDriver.BlinkinPattern.BLACK);
 
-        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+//        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
         localizer = new KalmanFilter(
                 Pose.ZERO,
-                new TwoDeadWheelLocalizer(hardware),
-                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+                new ThreeDeadWheelLocalizer(hardware),
+//                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
                 new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
         );
         drive = new Drive(hardware, 0.35);
@@ -39,7 +39,7 @@ public class LocalizerTest extends OpMode {
 
     @Override
     public void loop() {
-        drive.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+        drive.driveOld(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
 
         localizer.update();
         Pose p = localizer.getPoseEstimate();

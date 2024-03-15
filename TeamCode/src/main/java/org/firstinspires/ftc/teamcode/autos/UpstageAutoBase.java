@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 import org.firstinspires.ftc.teamcode.poser.Poser;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Box;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
@@ -94,9 +95,9 @@ public abstract class UpstageAutoBase extends AutoBase {
         ).run();
 
         // drop pixel
-        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(500);
-        arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        box.setFlapPosition(Box.FlapPosition.CLOSED);
 
         poser.goTo(
                 Distance.inTiles(2),
@@ -106,7 +107,7 @@ public abstract class UpstageAutoBase extends AutoBase {
         // lower slide and move arm in
         arm.moveDown();
         while (arm.isBusy()) arm.update();
-        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(500);
         lift.setTarget(0.00);
         while (lift.update());
@@ -135,7 +136,7 @@ public abstract class UpstageAutoBase extends AutoBase {
 //        // lower slide and move arm in
 //        arm.moveDown();
 //        while (arm.isBusy()) arm.update();
-//        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+//        box.setFlapPosition(Box.FlapPosition.OPEN);
 //        sleep(500);
 //        lift.setTarget(0.02);
 //        while (lift.update());

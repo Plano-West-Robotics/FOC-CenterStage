@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevTouchSensor;
@@ -116,7 +117,7 @@ public class Hardware {
         liftL.setDirection(DcMotorSimple.Direction.REVERSE);
         liftR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        leftOdo = null; // TODO
+        leftOdo = new Encoder(liftL);
         backOdo = new Encoder(ramp);
         rightOdo = new Encoder(intake);
 
@@ -172,6 +173,10 @@ public class Hardware {
         OpenCvCameraFactory cameraFactory = OpenCvCameraFactory.getInstance();
         frontCam = cameraFactory.createWebcam(hardwareMap.get(WebcamName.class, "frontCam"));
         rearCam = cameraFactory.createWebcam(hardwareMap.get(WebcamName.class, "rearCam"));
+
+        for (LynxModule hub : hardwareMap.getAll(LynxModule.class)) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
     }
 
     /**

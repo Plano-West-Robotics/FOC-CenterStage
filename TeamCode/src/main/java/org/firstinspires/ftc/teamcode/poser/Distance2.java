@@ -85,6 +85,6 @@ public class Distance2 {
     }
 
     public Angle angle() {
-        return Angle.inRadians(-Math.atan2(this.x.valInDefaultUnits(), this.y.valInDefaultUnits()));
+        return Angle.inRadians(Math.atan2(this.y.valInDefaultUnits(), this.x.valInDefaultUnits()));
     }
 }

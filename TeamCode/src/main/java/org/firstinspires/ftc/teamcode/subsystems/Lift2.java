@@ -8,7 +8,7 @@ public class Lift2 {
     private double power;
     private boolean isGoingToTarget;
     private int target;
-    private int leftEncoder;
+//    private int leftEncoder;
     private int rightEncoder;
     private int pos;
 
@@ -35,9 +35,10 @@ public class Lift2 {
         this.power = 0;
         this.isGoingToTarget = false;
 
-        leftEncoder = hardware.liftL.getCurrentPosition();
+//        leftEncoder = hardware.liftL.getCurrentPosition();
         rightEncoder = hardware.liftR.getCurrentPosition();
-        pos = (leftEncoder + rightEncoder) / 2; // /shrug
+//        pos = (leftEncoder + rightEncoder) / 2; // /shrug
+        pos = rightEncoder; // /shrug
     }
 
     public int getPos() {
@@ -54,13 +55,14 @@ public class Lift2 {
     }
 
     public void update(boolean override) {
-        int newLeftEncoder = this.hardware.liftL.getCurrentPosition();
+//        int newLeftEncoder = this.hardware.liftL.getCurrentPosition();
         int newRightEncoder = this.hardware.liftR.getCurrentPosition();
-        int leftEncoderDiff = newLeftEncoder - leftEncoder;
+//        int leftEncoderDiff = newLeftEncoder - leftEncoder;
         int rightEncoderDiff = newRightEncoder - rightEncoder;
-        leftEncoder = newLeftEncoder;
+//        leftEncoder = newLeftEncoder;
         rightEncoder = newRightEncoder;
-        pos += (leftEncoderDiff + rightEncoderDiff) / 2;
+//        pos += (leftEncoderDiff + rightEncoderDiff) / 2;
+        pos += rightEncoderDiff;
         if (hardware.slideLimitSwitch.isPressed()) {
             pos = 10;
         }
@@ -112,7 +114,11 @@ public class Lift2 {
     }
 
     private static double helper2(double error) {
-        return 0.8 * Math.signum(error) * (Math.abs(error) > 300 ? 1: Math.sqrt(1 - Math.pow(1 - Math.abs(error) / 300, 2)));
+        error /= 300;
+        double tmp = Math.exp(3 * error);
+        return 0.8 * (tmp - 1) / (tmp + 1);
+
+//        return 0.8 * Math.signum(error) * (Math.abs(error) > 300 ? 1 : Math.sqrt(1 - Math.pow(1 - Math.abs(error) / 300, 2)));
     }
 
     public void stop() {

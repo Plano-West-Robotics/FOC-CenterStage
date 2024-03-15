@@ -36,6 +36,7 @@ public class RunUntil implements Action {
     }
 
     public void end() {
+        if (!complete) action.end();
         condition.end();
         complete = false;
     }

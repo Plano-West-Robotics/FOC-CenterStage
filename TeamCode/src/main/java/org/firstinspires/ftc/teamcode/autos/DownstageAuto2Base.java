@@ -5,6 +5,7 @@ import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Box;
 
 public abstract class DownstageAuto2Base extends AutoBase {
     public void runOpMode(Alliance alliance) {
@@ -100,9 +101,9 @@ public abstract class DownstageAuto2Base extends AutoBase {
                 Distance.ZERO
         ).run();
         // drop pixel
-        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(1000);
-        arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+        box.setFlapPosition(Box.FlapPosition.CLOSED);
 
         // move over
         poser.moveBy(
@@ -117,7 +118,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
         // lower slide and move arm in
         arm.moveDown();
         while (arm.isBusy()) arm.update();
-        arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+        box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(500);
         lift.setTarget(0.02);
         while (lift.update());

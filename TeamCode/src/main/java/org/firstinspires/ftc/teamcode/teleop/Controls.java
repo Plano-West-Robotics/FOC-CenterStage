@@ -22,10 +22,11 @@ public class Controls {
     public static Gamepads.Button LIFT_SLOW = Gamepads.Button.GP2_LEFT_BUMPER;
     public static Gamepads.Button LIFT_OVERRIDE = Gamepads.Button.GP2_LEFT_STICK_BUTTON;
     public static Gamepads.Button LIFT_GO_TO_HANG = Gamepads.Button.GP2_LEFT_TRIGGER;
+    public static Gamepads.Button LIFT_GO_TO_BOTTOM = Gamepads.Button.GP2_RIGHT_TRIGGER;
+    public static Gamepads.Button LIFT_HANG = Gamepads.Button.GP2_GUIDE;
     public static Gamepads.Button ARM_UP = Gamepads.Button.GP2_DPAD_UP;
     public static Gamepads.Button ARM_DOWN = Gamepads.Button.GP2_DPAD_DOWN;
     public static Gamepads.Button ARM_FIXEL = Gamepads.Button.GP2_DPAD_RIGHT;
-    public static Gamepads.Button ARM_BACK_TO_AUTO = Gamepads.Button.GP2_DPAD_LEFT;
     public static Gamepads.Button FLAP_OPEN = Gamepads.Button.GP2_SQUARE;
     public static Gamepads.Button FLAP_CLOSED = Gamepads.Button.GP2_CROSS;
     public static Gamepads.Button BLOCKER_OPEN = Gamepads.Button.GP2_TRIANGLE;

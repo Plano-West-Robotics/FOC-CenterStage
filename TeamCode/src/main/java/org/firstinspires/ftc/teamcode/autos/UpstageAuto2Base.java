@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.autos;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ConcurrentSet;
@@ -11,8 +13,12 @@ import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Distance2;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Box;
 
+@Config
 public abstract class UpstageAuto2Base extends AutoBase {
+    public static boolean FOO = true;
+    
     public void runOpMode(Alliance alliance) {
         super.setup(alliance, UpOrDownStage.UPSTAGE);
         FreeSightPipeline.Side randomization = super.runVisionUntilStart();
@@ -94,9 +100,9 @@ public abstract class UpstageAuto2Base extends AutoBase {
                     Distance.ZERO
             ).run();
             // drop pixel
-            arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+            box.setFlapPosition(Box.FlapPosition.OPEN);
             sleep(1000);
-            arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+            box.setFlapPosition(Box.FlapPosition.CLOSED);
             // move away from backdrop
             poser.moveBy(
                     Distance.inInches(-4),
@@ -105,7 +111,7 @@ public abstract class UpstageAuto2Base extends AutoBase {
             // lower slide and move arm in
             arm.moveDown();
             while (arm.isBusy()) arm.update();
-            arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+            box.setFlapPosition(Box.FlapPosition.OPEN);
             sleep(500);
             lift.setTarget(0.02);
             while (lift.update()) ;
@@ -137,6 +143,7 @@ public abstract class UpstageAuto2Base extends AutoBase {
                     }
             ).run();
             hardware.log.addLine("UpstageAuto2Base", "" + poser.localizer.getPoseEstimate());
+            while (FOO);
             poser.setSpeed(poser.getSpeed()*3/2);
             // cross the field to the stack
             poser.setSpeed(poser.getSpeed()/2);
@@ -196,13 +203,13 @@ public abstract class UpstageAuto2Base extends AutoBase {
                     Sequence.of(
                             Wait.millis(300),
                             Action.fromFn(() -> {
-                                arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+                                box.setFlapPosition(Box.FlapPosition.OPEN);
                                 intake.start();
                                 intake.update();
                             }),
                             Wait.millis(2000),
                             Action.fromFn(() -> {
-                                arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+                                box.setFlapPosition(Box.FlapPosition.CLOSED);
                                 intake.stop();
                                 intake.update();
                             })

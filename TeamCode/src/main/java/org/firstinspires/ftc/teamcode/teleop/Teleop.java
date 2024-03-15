@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.OpModeWrapper;
@@ -11,19 +12,24 @@ import org.firstinspires.ftc.teamcode.apriltag.AprilTagDetector;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.Macro;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
+import org.firstinspires.ftc.teamcode.macro.SimpleExecutor;
 import org.firstinspires.ftc.teamcode.macro.Wait;
+import org.firstinspires.ftc.teamcode.poser.Angle;
+import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Pose;
+import org.firstinspires.ftc.teamcode.poser.Poser;
+import org.firstinspires.ftc.teamcode.poser.Vector2;
 import org.firstinspires.ftc.teamcode.poser.localization.AprilTagLocalizer;
 import org.firstinspires.ftc.teamcode.poser.localization.KalmanFilter;
 import org.firstinspires.ftc.teamcode.poser.localization.Localizer;
-import org.firstinspires.ftc.teamcode.poser.localization.TwoDeadWheelLocalizer;
-import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.poser.localization.ThreeDeadWheelLocalizer;
+import org.firstinspires.ftc.teamcode.subsystems.Box;
 import org.firstinspires.ftc.teamcode.subsystems.ControlledArm;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
+import org.firstinspires.ftc.teamcode.subsystems.Gamepads;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.LED;
-import org.firstinspires.ftc.teamcode.subsystems.Lift;
-import org.firstinspires.ftc.teamcode.subsystems.Lift2;
+import org.firstinspires.ftc.teamcode.subsystems.Lift3;
 import org.firstinspires.ftc.teamcode.subsystems.PlaneLauncher;
 import org.openftc.apriltag.AprilTagDetectorJNI;
 
@@ -31,13 +37,15 @@ import org.openftc.apriltag.AprilTagDetectorJNI;
 public class Teleop extends OpModeWrapper {
     Drive drive;
     Intake intake;
-    Lift2 lift;
-    ControlledArm arm;
+    Lift3 lift;
+    Box box;
     PlaneLauncher launcher;
     LED ledStrip;
     double driveSpeed;
     double intakeSpeed;
-    boolean armManual;
+    boolean fieldOriented;
+    SimpleExecutor motion = new SimpleExecutor();
+    Poser poser;
 
     Macro launchMacro;
     Macro stackro;
@@ -51,28 +59,32 @@ public class Teleop extends OpModeWrapper {
 
     @Override
     public void setup() {
-        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
-        AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
-        this.localizer = new KalmanFilter(
-                Pose.ZERO,
-                new TwoDeadWheelLocalizer(hardware),
-                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
-                new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
-        );
-        FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
+////        AprilTagDetector detector1 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+//        AprilTagDetector detector2 = new AprilTagDetector(AprilTagDetectorJNI.TagFamily.TAG_36h11, 3, 3);
+//        this.localizer = new KalmanFilter(
+//                Pose.ZERO,
+//                new ThreeDeadWheelLocalizer(hardware),
+////                new AprilTagLocalizer(detector1, hardware, AprilTagLocalizer.Camera.FRONT),
+//                new AprilTagLocalizer(detector2, hardware, AprilTagLocalizer.Camera.REAR)
+//        );
+//        FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
+
+        hardware.fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        hardware.br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         driveSpeed = 1;
         intakeSpeed = 1; // change this speed if you have to
         drive = new Drive(hardware, driveSpeed);
-        drive.setFieldOriented(true);
+        drive.setFieldOriented(false);
 
         intake = new Intake(hardware, intakeSpeed);
         intake.stop();
 
-        lift = new Lift2(hardware);
+        lift = new Lift3(hardware);
 
-        arm = new ControlledArm(hardware);
-        armManual = false;
+        box = new Box(hardware);
 
         launcher = new PlaneLauncher(hardware);
         launcher.idle().run();
@@ -110,15 +122,19 @@ public class Teleop extends OpModeWrapper {
 
         pixelSwitchMacro = new Macro(
                 Sequence.of(
-                        Action.fromFn(() -> arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED)),
+                        Action.fromFn(() -> box.setFlapPosition(Box.FlapPosition.CLOSED)),
                         Wait.millis(300),
-                        Action.fromFn(() -> arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK))
+                        Action.fromFn(() -> box.setBlockerPosition(Box.BlockerPosition.UNBLOCK))
                 )
         );
 
         ledStrip = new LED(hardware);
         ledStrip.setMode(LED.Mode.IDLE);
         ledStrip.update();
+
+        poser = new Poser(hardware, DEFAULT_SPEED, false, Pose.ZERO);
+        localizer = poser.localizer;
+        FtcDashboard.getInstance().startCameraStream(hardware.rearCam, 0);
     }
 
     @SuppressLint("DefaultLocale")
@@ -141,7 +157,7 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Drive speed", String.format("%.2f", drive.getSpeed()));
 
         if (!stackro.isRunning()) {
-            if (gamepads.justPressed(Controls.TOGGLE_INTAKE)) {
+            if (gamepads.justPressed(Controls.TOGGLE_INTAKE) && !gamepads.isPressed(Gamepads.Button.GP1_START)) {
                 intake.toggleRunning();
             }
             if (gamepads.justPressed(Controls.INTAKE_DIR_TOG)) {
@@ -159,43 +175,29 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Intake reversed?", intake.isReversed());
         telemetry.addData("Intake running?", intake.isRunning());
 
-        if (gamepads.isPressed(Controls.ARM_BACK_TO_AUTO)) {
-            armManual = false;
+        if (gamepads.justPressed(Controls.ARM_UP)) {
+            lift.setArmPosition(ControlledArm.ArmPosition.UP);
         }
-        if (gamepads.isPressed(Controls.ARM_UP) || gamepads.isPressed(Controls.ARM_DOWN) || gamepads.isPressed(Controls.ARM_FIXEL)) {
-            armManual = true;
+        if (gamepads.justPressed(Controls.ARM_DOWN)) {
+            lift.setArmPosition(ControlledArm.ArmPosition.DOWN);
         }
-        if (armManual) {
-            if (gamepads.justPressed(Controls.ARM_UP)) {
-                arm.moveUp();
-            }
-            if (gamepads.justPressed(Controls.ARM_DOWN)) {
-                arm.moveDown();
-            }
-            if (gamepads.justPressed(Controls.ARM_FIXEL)) {
-                arm.moveToFixel();
-            }
-        } else {
-            if (lift.getPos() < Lift2.NEAR_BOTTOM_RANGE) {
-                arm.moveDown();
-            } else {
-                arm.moveUp();
-            }
+        if (gamepads.justPressed(Controls.ARM_FIXEL)) {
+            lift.setArmPosition(ControlledArm.ArmPosition.FIXEL);
         }
 
         if (!pixelSwitchMacro.isRunning()) {
             if (gamepads.justPressed(Controls.FLAP_OPEN)) {
-                arm.arm.setFlapPosition(Arm.FlapPosition.OPEN);
+                box.setFlapPosition(Box.FlapPosition.OPEN);
             }
             if (gamepads.justPressed(Controls.FLAP_CLOSED)) {
-                arm.arm.setFlapPosition(Arm.FlapPosition.CLOSED);
+                box.setFlapPosition(Box.FlapPosition.CLOSED);
             }
 
             if (gamepads.justPressed(Controls.BLOCKER_OPEN)) {
-                arm.arm.setBlockerPosition(Arm.BlockerPosition.UNBLOCK);
+                box.setBlockerPosition(Box.BlockerPosition.UNBLOCK);
             }
             if (gamepads.justPressed(Controls.BLOCKER_CLOSED)) {
-                arm.arm.setBlockerPosition(Arm.BlockerPosition.BLOCK);
+                box.setBlockerPosition(Box.BlockerPosition.BLOCK);
             }
         }
 
@@ -211,30 +213,64 @@ public class Teleop extends OpModeWrapper {
         }
 
         if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
-            drive.toggleFieldOriented();
+//            drive.toggleFieldOriented();
+            fieldOriented = !fieldOriented;
         }
 
-        if (gamepads.justPressed(Controls.RESET_IMU)) {
-            drive.resetYaw();
+//        if (gamepads.justPressed(Controls.RESET_IMU)) {
+//            drive.resetYaw();
+//        }
+
+        // proof-of-concept
+        if (gamepads.justPressed(Gamepads.Button.GP1_RIGHT_TRIGGER)) {
+            if (localizer.getPoseEstimate().pos.y.valInMM() < 0) {
+                motion.run(poser.goTo(
+                        Distance.inTiles(2).add(Distance.inInches(3)),
+                        Distance.inTiles(-1.5),
+                        Angle.BACKWARD
+                ));
+            } else {
+                motion.run(poser.goTo(
+                        Distance.inTiles(2).add(Distance.inInches(3)),
+                        Distance.inTiles(1.5),
+                        Angle.BACKWARD
+                ));
+            }
+        }
+        //as
+
+        double x = gamepads.getAnalogValue(Controls.STRAIGHT);
+        double y = -gamepads.getAnalogValue(Controls.STRAFE);
+        double turn = -gamepads.getAnalogValue(Controls.TURN);
+        if (x != 0 || y != 0 || turn != 0) motion.stop();
+        if (!motion.isRunning()) {
+            Vector2 xy = new Vector2(x, y);
+            if (fieldOriented) {
+                xy = xy.rot(localizer.getPoseEstimate().yaw);
+            }
+            drive.drive(xy.x, xy.y, turn);
         }
 
-        double y = gamepads.getAnalogValue(Controls.STRAIGHT);
-        double x = gamepads.getAnalogValue(Controls.STRAFE);
-        double turn = gamepads.getAnalogValue(Controls.TURN);
-        drive.drive(x, y, turn);
-
-        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
+//        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
+        telemetry.addData("Field oriented enabled", fieldOriented);
 
         lift.setPower(gamepads.getAnalogValue(Controls.LIFT) * (gamepads.isPressed(Controls.LIFT_SLOW) ? 0.35 : 1));
         if (gamepads.isPressed(Controls.LIFT_GO_TO_HANG)) {
-            lift.setTarget(Lift2.HANG_HEIGHT);
+            lift.setArmPosition(ControlledArm.ArmPosition.UP);
+            lift.setTarget(Lift3.HANG_HEIGHT);
+        }
+        if (gamepads.isPressed(Controls.LIFT_GO_TO_BOTTOM)) {
+            lift.setTarget(0);
+        }
+        if (gamepads.justPressed(Controls.LIFT_HANG)) {
+            lift.hang();
         }
 
         telemetry.addData("Left Lift Encoder", hardware.liftL.getCurrentPosition());
         telemetry.addData("Right Lift Encoder", hardware.liftR.getCurrentPosition());
         telemetry.addData("Lift Position", lift.getPos());
 
-        if (arm.arm.currentArmPos == Arm.ArmPosition.FIXEL) {
+        if (lift.getArmPosition() == ControlledArm.ArmPosition.FIXEL) {
             ledStrip.setMode(LED.Mode.FIXEL_OVERRIDE);
         } else if (intake.isReversed()) {
             ledStrip.setMode(LED.Mode.EJECT_OVERRIDE);
@@ -247,15 +283,14 @@ public class Teleop extends OpModeWrapper {
         telemetry.addData("Bottom state", ledStrip.sensor.bottom_state);
 
         telemetry.addData("Magnet sensed", hardware.slideLimitSwitch.isPressed());
-        telemetry.addData("Auto arm state", armManual ? "manual" : "auto");
-        telemetry.addData("arm position", arm.arm.currentArmPos);
+        telemetry.addData("arm position", lift.getArmPosition());
 
         intake.update();
         lift.update(gamepads.isPressed(Controls.LIFT_OVERRIDE));
-        arm.update();
 
         launchMacro.update();
         stackro.update();
         pixelSwitchMacro.update();
+        motion.update();
     }
 }

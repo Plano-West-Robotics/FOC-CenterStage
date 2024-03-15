@@ -40,7 +40,7 @@ public class Angle {
     }
 
     public String toString() {
-        return this.val + " rad";
+        return this.valInDegrees() + " deg";
     }
 
     public boolean isZero() {

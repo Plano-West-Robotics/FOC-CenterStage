@@ -66,6 +66,6 @@ public class Vector2 {
     }
 
     public Angle angle() {
-        return Angle.inRadians(-Math.atan2(this.x, this.y));
+        return Angle.inRadians(Math.atan2(this.y, this.x));
     }
 }
