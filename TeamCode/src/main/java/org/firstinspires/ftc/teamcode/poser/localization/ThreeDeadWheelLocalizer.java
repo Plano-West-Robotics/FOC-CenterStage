@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.poser.localization;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.log.Plank;
+import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
 import org.firstinspires.ftc.teamcode.poser.Pose;
 
@@ -39,10 +41,18 @@ public class ThreeDeadWheelLocalizer implements DeltaLocalizer {
         double backOdoDiff = (newBackOdo - this.backOdo) * BACK_ODO_DIR * MM_PER_ENCODER_TICK;
         double rightOdoDiff = (newRightOdo - this.rightOdo) * RIGHT_ODO_DIR * MM_PER_ENCODER_TICK;
 
+        Plank log = hardware.log.chop("ThreeDeadWheelLocalizer");
+        log.addData("leftOdoDiff", leftOdoDiff);
+        log.addData("-rightOdoDiff", -rightOdoDiff);
+        log.addData("backOdoDiff", backOdoDiff);
+
         // yawDiff is in rad, rest in mm
         double yawDiff = (leftOdoDiff + rightOdoDiff) / (LEFT_ODO_LEVER_ARM.valInMM() + RIGHT_ODO_LEVER_ARM.valInMM());
+        leftOdoDiff -= yawDiff * LEFT_ODO_LEVER_ARM.valInMM();
+        rightOdoDiff -= yawDiff * RIGHT_ODO_LEVER_ARM.valInMM();
+        backOdoDiff -= yawDiff * BACK_ODO_LEVER_ARM.valInMM();
         double relativeXDiff = (-leftOdoDiff + rightOdoDiff) / 2.;
-        double relativeYDiff = yawDiff * BACK_ODO_LEVER_ARM.valInMM() - backOdoDiff;
+        double relativeYDiff = -backOdoDiff;
 
         Pose delta = DeltaLocalizer.poseExpHelper(relativeXDiff, relativeYDiff, yawDiff);
 

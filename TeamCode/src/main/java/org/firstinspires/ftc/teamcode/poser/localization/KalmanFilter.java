@@ -65,6 +65,7 @@ public class KalmanFilter implements Localizer {
         p = (1 - k) * p;
 
         foo.addData("fml", poseEstimate.yaw.valInDegrees());
+        foo.addData("jkma", justKillMeAlready);
     }
 
     @Override

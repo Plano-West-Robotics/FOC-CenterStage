@@ -31,28 +31,53 @@ public abstract class UpstageAutoBase extends AutoBase {
         switch (randomization) {
             case LEFT:
                 yOffsetAtBackdrop = Distance.inInches(6);
-                RunUntil.firstCompletes(
-                        Wait.millis(500),
-                        poser.goTo(Distance.inTiles(1), Distance.inTiles(-1.5))
+//                RunUntil.firstCompletes(
+//                        Wait.millis(500),
+//                        poser.goTo(Distance.inTiles(1), Distance.inTiles(-1.5))
+//                ).run();
+//                poser.goTo(
+//                        Distance.inTiles(0.5).sub(Distance.inInches(2.5)),
+//                        Distance.inTiles(-1.5).add(Distance.inInches(2.5)),
+//                        Angle.BACKWARD
+//                ).run();
+                poser.goTo(
+                        Distance.inTiles(0.5),
+                        Distance.inTiles(-1.5)
                 ).run();
                 poser.goTo(
-                        Distance.inTiles(0.5).sub(Distance.inInches(2.5)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(2.5)),
                         Angle.BACKWARD
+                ).run();
+                poser.moveBy(
+                        Distance.inInches(-2.5),
+                        Distance.inInches(1)
                 ).run();
                 break;
             case MIDDLE:
+//                poser.goTo(
+//                        Distance.inTiles(1),
+//                        Distance.inTiles(-1).sub(Distance.inInches(3)),
+//                        Angle.BACKWARD.sub(Angle.inRadians(Math.PI / 16))
+//                ).run();
                 poser.goTo(
                         Distance.inTiles(1),
-                        Distance.inTiles(-1).sub(Distance.inInches(3)),
+                        Distance.inTiles(-1).sub(Distance.inInches(3))
+                ).run();
+                poser.goTo(
                         Angle.BACKWARD.sub(Angle.inRadians(Math.PI / 16))
                 ).run();
                 break;
             case RIGHT:
                 yOffsetAtBackdrop = Distance.inInches(-6);
+//                poser.goTo(
+//                        Distance.inTiles(1.5).sub(Distance.inInches(4)),
+//                        Distance.inTiles(-1.5).add(Distance.inInches(1)),
+//                        Angle.BACKWARD
+//                ).run();
                 poser.goTo(
                         Distance.inTiles(1.5).sub(Distance.inInches(4)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(1)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(1))
+                ).run();
+                poser.goTo(
                         Angle.BACKWARD
                 ).run();
                 break;
@@ -68,10 +93,14 @@ public abstract class UpstageAutoBase extends AutoBase {
 
         ConcurrentSet.of(
                 // go in front of backdrop
-                poser.goTo(
-                        Distance.inTiles(2).add(Distance.inInches(3.5)),
-                        Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
-                        Angle.BACKWARD
+                Sequence.of(
+                        poser.goTo(
+                                Distance.inTiles(2).add(Distance.inInches(3)),
+                                Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
+                        ),
+                        poser.goTo(
+                                Angle.BACKWARD
+                        )
                 ),
                 // lift up
                 Sequence.of(
@@ -83,7 +112,7 @@ public abstract class UpstageAutoBase extends AutoBase {
                             @Override
                             public ControlFlow update() {
                                 arm.update();
-                                return ControlFlow.continueIf(lift.update() && arm.isBusy());
+                                return ControlFlow.continueIf(lift.update() || arm.isBusy());
                             }
 
                             @Override

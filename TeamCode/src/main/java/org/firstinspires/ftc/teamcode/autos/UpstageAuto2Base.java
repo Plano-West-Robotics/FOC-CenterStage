@@ -44,7 +44,9 @@ public abstract class UpstageAuto2Base extends AutoBase {
             case MIDDLE:
                 poser.goTo(
                         Distance.inTiles(1),
-                        Distance.inTiles(-1).sub(Distance.inInches(3)),
+                        Distance.inTiles(-1).sub(Distance.inInches(3))
+                ).run();
+                poser.goTo(
                         Angle.BACKWARD.sub(Angle.inRadians(Math.PI / 16))
                 ).run();
                 break;
@@ -52,7 +54,9 @@ public abstract class UpstageAuto2Base extends AutoBase {
                 yOffsetAtBackdrop = Distance.inInches(-6);
                 poser.goTo(
                         Distance.inTiles(1.5).sub(Distance.inInches(4)),
-                        Distance.inTiles(-1.5).add(Distance.inInches(1)),
+                        Distance.inTiles(-1.5).add(Distance.inInches(1))
+                ).run();
+                poser.goTo(
                         Angle.BACKWARD
                 ).run();
                 break;
@@ -81,7 +85,9 @@ public abstract class UpstageAuto2Base extends AutoBase {
         // go in front of backdrop
         poser.goTo(
                 Distance.inTiles(2),
-                Distance.inTiles(-1.5).add(yOffsetAtBackdrop),
+                Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
+        ).run();
+        poser.goTo(
                 Angle.BACKWARD
         ).run();
 
