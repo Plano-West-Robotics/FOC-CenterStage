@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.macro.Wait;
 public class PlaneLauncher {
     Hardware hardware;
     private static final double IDLE_POS = 0.55;
-    private static final double AIM = 0.68;
+    private static final double AIM = 0.70;
 
     public PlaneLauncher(Hardware hw) {
         hardware = hw;
