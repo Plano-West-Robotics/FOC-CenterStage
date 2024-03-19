@@ -95,7 +95,7 @@ public abstract class UpstageAutoBase extends AutoBase {
                 // go in front of backdrop
                 Sequence.of(
                         poser.goTo(
-                                Distance.inTiles(2).add(Distance.inInches(3)),
+                                Distance.inTiles(2).add(Distance.inInches(3.75)),
                                 Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
                         ),
                         poser.goTo(
@@ -138,7 +138,7 @@ public abstract class UpstageAutoBase extends AutoBase {
         while (arm.isBusy()) arm.update();
         box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(500);
-        lift.setTarget(0.00);
+        lift.setTarget(0.02);
         while (lift.update());
         lift.stop();
 
@@ -148,7 +148,7 @@ public abstract class UpstageAutoBase extends AutoBase {
                 Distance.inTiles(-2.5)
         ).run();
 
-        poser.goTo(Angle.LEFT);
+        poser.goTo(Angle.LEFT).run();
 
 //        // all done!
 

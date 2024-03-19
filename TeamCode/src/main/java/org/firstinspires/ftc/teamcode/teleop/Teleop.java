@@ -43,8 +43,8 @@ public class Teleop extends OpModeWrapper {
     LED ledStrip;
     double driveSpeed;
     double intakeSpeed;
-    boolean fieldOriented;
-    SimpleExecutor motion = new SimpleExecutor();
+//    boolean fieldOriented;
+//    SimpleExecutor motion = new SimpleExecutor();
     Poser poser;
 
     Macro launchMacro;
@@ -213,46 +213,45 @@ public class Teleop extends OpModeWrapper {
         }
 
         if (gamepads.justPressed(Controls.FIELD_ORIENTED)) {
-//            drive.toggleFieldOriented();
-            fieldOriented = !fieldOriented;
+            drive.toggleFieldOriented();
+//            fieldOriented = !fieldOriented;
         }
 
-//        if (gamepads.justPressed(Controls.RESET_IMU)) {
-//            drive.resetYaw();
-//        }
+        if (gamepads.justPressed(Controls.RESET_IMU)) {
+            drive.resetYaw();
+        }
 
         // proof-of-concept
-        if (gamepads.justPressed(Gamepads.Button.GP1_RIGHT_TRIGGER)) {
-            if (localizer.getPoseEstimate().pos.y.valInMM() < 0) {
-                motion.run(poser.goTo(
-                        Distance.inTiles(2).add(Distance.inInches(3)),
-                        Distance.inTiles(-1.5),
-                        Angle.BACKWARD
-                ));
-            } else {
-                motion.run(poser.goTo(
-                        Distance.inTiles(2).add(Distance.inInches(3)),
-                        Distance.inTiles(1.5),
-                        Angle.BACKWARD
-                ));
-            }
-        }
-        //as
+//        if (gamepads.justPressed(Gamepads.Button.GP1_RIGHT_TRIGGER)) {
+//            if (localizer.getPoseEstimate().pos.y.valInMM() < 0) {
+//                motion.run(poser.goTo(
+//                        Distance.inTiles(2).add(Distance.inInches(3)),
+//                        Distance.inTiles(-1.5),
+//                        Angle.BACKWARD
+//                ));
+//            } else {
+//                motion.run(poser.goTo(
+//                        Distance.inTiles(2).add(Distance.inInches(3)),
+//                        Distance.inTiles(1.5),
+//                        Angle.BACKWARD
+//                ));
+//            }
+//        }
 
         double x = gamepads.getAnalogValue(Controls.STRAIGHT);
         double y = -gamepads.getAnalogValue(Controls.STRAFE);
         double turn = -gamepads.getAnalogValue(Controls.TURN);
-        if (x != 0 || y != 0 || turn != 0) motion.stop();
-        if (!motion.isRunning()) {
+//        if (x != 0 || y != 0 || turn != 0) motion.stop();
+//        if (!motion.isRunning()) {
             Vector2 xy = new Vector2(x, y);
-            if (fieldOriented) {
-                xy = xy.rot(localizer.getPoseEstimate().yaw);
-            }
+//            if (fieldOriented) {
+//                xy = xy.rot(localizer.getPoseEstimate().yaw);
+//            }
             drive.drive(xy.x, xy.y, turn);
-        }
+//        }
 
-//        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
-        telemetry.addData("Field oriented enabled", fieldOriented);
+        telemetry.addData("Field oriented enabled", drive.getFieldOriented());
+//        telemetry.addData("Field oriented enabled", fieldOriented);
 
         lift.setPower(gamepads.getAnalogValue(Controls.LIFT) * (gamepads.isPressed(Controls.LIFT_SLOW) ? 0.35 : 1));
         if (gamepads.isPressed(Controls.LIFT_GO_TO_HANG)) {
@@ -291,6 +290,6 @@ public class Teleop extends OpModeWrapper {
         launchMacro.update();
         stackro.update();
         pixelSwitchMacro.update();
-        motion.update();
+//        motion.update();
     }
 }

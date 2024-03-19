@@ -22,7 +22,7 @@ public class ThreeDeadWheelLocalizer implements DeltaLocalizer {
     public static final Distance RIGHT_ODO_LEVER_ARM = Distance.inMM(162);
     public static int LEFT_ODO_DIR = 1; // 1 for CCW positive, -1 for CW
     public static int BACK_ODO_DIR = -1;
-    public static int RIGHT_ODO_DIR = -1;
+    public static int RIGHT_ODO_DIR = 1;
 // as
     public ThreeDeadWheelLocalizer(Hardware hardware) {
         this.hardware = hardware;
@@ -39,7 +39,7 @@ public class ThreeDeadWheelLocalizer implements DeltaLocalizer {
 
         double leftOdoDiff = (newLeftOdo - this.leftOdo) * LEFT_ODO_DIR * MM_PER_ENCODER_TICK_2; // this one is gobilda
         double backOdoDiff = (newBackOdo - this.backOdo) * BACK_ODO_DIR * MM_PER_ENCODER_TICK;
-        double rightOdoDiff = (newRightOdo - this.rightOdo) * RIGHT_ODO_DIR * MM_PER_ENCODER_TICK;
+        double rightOdoDiff = (newRightOdo - this.rightOdo) * RIGHT_ODO_DIR * MM_PER_ENCODER_TICK_2;
 
         Plank log = hardware.log.chop("ThreeDeadWheelLocalizer");
         log.addData("leftOdoDiff", leftOdoDiff);

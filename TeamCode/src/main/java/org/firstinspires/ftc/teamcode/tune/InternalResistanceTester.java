@@ -190,7 +190,7 @@ public class InternalResistanceTester extends LinearOpMode {
         log.addLine("    Deviations: ±%f V, ±%f A", vStddev, iStddev);
         log.addLine("    Means: %f V, %f A", vMean, iMean);
 
-        if (vStddev > 0.05 || iStddev > 0.08) return null;
+        if (vStddev > 0.05 || iStddev > 0.12) return null;
         return new VoltageCurrentPair(mean(voltages), mean(currents));
     }
 
