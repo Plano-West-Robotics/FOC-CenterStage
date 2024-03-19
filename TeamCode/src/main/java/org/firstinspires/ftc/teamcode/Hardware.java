@@ -129,10 +129,10 @@ public class Hardware {
         blocker = hardwareMap.get(Servo.class, "blocker");
 
         /*
-        * Measured 2024-02-20
+        * Measured 2024-03-19
         *            in - out
         *  elbowR: 0.17 - 0.65
-        *  elbowL: 0.80 - 0.32
+        *  elbowL: 0.69 - 0.21
         *  wristR: 0.24 - 0.46 (intermediate: 0.12) (fixel: 0.5)
         *  wristL: 0.86 - 0.64 (intermediate: 0.98) (fixel: 0.6)
         *
@@ -145,7 +145,7 @@ public class Hardware {
 
         elbowR.scaleRange(0.17, 0.65);
         elbowR.setDirection(Servo.Direction.FORWARD);
-        elbowL.scaleRange(0.32, 0.80);
+        elbowL.scaleRange(0.21, 0.69);
         elbowL.setDirection(Servo.Direction.REVERSE);
         wristR.scaleRange(0.12, 0.5); // todo: retune these once it's fixed
         wristR.setDirection(Servo.Direction.FORWARD);
