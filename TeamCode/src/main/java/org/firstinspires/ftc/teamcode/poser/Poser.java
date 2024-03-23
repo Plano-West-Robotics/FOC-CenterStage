@@ -147,20 +147,26 @@ public class Poser {
     }
 
     public class Motion implements Action {
+        private static final double TIME_LIMIT = 2;
+
         protected final PIDController xCtrl = new PIDController(1.5, 0, 0.25);
         protected final PIDController yCtrl = new PIDController(1.5, 0, 0.25);
         protected final PIDController yawCtrl = new PIDController(1.5, 0, 0.15);
         protected Pose target;
         private RotationDirection rotationDirection;
+        private boolean stuckCheckEnabled;
 
         private long lastUpdate;
+        private double timeStuck;
 
         public Motion(Pose target) {
             this.target = target;
 
             this.rotationDirection = RotationDirection.NONE;
+            this.stuckCheckEnabled = false;
 
             this.lastUpdate = System.nanoTime();
+            this.timeStuck = 0;
         }
 
         public Motion turningCw() {
@@ -181,6 +187,11 @@ public class Poser {
             return this;
         }
 
+        public Motion withStuckCheck() {
+            this.stuckCheckEnabled = true;
+            return this;
+        }
+
         public ControlFlow update() {
             Poser poser = Poser.this;
 
@@ -195,6 +206,7 @@ public class Poser {
             lastUpdate = now;
             double dt = dtNanos / (1000 * 1000 * 1000.);
 
+            Pose poseBefore = poser.localizer.getPoseEstimate();
             poser.localizer.update();
             Pose pose = poser.localizer.getPoseEstimate();
 
@@ -222,6 +234,25 @@ public class Poser {
             angPow = Range.clip(angPow, -1, 1) * poser.speed;
 
             poser.move(pow.x, pow.y, angPow);
+
+            if (stuckCheckEnabled) {
+                Distance2 posDelta = pose.pos.sub(poseBefore.pos);
+                Distance velEstimate = posDelta.magnitude().div(dt);
+
+                Angle yawDelta = pose.yaw.sub(poseBefore.yaw);
+                Angle yawVelEstimate = yawDelta.abs().div(dt);
+
+                if (velEstimate.valInMM() < 10 && yawVelEstimate.valInRadians() < 0.5) {
+                    timeStuck += dt;
+
+                    if (timeStuck > TIME_LIMIT) {
+                        hardware.log.addLine("Poser.Motion", "WARN: Stuck, breaking");
+                        return ControlFlow.BREAK;
+                    }
+                } else {
+                    timeStuck = 0;
+                }
+            }
 
             return ControlFlow.continueIf(
                     posError.magnitude().valInMM() > 15 || Math.abs(angError.valInDegrees()) > 4

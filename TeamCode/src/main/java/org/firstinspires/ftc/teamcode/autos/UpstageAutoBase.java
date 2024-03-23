@@ -1,24 +1,13 @@
 package org.firstinspires.ftc.teamcode.autos;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
-import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.freesight.pipelines.FreeSightPipeline;
 import org.firstinspires.ftc.teamcode.macro.Action;
 import org.firstinspires.ftc.teamcode.macro.ConcurrentSet;
 import org.firstinspires.ftc.teamcode.macro.ControlFlow;
-import org.firstinspires.ftc.teamcode.macro.RunUntil;
 import org.firstinspires.ftc.teamcode.macro.Sequence;
-import org.firstinspires.ftc.teamcode.macro.Wait;
 import org.firstinspires.ftc.teamcode.poser.Angle;
 import org.firstinspires.ftc.teamcode.poser.Distance;
-import org.firstinspires.ftc.teamcode.poser.Distance2;
-import org.firstinspires.ftc.teamcode.poser.Pose;
-import org.firstinspires.ftc.teamcode.poser.Poser;
-import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import org.firstinspires.ftc.teamcode.subsystems.Box;
-import org.firstinspires.ftc.teamcode.subsystems.ControlledLift;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 public abstract class UpstageAutoBase extends AutoBase {
     public void runOpMode(Alliance alliance) {
@@ -97,10 +86,10 @@ public abstract class UpstageAutoBase extends AutoBase {
                         poser.goTo(
                                 Distance.inTiles(2).add(Distance.inInches(3.75)),
                                 Distance.inTiles(-1.5).add(yOffsetAtBackdrop)
-                        ),
+                        ).withStuckCheck(),
                         poser.goTo(
                                 Angle.BACKWARD
-                        )
+                        ).withStuckCheck()
                 ),
                 // lift up
                 Sequence.of(
@@ -128,10 +117,16 @@ public abstract class UpstageAutoBase extends AutoBase {
         sleep(500);
         box.setFlapPosition(Box.FlapPosition.CLOSED);
 
+        // corner
         poser.goTo(
                 Distance.inTiles(2),
                 Distance.inTiles(-2.5)
         ).run();
+        // center
+//        poser.goTo(
+//                Distance.inTiles(2),
+//                Distance.inTiles(-0.4)
+//        ).run();
 
         // lower slide and move arm in
         arm.moveDown();
@@ -143,12 +138,18 @@ public abstract class UpstageAutoBase extends AutoBase {
         lift.stop();
 
         // move to final parking position
+        // corner
+        poser.goTo(Angle.LEFT).run();
         poser.goTo(
                 Distance.inTiles(2.5),
                 Distance.inTiles(-2.5)
         ).run();
-
-        poser.goTo(Angle.LEFT).run();
+        // center
+//        poser.goTo(
+//                Distance.inTiles(2.5),
+//                Distance.inTiles(-0.4)
+//        ).run();
+//        poser.goTo(Angle.LEFT).run();
 
 //        // all done!
 

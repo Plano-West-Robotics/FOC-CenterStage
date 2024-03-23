@@ -71,6 +71,10 @@ public class Angle {
         return new Angle(-this.val);
     }
 
+    public Angle abs() {
+        return new Angle(Math.abs(val));
+    }
+
     private double modTau(double v) {
         v = v % TAU;
         if (v < 0) {

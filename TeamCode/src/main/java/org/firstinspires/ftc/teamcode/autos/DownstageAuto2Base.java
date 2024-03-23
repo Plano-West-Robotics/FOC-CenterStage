@@ -97,7 +97,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
         lift.stop();
         // move closer to backdrop
         poser.moveBy(
-                Distance.inInches(3),
+                Distance.inInches(2.75),
                 Distance.ZERO
         ).run();
         // drop pixel
@@ -107,7 +107,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
 
         // move over
         poser.moveBy(
-                Distance.inInches(-3),
+                Distance.inInches(-2.75),
                 Distance.ZERO
         ).run();
         poser.goTo(
@@ -126,7 +126,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
 
         // move to final parking position
         poser.goTo(
-                Distance.inTiles(2.5),
+                Distance.inTiles(2.3),
                 Distance.inTiles(-0.4)
         ).run();
     }
