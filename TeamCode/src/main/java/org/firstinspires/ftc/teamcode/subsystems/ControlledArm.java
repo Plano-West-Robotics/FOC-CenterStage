@@ -45,10 +45,10 @@ public class ControlledArm {
             case DOWN:
                 return;
             case UP:
-                waiter.run(Wait.millis(350));
+                waiter.run(Wait.millis(400));
                 break;
             case FIXEL:
-                waiter.run(Wait.millis(350));
+                waiter.run(Wait.millis(400));
                 break;
         }
         arm.setArmPosition(Arm.ArmPosition.DOWN);

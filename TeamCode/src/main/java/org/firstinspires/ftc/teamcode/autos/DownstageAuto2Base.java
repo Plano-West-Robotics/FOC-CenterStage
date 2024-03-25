@@ -21,15 +21,15 @@ public abstract class DownstageAuto2Base extends AutoBase {
                 poser.goTo(
                         Distance.inTiles(-2).add(Distance.inInches(1.5)),
                         Distance.inTiles(-1).add(Distance.inInches(6))
-                ).run();
-                poser.goTo(Angle.RIGHT).run();
+                ).withStuckCheck().run();
+                poser.goTo(Angle.RIGHT).withStuckCheck().run();
                 break;
             case MIDDLE:
                 poser.goTo(
                         Distance.inTiles(-1.5).sub(Distance.inInches(2.5)),
                         Distance.inTiles(-0.5).sub(Distance.inInches(3.5))
                 ).run();
-                poser.goTo(Angle.RIGHT).run();
+                poser.goTo(Angle.RIGHT).withStuckCheck().run();
                 break;
             case RIGHT:
                 yOffsetAtBackdrop = Distance.inInches(-7);
@@ -68,11 +68,12 @@ public abstract class DownstageAuto2Base extends AutoBase {
                 break;
         }
         poser.goToY(crossingYCoord).run();
-        poser.goTo(Angle.BACKWARD.sub(Angle.inDegrees(5))).run();
+        poser.goTo(Angle.BACKWARD.add(Angle.inDegrees(5))).run();
         // now in position to cross to the other side of the field
 
         // configurable delay goes here, if you wish
-        sleep(6000);
+//        sleep(6000);
+        sleep(500);
 
         // migrate
         poser.goTo(
@@ -91,7 +92,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
         ).run();
 
         // lift up
-        lift.setTarget(0.35);
+        lift.setTarget(0.32);
         arm.moveUp();
         while (lift.update() && arm.isBusy()) arm.update();
         lift.stop();
@@ -99,7 +100,7 @@ public abstract class DownstageAuto2Base extends AutoBase {
         poser.moveBy(
                 Distance.inInches(2.75),
                 Distance.ZERO
-        ).run();
+        ).withStuckCheck().run();
         // drop pixel
         box.setFlapPosition(Box.FlapPosition.OPEN);
         sleep(1000);

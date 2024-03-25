@@ -153,9 +153,9 @@ public class Lift3 {
                     }
 
                     if (pos > 200) {
-                        outPower = helper3(150);
+                        outPower = helper3(175);
                     } else {
-                        outPower = -0.19;
+                        outPower = -0.11;
                     }
 
                     break loop;
